@@ -4,7 +4,7 @@ from sanic import Sanic
 
 from server.common.common import Worker
 from server.common.logger import is_logged
-from server.common.web_config import ProjectConfigWeb, ServerType, web_config
+from server.common.web_config import ProjectConfigWeb, ServerType
 
 
 class InnerServer(Worker, ABC):
@@ -58,6 +58,3 @@ class WebServer(Worker):
 
     def get_underlying_server(self):
         return self.server.get_server()
-
-
-web_server = WebServer(web_config, InnerServerFactory())

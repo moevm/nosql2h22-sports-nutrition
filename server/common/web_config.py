@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from enum import Enum
 
-from server.common.config import ProjectConfig, config
+from server.common.config import ProjectConfig
 
 
 @dataclass
@@ -32,6 +32,3 @@ class ProjectConfigWeb(ProjectConfig):
 
     def get_server_type(self) -> ServerType:
         return ServerType[self.get_config()[WebConfigConstant.SERVER_TYPE_TOKEN]]
-
-
-web_config = ProjectConfigWeb(config)

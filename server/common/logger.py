@@ -1,15 +1,18 @@
 import functools
+import os
 from dataclasses import dataclass
 from logging import basicConfig, DEBUG, debug
 
 
 @dataclass
 class LoggerConstants:
+    LOGGER_FOLDER: str = "./log/"
     LOGGER_FILE_NAME: str = "sports-nutrition.log"
 
 
 def configure_logging():
-    basicConfig(filename=LoggerConstants.LOGGER_FILE_NAME, level=DEBUG, force=True)
+    basicConfig(filename=os.path.join(LoggerConstants.LOGGER_FOLDER, LoggerConstants.LOGGER_FILE_NAME), level=DEBUG,
+                force=True)
 
 
 def is_logged(names: list = [], level=debug):

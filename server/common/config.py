@@ -1,4 +1,3 @@
-import configparser
 import os
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
@@ -30,8 +29,3 @@ class ProjectConfig(ProjectBaseConfig):
 
     def get_config(self):
         return self.config
-
-
-raw_config = configparser.ConfigParser()
-raw_config.read(check_and_get_config_path())
-config = ProjectConfig(raw_config)
