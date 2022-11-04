@@ -44,6 +44,14 @@ class EmployeeDto(BaseModel):
     def surname_contains_only_letters(cls, surname):
         return check(surname, lambda string: string.isalpha(), "Surname must contain only alphabetic symbols")
 
+    @validator('city')
+    def city_contains_only_letters(cls, city):
+        return check(city, lambda string: string.isalpha(), "City must contain only alphabetic symbols")
+
+    @validator('role')
+    def city_contains_only_letters(cls, role):
+        return check(role, lambda string: string.isalpha(), "Role must contain only alphabetic symbols")
+
     @validator('patronymic')
     def patronymic_contains_only_letters(cls, surname):
         return check(surname, lambda string: string.isalpha(), "Patronymic must contain only alphabetic symbols")
