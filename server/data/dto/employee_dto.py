@@ -49,7 +49,7 @@ class EmployeeDto(BaseModel):
         return check(city, lambda string: string.isalpha(), "City must contain only alphabetic symbols")
 
     @validator('role')
-    def city_contains_only_letters(cls, role):
+    def role_contains_only_letters(cls, role):
         return check(role, lambda string: string.isalpha(), "Role must contain only alphabetic symbols")
 
     @validator('patronymic')
