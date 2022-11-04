@@ -11,7 +11,10 @@ class LoggerConstants:
 
 
 def configure_logging():
-    basicConfig(filename=os.path.join(LoggerConstants.LOGGER_FOLDER, LoggerConstants.LOGGER_FILE_NAME), level=DEBUG,
+    basicConfig(format='%(asctime)s %(levelname)-8s %(message)s',
+                datefmt='%d-%m-%Y %H:%M:%S',
+                filename=os.path.join(LoggerConstants.LOGGER_FOLDER, LoggerConstants.LOGGER_FILE_NAME),
+                level=DEBUG,
                 force=True)
 
 

@@ -1,14 +1,20 @@
+from sanic import Blueprint
+
 from server.common.factory import web_server
 from server.common.logger import configure_logging
-from server.web.endpoint.dispatcher import register_handlers
-from server.web.web_server import WebServer
+from server.web.endpoint.employee_endpoint import employee_blueprint
+from server.web.endpoint.exception_handler import exception_handler_blueprint
 
 
-def main(web_server: WebServer):
+def main():
     configure_logging()
-    register_handlers(web_server)
+
+    api = Blueprint.group(employee_blueprint, exception_handler_blueprint)
+
+    web_server.get_underlying_server().blueprint(api)
+
     web_server.run()
 
 
 if __name__ == '__main__':
-    main(web_server)
+    main()

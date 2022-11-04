@@ -17,11 +17,11 @@ class SanicServer(InnerServer, ABC):
 
     def __init__(self, config: ProjectConfigWeb):
         self.config = config
-        self.server = Sanic("cafe")
+        self.server = Sanic("sports-nutrition")
 
     @is_logged()
     def run(self) -> None:
-        self.server.run(host=self.config.get_host(), port=self.config.get_port(), fast=True)
+        self.server.run(host=self.config.get_host(), port=self.config.get_port(), fast=True, access_log=True)
 
     def stop(self) -> None:
         self.server.stop()
