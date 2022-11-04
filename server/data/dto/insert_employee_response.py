@@ -1,8 +1,12 @@
 from bson import ObjectId
+from pydantic import BaseModel
 
 
-class InsertEmployeeResponse:
+class InsertEmployeeResponse(BaseModel):
     id: str
 
-    def __init__(self, object_id: ObjectId):
-        self.id = str(object_id)
+
+def insert_employee_response(object_id: ObjectId) -> InsertEmployeeResponse:
+    response = InsertEmployeeResponse.construct()
+    response.id = str(object_id)
+    return response

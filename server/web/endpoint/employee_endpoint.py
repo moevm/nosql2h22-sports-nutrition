@@ -7,7 +7,7 @@ from sanic_ext import validate
 from server.common.exceptions import InvalidObjectId
 from server.common.factory import employees_service, web_server
 from server.data.dto.employee_dto import EmployeeDto
-from server.data.dto.insert_employee_response import InsertEmployeeResponse
+from server.data.dto.insert_employee_response import insert_employee_response
 from server.data.dto_mapper import dto_indexed_from_employee_indexed
 from server.data.services.employee import from_employee_dto
 
@@ -24,7 +24,7 @@ async def insert_employee(request: Request, body: EmployeeDto) -> HTTPResponse:
 
     info(f"added employee id {inserted.inserted_id}")
 
-    return res.json(InsertEmployeeResponse(inserted.inserted_id).__dict__)
+    return res.json(insert_employee_response(inserted.inserted_id).dict())
 
 
 @app.route("/employee/<employee_id:str>", methods=['GET'])
