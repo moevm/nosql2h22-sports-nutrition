@@ -4,8 +4,9 @@ from server.common.config import ProjectConfig, check_and_get_config_path
 from server.common.mongo_config import ProjectConfigMongo
 from server.common.web_config import ProjectConfigWeb
 from server.database.mongo_connection import MongoConnection
+from server.repository.branch_repository import BranchRepository
 from server.repository.employees_repository import EmployeesRepository
-from server.service.employees_service import EmployeesService
+from server.service.branch_service import BranchService
 from server.web.web_server import WebServer, InnerServerFactory
 
 raw_config = configparser.ConfigParser()
@@ -23,4 +24,6 @@ mongo_connection = MongoConnection(mongo_config)
 
 employees_repository = EmployeesRepository(mongo_connection)
 
-employees_service = EmployeesService(employees_repository)
+branch_repository = BranchRepository(mongo_connection)
+
+branch_service = BranchService(employees_repository, branch_repository)

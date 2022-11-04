@@ -1,5 +1,7 @@
-from server.data.database.employee_entity import EmployeeEntity, SalaryChangeEntity, VacationEntity
-from server.data.services.employee import Employee, Vacation, SalaryChange
+from bson import ObjectId
+
+from server.data.database.branch_entity import EmployeeEntity, SalaryChangeEntity, VacationEntity, BranchEntity
+from server.data.services.branch import Employee, Vacation, SalaryChange, InsertBranch
 
 
 def entity_from_salary_change(change: SalaryChange) -> SalaryChangeEntity:
@@ -20,6 +22,7 @@ def entity_from_vacation(vacation: Vacation) -> VacationEntity:
 
 def entity_from_employee(employee: Employee) -> EmployeeEntity:
     entity = EmployeeEntity.construct()
+    entity.id = ObjectId()
     entity.name = employee.name
     entity.surname = employee.surname
     entity.patronymic = employee.patronymic
@@ -33,4 +36,11 @@ def entity_from_employee(employee: Employee) -> EmployeeEntity:
     entity.shifts_history = employee.shifts_history
     entity.vacation_history = list(map(entity_from_vacation, employee.vacation_history))
     entity.salary_change_history = list(map(entity_from_salary_change, employee.salary_change_history))
+    return entity
+
+
+def entity_from_branch(branch: InsertBranch) -> BranchEntity:
+    entity = BranchEntity.construct()
+    entity.name = branch.name
+    entity.city = branch.city
     return entity

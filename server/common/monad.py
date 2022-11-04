@@ -22,7 +22,7 @@ class Optional:
             raise exception_supplier()
         return self.value
 
-    def bind(self, func):
+    def map(self, func):
         if self.value is None:
             return empty_optional
         return Optional(func(self.value))

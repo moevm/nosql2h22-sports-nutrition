@@ -18,5 +18,5 @@ class MongoConnection:
 
         return motor.motor_asyncio.AsyncIOMotorClient(url)
 
-    def get_employees(self):
-        return self.client[self.config.get_database()]['employees']
+    def get_branches(self):
+        return self.client[self.config.get_database()]['branches']

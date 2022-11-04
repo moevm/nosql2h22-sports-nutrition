@@ -1,20 +1,10 @@
 from datetime import datetime
+from logging import info
 from typing import List
 
-from bson import ObjectId
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
-
-class PydanticObjectId(ObjectId):
-    @classmethod
-    def __get_validators__(cls):
-        yield cls.validate
-
-    @classmethod
-    def validate(cls, v):
-        if not isinstance(v, ObjectId):
-            raise TypeError('ObjectId required')
-        return str(v)
+from server.data.database.common import PydanticObjectId
 
 
 class SalaryChangeEntity(BaseModel):
@@ -30,7 +20,7 @@ class VacationEntity(BaseModel):
 
 
 class EmployeeEntity(BaseModel):
-    id: PydanticObjectId
+    id: PydanticObjectId = Field(alias='_id')
     name: str
     surname: str
     patronymic: str
@@ -44,6 +34,33 @@ class EmployeeEntity(BaseModel):
     shifts_history: list
     vacation_history: List[VacationEntity]
     salary_change_history: List[SalaryChangeEntity]
+
+
+class ProductDescriptorEntity(BaseModel):
+    id: PydanticObjectId = Field(alias='_id')
+    name: str
+
+
+class ProductEntity(BaseModel):
+    id: PydanticObjectId = Field(alias='_id')
+    descriptor: ProductDescriptorEntity
+    supplier_id: PydanticObjectId
+    price: float
+
+
+class StockEntity(BaseModel):
+    id: PydanticObjectId = Field(alias='_id')
+    amount: int
+    price: float
+    product: ProductEntity
+
+
+class BranchEntity(BaseModel):
+    id: PydanticObjectId = Field(alias='_id')
+    name: str
+    city: str
+    stocks: List[StockEntity] = []
+    employees: List[EmployeeEntity] = []
 
 
 def from_salary_change_document(document) -> SalaryChangeEntity:
@@ -63,6 +80,8 @@ def from_vacation_document(document) -> VacationEntity:
 
 
 def from_employee_document(document) -> EmployeeEntity:
+    info(f"parse document: {document}")
+
     entity = EmployeeEntity.construct()
     entity.id = document['_id']
     entity.name = document['name']
@@ -78,4 +97,40 @@ def from_employee_document(document) -> EmployeeEntity:
     entity.shifts_history = document['shifts_history']
     entity.vacation_history = list(map(from_vacation_document, document['vacation_history']))
     entity.salary_change_history = list(map(from_salary_change_document, document['salary_change_history']))
+    return entity
+
+
+def from_product_descriptor_document(document) -> ProductDescriptorEntity:
+    entity = ProductDescriptorEntity.construct()
+    entity.id = document['_id']
+    entity.name = document['name']
+    return entity
+
+
+def from_product_document(document) -> ProductEntity:
+    entity = ProductEntity.construct()
+    entity.id = document['_id']
+    entity.supplier_id = document['supplier_id']
+    entity.price = document['price']
+    return entity
+
+
+def from_stock_document(document) -> StockEntity:
+    entity = StockEntity.construct()
+    entity.id = document['_id']
+    entity.amount = document['amount']
+    entity.price = document['price']
+    entity.product = from_product_document(document['product'])
+    return entity
+
+
+def from_branch_document(document) -> BranchEntity:
+    info(f"parse document: {document}")
+
+    entity = BranchEntity.construct()
+    entity.id = document['_id']
+    entity.name = document['name']
+    entity.city = document['city']
+    entity.employees = list(map(from_employee_document, document['employees']))
+    entity.stocks = list(map(from_stock_document, document['stocks']))
     return entity

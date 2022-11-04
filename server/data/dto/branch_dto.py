@@ -1,6 +1,24 @@
-from typing import List
+from dataclasses import dataclass
+from typing import List, Optional, Any
 
 from pydantic import BaseModel, validator, Field
+
+
+@dataclass
+class DtoConstant:
+    STRING_SIZE: int = 30
+
+
+def check(argument, predicate, message):
+    if not predicate(argument):
+        raise ValueError(message)
+    return argument
+
+
+class BranchQueryDto(BaseModel):
+    name: Optional[Any] = None
+    city: Optional[Any] = None
+    id: Any = Field(None, alias="_id")
 
 
 class SalaryChangeDto(BaseModel):
@@ -15,22 +33,16 @@ class VacationDto(BaseModel):
     end_date: str
 
 
-def check(argument, predicate, message):
-    if not predicate(argument):
-        raise ValueError(message)
-    return argument
-
-
-class EmployeeDto(BaseModel):
-    name: str = Field(..., max_length=30)
-    surname: str = Field(..., max_length=30)
-    patronymic: str = Field(..., max_length=30)
-    passport: str = Field(..., max_length=30)
-    phone: str = Field(..., max_length=30)
-    role: str = Field(..., max_length=30)
-    city: str = Field(..., max_length=30)
-    employment_date: str = Field(..., max_length=30)
-    dismissal_date: str = Field(..., max_length=30)
+class InsertEmployeeDto(BaseModel):
+    name: str = Field(..., max_length=DtoConstant.STRING_SIZE)
+    surname: str = Field(..., max_length=DtoConstant.STRING_SIZE)
+    patronymic: str = Field(..., max_length=DtoConstant.STRING_SIZE)
+    passport: str = Field(..., max_length=DtoConstant.STRING_SIZE)
+    phone: str = Field(..., regex=r"^(\+)[1-9][0-9\-\(\)\.]{9,15}$")
+    role: str = Field(..., max_length=DtoConstant.STRING_SIZE)
+    city: str = Field(..., max_length=DtoConstant.STRING_SIZE)
+    employment_date: str = Field(..., max_length=DtoConstant.STRING_SIZE)
+    dismissal_date: str = Field(..., max_length=DtoConstant.STRING_SIZE)
     salary: int = Field(..., description="Salary must be a non-negative value", gt=0)
     shifts_history: List[str] = []
     vacation_history: List[VacationDto] = []
@@ -44,18 +56,11 @@ class EmployeeDto(BaseModel):
     def surname_contains_only_letters(cls, surname):
         return check(surname, lambda string: string.isalpha(), "Surname must contain only alphabetic symbols")
 
-    @validator('city')
-    def city_contains_only_letters(cls, city):
-        return check(city, lambda string: string.isalpha(), "City must contain only alphabetic symbols")
-
-    @validator('role')
-    def role_contains_only_letters(cls, role):
-        return check(role, lambda string: string.isalpha(), "Role must contain only alphabetic symbols")
-
     @validator('patronymic')
     def patronymic_contains_only_letters(cls, surname):
         return check(surname, lambda string: string.isalpha(), "Patronymic must contain only alphabetic symbols")
 
-    @validator('phone')
-    def valid_phone(cls, phone):
-        return check(phone, lambda string: string.isnumeric(), "Phone must contain only 0-9 symbols")
+
+class InsertBranchDto(BaseModel):
+    name: str = Field(..., max_length=DtoConstant.STRING_SIZE)
+    city: str = Field(..., max_length=DtoConstant.STRING_SIZE)

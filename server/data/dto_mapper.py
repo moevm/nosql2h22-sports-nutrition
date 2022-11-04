@@ -1,8 +1,10 @@
 from server.data.datetime_formatter import get_string
-from server.data.dto.employee_dto import SalaryChangeDto, VacationDto
-from server.data.dto.employee_indexed_dto import EmployeeIndexedDto
-from server.data.services.employee import SalaryChange, Vacation
-from server.data.services.employee_indexed import EmployeeIndexed
+from server.data.dto.branch_dto import SalaryChangeDto, VacationDto
+from server.data.dto.branch_indexed_dto import EmployeeIndexedDto, ProductDescriptorIndexedDto, ProductIndexedDto, \
+    StockIndexedDto, BranchIndexedDto
+from server.data.services.branch import SalaryChange, Vacation
+from server.data.services.branch_indexed import EmployeeIndexed, ProductDescriptorIndexed, ProductIndexed, StockIndexed, \
+    BranchIndexed
 
 
 def dto_from_salary_change(change: SalaryChange) -> SalaryChangeDto:
@@ -38,3 +40,38 @@ def dto_indexed_from_employee_indexed(employee: EmployeeIndexed) -> EmployeeInde
     entity.vacation_history = list(map(dto_from_vacation, employee.vacation_history))
     entity.salary_change_history = list(map(dto_from_salary_change, employee.salary_change_history))
     return entity
+
+
+def dto_indexed_from_product_descriptor_indexed(descriptor: ProductDescriptorIndexed) -> ProductDescriptorIndexedDto:
+    internal = ProductDescriptorIndexedDto.construct()
+    internal.id = str(descriptor.id)
+    internal.name = descriptor.name
+    return internal
+
+
+def dto_indexed_from_product_indexed(product: ProductIndexed) -> ProductIndexedDto:
+    internal = ProductIndexedDto.construct()
+    internal.id = str(product.id)
+    internal.supplier_id = str(product.supplier_id)
+    internal.price = product.price
+    internal.descriptor = dto_indexed_from_product_descriptor_indexed(product.descriptor)
+    return internal
+
+
+def dto_indexed_from_stock_indexed(stock: StockIndexed) -> StockIndexedDto:
+    internal = StockIndexedDto.construct()
+    internal.id = str(stock.id)
+    internal.amount = stock.amount
+    internal.price = stock.price
+    internal.product = dto_indexed_from_product_indexed(stock.product)
+    return internal
+
+
+def dto_indexed_from_branch_indexed(branch: BranchIndexed) -> BranchIndexedDto:
+    internal = BranchIndexedDto.construct()
+    internal.id = str(branch.id)
+    internal.name = branch.name
+    internal.city = branch.city
+    internal.employees = list(map(dto_indexed_from_employee_indexed, branch.employees))
+    internal.stocks = list(map(dto_indexed_from_stock_indexed, branch.stocks))
+    return internal
