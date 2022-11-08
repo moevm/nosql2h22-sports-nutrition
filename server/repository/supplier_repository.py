@@ -9,7 +9,7 @@ from server.database.mongo_connection import MongoConnection
 class SupplierRepository:
 
     def __init__(self, connection: MongoConnection):
-        self.collection = connection.get_branches()
+        self.collection = connection.get_suppliers()
 
     async def insert(self, request: SupplierEntity) -> ObjectId:
         info(f"insert supplier {request}")
