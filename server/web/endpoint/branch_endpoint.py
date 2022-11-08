@@ -4,10 +4,10 @@ from sanic import response as res, Request, HTTPResponse, Blueprint
 from sanic_ext import validate
 
 from server.common.factory import web_server, branch_service
-from server.data.dto.branch_dto import InsertBranchDto, BranchQueryDto
+from server.data.dto.branch.branch_dto import InsertBranchDto, BranchQueryDto
 from server.data.dto.response_dto import insert_branch_response
 from server.data.dto_mapper import dto_indexed_from_branch_indexed
-from server.data.services.branch import from_insert_branch_dto, from_query_dto
+from server.data.services.branch.branch import from_insert_branch_dto, from_query_dto
 
 branch_blueprint = Blueprint("branch")
 app = web_server.get_underlying_server()

@@ -19,3 +19,8 @@ class BranchNotFound(NotFound):
 class InvalidBranchQuery(InvalidUsage):
     def __init__(self):
         super().__init__("Query must have at least one condition. Name and City must contain less than 30 symbols")
+
+
+class InvalidSupplierQuery(InvalidUsage):
+    def __init__(self):
+        super().__init__("Supplier must have at least one condition: name, phone or email")

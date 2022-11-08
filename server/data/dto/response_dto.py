@@ -18,6 +18,10 @@ class InsertSupplierResponseDto(BaseInsertResponseDto):
     pass
 
 
+class InsertProductResponseDto(BaseInsertResponseDto):
+    pass
+
+
 def insert_branch_response(object_id: ObjectId) -> InsertBranchResponseDto:
     response = InsertBranchResponseDto.construct()
     response.id = str(object_id)
@@ -32,5 +36,11 @@ def insert_employee_response(object_id: ObjectId) -> InsertEmployeeResponseDto:
 
 def insert_supplier_response(object_id: ObjectId) -> InsertSupplierResponseDto:
     response = InsertSupplierResponseDto.construct()
+    response.id = str(object_id)
+    return response
+
+
+def insert_product_response(object_id: ObjectId) -> InsertProductResponseDto:
+    response = InsertProductResponseDto.construct()
     response.id = str(object_id)
     return response

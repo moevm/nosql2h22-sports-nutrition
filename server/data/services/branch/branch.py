@@ -4,7 +4,7 @@ from bson import ObjectId
 
 from server.common.exceptions import InvalidBranchQuery
 from server.data.datetime_formatter import get_datetime
-from server.data.dto.branch_dto import InsertEmployeeDto, SalaryChangeDto, VacationDto, InsertBranchDto, BranchQueryDto, \
+from server.data.dto.branch.branch_dto import InsertEmployeeDto, SalaryChangeDto, VacationDto, InsertBranchDto, BranchQueryDto, \
     DtoConstant
 
 

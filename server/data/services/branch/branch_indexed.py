@@ -4,7 +4,7 @@ from bson import ObjectId
 
 from server.data.database.branch_entity import SalaryChangeEntity, VacationEntity, EmployeeEntity, BranchEntity, \
     StockEntity, ProductEntity, ProductDescriptorEntity
-from server.data.services.branch import SalaryChange, Vacation
+from server.data.services.branch.branch import SalaryChange, Vacation
 
 
 class EmployeeIndexed:

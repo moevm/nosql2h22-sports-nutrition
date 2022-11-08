@@ -1,14 +1,14 @@
-from dataclasses import dataclass
-from typing import List, Optional, Any
+from typing import Optional, Any
 
-from pydantic import BaseModel, validator, Field
+from pydantic import BaseModel, Field
 
-from server.data.dto.branch_dto import DtoConstant
+from server.data.dto.branch.branch_dto import DtoConstant
 
 
 class SupplierQueryDto(BaseModel):
     name: Optional[Any] = None
-    city: Optional[Any] = None
+    phone: Optional[Any] = None
+    email: Optional[Any] = None
     id: Any = Field(None, alias="_id")
 
 

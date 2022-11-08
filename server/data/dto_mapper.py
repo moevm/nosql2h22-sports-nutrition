@@ -1,9 +1,9 @@
 from server.data.datetime_formatter import get_string
-from server.data.dto.branch_dto import SalaryChangeDto, VacationDto
-from server.data.dto.branch_indexed_dto import EmployeeIndexedDto, ProductDescriptorIndexedDto, ProductIndexedDto, \
+from server.data.dto.branch.branch_dto import SalaryChangeDto, VacationDto
+from server.data.dto.branch.branch_indexed_dto import EmployeeIndexedDto, ProductDescriptorIndexedDto, ProductIndexedDto, \
     StockIndexedDto, BranchIndexedDto
-from server.data.services.branch import SalaryChange, Vacation
-from server.data.services.branch_indexed import EmployeeIndexed, ProductDescriptorIndexed, ProductIndexed, StockIndexed, \
+from server.data.services.branch.branch import SalaryChange, Vacation
+from server.data.services.branch.branch_indexed import EmployeeIndexed, ProductDescriptorIndexed, ProductIndexed, StockIndexed, \
     BranchIndexed
 
 
