@@ -18,7 +18,7 @@ class EmployeeIndexed:
     city: str
     employment_date: datetime
     dismissal_date: datetime
-    salary: int
+    salary: float
     shifts_history: list
     vacation_history: list
     salary_change_history: list

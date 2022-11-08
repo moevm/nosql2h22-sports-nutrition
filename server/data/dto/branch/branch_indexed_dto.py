@@ -16,7 +16,7 @@ class EmployeeIndexedDto(BaseModel):
     city: str
     employment_date: str
     dismissal_date: str
-    salary: int
+    salary: float
     shifts_history: List[str]
     vacation_history: List[VacationDto]
     salary_change_history: List[SalaryChangeDto]

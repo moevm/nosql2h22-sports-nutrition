@@ -1,9 +1,10 @@
 from logging import info
+from typing import List
 
 from pydantic import BaseModel, Field
+
 from server.data.database.branch_entity import ProductEntity, from_product_document
 from server.data.database.common import PydanticObjectId
-from typing import List
 
 
 class SupplierEntity(BaseModel):

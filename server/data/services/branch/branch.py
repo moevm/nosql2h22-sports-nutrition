@@ -4,7 +4,8 @@ from bson import ObjectId
 
 from server.common.exceptions import InvalidBranchQuery
 from server.data.datetime_formatter import get_datetime
-from server.data.dto.branch.branch_dto import InsertEmployeeDto, SalaryChangeDto, VacationDto, InsertBranchDto, BranchQueryDto, \
+from server.data.dto.branch.branch_dto import InsertEmployeeDto, SalaryChangeDto, VacationDto, InsertBranchDto, \
+    BranchQueryDto, \
     DtoConstant
 
 
@@ -18,13 +19,13 @@ class BranchQuery:
 
 
 class SalaryChange:
-    salary_before: int
-    salary_after: int
+    salary_before: float
+    salary_after: float
     date: datetime
 
 
 class Vacation:
-    payments: int
+    payments: float
     start_date: datetime
     end_date: datetime
 
@@ -39,7 +40,7 @@ class Employee:
     city: str
     employment_date: datetime
     dismissal_date: datetime
-    salary: int
+    salary: float
     shifts_history: list
     vacation_history: list
     salary_change_history: list
@@ -94,10 +95,10 @@ def from_insert_branch_dto(branch: InsertBranchDto) -> InsertBranch:
 def from_query_dto(query: BranchQueryDto) -> BranchQuery:
     internal = BranchQuery()
 
-    if hasattr(query, "name") and query.name and len(query.name) < DtoConstant.STRING_SIZE:
+    if hasattr(query, "name") and query.name and len(query.name) < DtoConstant.MAX_STRING_SIZE:
         internal.name = query.name[0]
 
-    if hasattr(query, "city") and query.city and len(query.city) < DtoConstant.STRING_SIZE:
+    if hasattr(query, "city") and query.city and len(query.city) < DtoConstant.MAX_STRING_SIZE:
         internal.city = query.city[0]
 
     if hasattr(query, "id") and query.id:

@@ -7,4 +7,3 @@ class SupplierIndexedDto(BaseModel):
     email: str
     phone: str
     products: list
-

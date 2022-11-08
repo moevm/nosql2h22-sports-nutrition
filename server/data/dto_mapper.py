@@ -1,77 +1,91 @@
 from server.data.datetime_formatter import get_string
 from server.data.dto.branch.branch_dto import SalaryChangeDto, VacationDto
-from server.data.dto.branch.branch_indexed_dto import EmployeeIndexedDto, ProductDescriptorIndexedDto, ProductIndexedDto, \
+from server.data.dto.branch.branch_indexed_dto import EmployeeIndexedDto, ProductDescriptorIndexedDto, \
+    ProductIndexedDto, \
     StockIndexedDto, BranchIndexedDto
+from server.data.dto.supplier.supplier_indexed_dto import SupplierIndexedDto
 from server.data.services.branch.branch import SalaryChange, Vacation
-from server.data.services.branch.branch_indexed import EmployeeIndexed, ProductDescriptorIndexed, ProductIndexed, StockIndexed, \
+from server.data.services.branch.branch_indexed import EmployeeIndexed, ProductDescriptorIndexed, ProductIndexed, \
+    StockIndexed, \
     BranchIndexed
+from server.data.services.supplier.supplier import SupplierIndexed
 
 
 def dto_from_salary_change(change: SalaryChange) -> SalaryChangeDto:
-    entity = SalaryChangeDto.construct()
-    entity.salary_before = change.salary_before
-    entity.salary_after = change.salary_after
-    entity.date = get_string(change.date)
-    return entity
+    dto = SalaryChangeDto.construct()
+    dto.salary_before = change.salary_before
+    dto.salary_after = change.salary_after
+    dto.date = get_string(change.date)
+    return dto
 
 
 def dto_from_vacation(vacation: Vacation) -> VacationDto:
-    entity = VacationDto.construct()
-    entity.payments = vacation.payments
-    entity.start_date = get_string(vacation.start_date)
-    entity.end_date = get_string(vacation.end_date)
-    return entity
+    dto = VacationDto.construct()
+    dto.payments = vacation.payments
+    dto.start_date = get_string(vacation.start_date)
+    dto.end_date = get_string(vacation.end_date)
+    return dto
 
 
 def dto_indexed_from_employee_indexed(employee: EmployeeIndexed) -> EmployeeIndexedDto:
-    entity = EmployeeIndexedDto.construct()
-    entity.id = str(employee.id)
-    entity.name = employee.name
-    entity.surname = employee.surname
-    entity.patronymic = employee.patronymic
-    entity.passport = employee.passport
-    entity.phone = employee.phone
-    entity.role = employee.role
-    entity.city = employee.city
-    entity.employment_date = get_string(employee.employment_date)
-    entity.dismissal_date = get_string(employee.dismissal_date)
-    entity.salary = employee.salary
-    entity.shifts_history = list(map(get_string, employee.shifts_history))
-    entity.vacation_history = list(map(dto_from_vacation, employee.vacation_history))
-    entity.salary_change_history = list(map(dto_from_salary_change, employee.salary_change_history))
-    return entity
+    dto = EmployeeIndexedDto.construct()
+    dto.id = str(employee.id)
+    dto.name = employee.name
+    dto.surname = employee.surname
+    dto.patronymic = employee.patronymic
+    dto.passport = employee.passport
+    dto.phone = employee.phone
+    dto.role = employee.role
+    dto.city = employee.city
+    dto.employment_date = get_string(employee.employment_date)
+    dto.dismissal_date = get_string(employee.dismissal_date)
+    dto.salary = employee.salary
+    dto.shifts_history = list(map(get_string, employee.shifts_history))
+    dto.vacation_history = list(map(dto_from_vacation, employee.vacation_history))
+    dto.salary_change_history = list(map(dto_from_salary_change, employee.salary_change_history))
+    return dto
 
 
 def dto_indexed_from_product_descriptor_indexed(descriptor: ProductDescriptorIndexed) -> ProductDescriptorIndexedDto:
-    internal = ProductDescriptorIndexedDto.construct()
-    internal.id = str(descriptor.id)
-    internal.name = descriptor.name
-    return internal
+    dto = ProductDescriptorIndexedDto.construct()
+    dto.id = str(descriptor.id)
+    dto.name = descriptor.name
+    return dto
 
 
 def dto_indexed_from_product_indexed(product: ProductIndexed) -> ProductIndexedDto:
-    internal = ProductIndexedDto.construct()
-    internal.id = str(product.id)
-    internal.supplier_id = str(product.supplier_id)
-    internal.price = product.price
-    internal.descriptor = dto_indexed_from_product_descriptor_indexed(product.descriptor)
-    return internal
+    dto = ProductIndexedDto.construct()
+    dto.id = str(product.id)
+    dto.supplier_id = str(product.supplier_id)
+    dto.price = product.price
+    dto.descriptor = dto_indexed_from_product_descriptor_indexed(product.descriptor)
+    return dto
 
 
 def dto_indexed_from_stock_indexed(stock: StockIndexed) -> StockIndexedDto:
-    internal = StockIndexedDto.construct()
-    internal.id = str(stock.id)
-    internal.amount = stock.amount
-    internal.price = stock.price
-    internal.product = dto_indexed_from_product_indexed(stock.product)
-    return internal
+    dto = StockIndexedDto.construct()
+    dto.id = str(stock.id)
+    dto.amount = stock.amount
+    dto.price = stock.price
+    dto.product = dto_indexed_from_product_indexed(stock.product)
+    return dto
 
 
 def dto_indexed_from_branch_indexed(branch: BranchIndexed) -> BranchIndexedDto:
-    internal = BranchIndexedDto.construct()
-    internal.id = str(branch.id)
-    internal.name = branch.name
-    internal.city = branch.city
-    internal.employees = list(map(dto_indexed_from_employee_indexed, branch.employees))
-    internal.stocks = list(map(dto_indexed_from_stock_indexed, branch.stocks))
-    return internal
+    dto = BranchIndexedDto.construct()
+    dto.id = str(branch.id)
+    dto.name = branch.name
+    dto.city = branch.city
+    dto.employees = list(map(dto_indexed_from_employee_indexed, branch.employees))
+    dto.stocks = list(map(dto_indexed_from_stock_indexed, branch.stocks))
+    return dto
+
+
+def dto_indexed_from_supplier(supplier: SupplierIndexed) -> SupplierIndexedDto:
+    dto = SupplierIndexedDto.construct()
+    dto.id = str(supplier.id)
+    dto.name = supplier.name
+    dto.email = supplier.email
+    dto.phone = supplier.phone
+    dto.products = list(map(dto_indexed_from_product_indexed, supplier.products))
+    return dto

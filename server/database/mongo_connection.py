@@ -26,4 +26,3 @@ class MongoConnection:
 
     def get_sales(self):
         return self.client[self.config.get_database()]['sales']
-

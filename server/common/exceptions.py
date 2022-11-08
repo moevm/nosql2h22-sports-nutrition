@@ -16,6 +16,11 @@ class BranchNotFound(NotFound):
         super().__init__(f"Branch with given description '{branch_description}' not found")
 
 
+class SupplierNotFound(NotFound):
+    def __init__(self, supplier_id):
+        super().__init__(f"Supplier with id '{supplier_id}' not found")
+
+
 class InvalidBranchQuery(InvalidUsage):
     def __init__(self):
         super().__init__("Query must have at least one condition. Name and City must contain less than 30 symbols")
@@ -23,4 +28,4 @@ class InvalidBranchQuery(InvalidUsage):
 
 class InvalidSupplierQuery(InvalidUsage):
     def __init__(self):
-        super().__init__("Query must have at least one condition: name, phone or email")
+        super().__init__("Query must have at least one condition")

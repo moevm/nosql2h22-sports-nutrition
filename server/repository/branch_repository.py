@@ -5,15 +5,7 @@ from bson import ObjectId
 from server.data.database.branch_entity import BranchEntity, from_branch_document
 from server.data.services.branch.branch import BranchQuery
 from server.database.mongo_connection import MongoConnection
-
-
-def get_dict_from_tuple(target):
-    key, value = target
-    return {key: value}
-
-
-def parse_query_items(items) -> list:
-    return list(get_dict_from_tuple(query_filter) for query_filter in items if query_filter[1] is not None)
+from server.repository.query_parser import parse_query_items
 
 
 class BranchRepository:

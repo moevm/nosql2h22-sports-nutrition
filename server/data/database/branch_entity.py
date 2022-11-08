@@ -8,13 +8,13 @@ from server.data.database.common import PydanticObjectId
 
 
 class SalaryChangeEntity(BaseModel):
-    salary_before: int
-    salary_after: int
+    salary_before: float
+    salary_after: float
     date: datetime
 
 
 class VacationEntity(BaseModel):
-    payments: int
+    payments: float
     start_date: datetime
     end_date: datetime
 
@@ -30,7 +30,7 @@ class EmployeeEntity(BaseModel):
     city: str
     employment_date: datetime
     dismissal_date: datetime
-    salary: int
+    salary: float
     shifts_history: list
     vacation_history: List[VacationEntity]
     salary_change_history: List[SalaryChangeEntity]

@@ -13,8 +13,8 @@ class SupplierQueryDto(BaseModel):
 
 
 class InsertSupplierDto(BaseModel):
-    name: str = Field(..., max_length=DtoConstant.STRING_SIZE)
-    phone: str = Field(..., regex=r"^(\+)[1-9][0-9\-\(\)\.]{9,15}$")
-    email: str = Field(..., regex=r"([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+")
-
-
+    name: str = Field(..., max_length=DtoConstant.MAX_STRING_SIZE, min_length=DtoConstant.MIN_STRING_SIZE)
+    phone: str = Field(..., regex=DtoConstant.PHONE_REGEX, max_length=DtoConstant.MAX_STRING_SIZE,
+                       min_length=DtoConstant.MIN_STRING_SIZE)
+    email: str = Field(..., regex=DtoConstant.EMAIL_REGEX, max_length=DtoConstant.MAX_STRING_SIZE,
+                       min_length=DtoConstant.MIN_STRING_SIZE)

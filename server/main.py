@@ -1,5 +1,3 @@
-from logging import info
-
 from sanic import Blueprint
 
 from server.common.factory import web_server
