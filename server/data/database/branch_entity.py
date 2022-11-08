@@ -112,6 +112,7 @@ def from_product_document(document) -> ProductEntity:
     entity.id = document['_id']
     entity.supplier_id = document['supplier_id']
     entity.price = document['price']
+    entity.descriptor = from_product_descriptor_document(document['descriptor'])
     return entity
 
 

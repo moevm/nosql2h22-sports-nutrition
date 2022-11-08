@@ -1,3 +1,5 @@
+from logging import info
+
 from sanic import Blueprint
 
 from server.common.factory import web_server
@@ -9,7 +11,7 @@ from server.web.endpoint.exception_handler import exception_handler_blueprint
 
 def main():
     configure_logging()
-
+    info('test')
     api = Blueprint.group(employee_blueprint, branch_blueprint, exception_handler_blueprint)
 
     web_server.get_underlying_server().blueprint(api)

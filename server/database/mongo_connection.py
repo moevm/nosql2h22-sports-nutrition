@@ -20,3 +20,10 @@ class MongoConnection:
 
     def get_branches(self):
         return self.client[self.config.get_database()]['branches']
+
+    def get_suppliers(self):
+        return self.client[self.config.get_database()]['suppliers']
+
+    def get_sales(self):
+        return self.client[self.config.get_database()]['sales']
+
