@@ -2,7 +2,7 @@ from typing import List
 
 from pydantic import BaseModel, Field
 
-from server.data.dto.branch_dto import VacationDto, SalaryChangeDto
+from server.data.dto.branch.branch_dto import VacationDto, SalaryChangeDto
 
 
 class EmployeeIndexedDto(BaseModel):

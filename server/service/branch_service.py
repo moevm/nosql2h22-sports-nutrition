@@ -3,8 +3,8 @@ from bson import ObjectId
 from server.common.exceptions import EmployeeNotFound
 from server.common.logger import is_logged
 from server.data.entity_mapper import entity_from_employee, entity_from_branch
-from server.data.services.branch import Employee, InsertBranch, BranchQuery
-from server.data.services.branch_indexed import EmployeeIndexed, from_employee_entity, from_branch_entity
+from server.data.services.branch.branch import Employee, InsertBranch, BranchQuery
+from server.data.services.branch.branch_indexed import EmployeeIndexed, from_employee_entity, from_branch_entity
 from server.repository.branch_repository import BranchRepository
 from server.repository.employees_repository import EmployeesRepository
 

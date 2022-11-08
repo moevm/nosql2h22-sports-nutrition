@@ -5,10 +5,10 @@ from sanic import response as res, Request, HTTPResponse, Blueprint
 from sanic_ext import validate
 
 from server.common.factory import branch_service, web_server
-from server.data.dto.branch_dto import InsertEmployeeDto
+from server.data.dto.branch.branch_dto import InsertEmployeeDto
 from server.data.dto.response_dto import insert_employee_response
 from server.data.dto_mapper import dto_indexed_from_employee_indexed
-from server.data.services.branch import from_employee_dto
+from server.data.services.branch.branch import from_employee_dto
 
 employee_blueprint = Blueprint("employee")
 app = web_server.get_underlying_server()

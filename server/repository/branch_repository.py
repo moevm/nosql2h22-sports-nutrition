@@ -3,7 +3,7 @@ from logging import info
 from bson import ObjectId
 
 from server.data.database.branch_entity import BranchEntity, from_branch_document
-from server.data.services.branch import BranchQuery
+from server.data.services.branch.branch import BranchQuery
 from server.database.mongo_connection import MongoConnection
 
 

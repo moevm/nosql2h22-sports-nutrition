@@ -1,7 +1,9 @@
 from bson import ObjectId
 
 from server.data.database.branch_entity import EmployeeEntity, SalaryChangeEntity, VacationEntity, BranchEntity
-from server.data.services.branch import Employee, Vacation, SalaryChange, InsertBranch
+from server.data.database.supplier_entity import SupplierEntity
+from server.data.services.branch.branch import Employee, Vacation, SalaryChange, InsertBranch
+from server.data.services.supplier.supplier import InsertSupplier
 
 
 def entity_from_salary_change(change: SalaryChange) -> SalaryChangeEntity:
@@ -43,4 +45,12 @@ def entity_from_branch(branch: InsertBranch) -> BranchEntity:
     entity = BranchEntity.construct()
     entity.name = branch.name
     entity.city = branch.city
+    return entity
+
+
+def entity_from_supplier(supplier: InsertSupplier) -> SupplierEntity:
+    entity = SupplierEntity.construct()
+    entity.name = supplier.name
+    entity.email = supplier.email
+    entity.phone = supplier.phone
     return entity
