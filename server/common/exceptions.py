@@ -23,4 +23,4 @@ class InvalidBranchQuery(InvalidUsage):
 
 class InvalidSupplierQuery(InvalidUsage):
     def __init__(self):
-        super().__init__("Supplier must have at least one condition: name, phone or email")
+        super().__init__("Query must have at least one condition: name, phone or email")

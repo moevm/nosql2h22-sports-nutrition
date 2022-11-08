@@ -12,7 +12,6 @@ from server.web.endpoint.supplier_endpoint import supplier_blueprint
 
 def main():
     configure_logging()
-    info('test')
     api = Blueprint.group(employee_blueprint, branch_blueprint, supplier_blueprint,
                           exception_handler_blueprint)
 
