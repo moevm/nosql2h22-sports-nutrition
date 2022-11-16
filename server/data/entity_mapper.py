@@ -1,9 +1,28 @@
 from bson import ObjectId
 
-from server.data.database.branch_entity import EmployeeEntity, SalaryChangeEntity, VacationEntity, BranchEntity
+from server.data.database.branch_entity import EmployeeEntity, SalaryChangeEntity, VacationEntity, BranchEntity, \
+    ProductEntity, ProductDescriptorEntity
 from server.data.database.supplier_entity import SupplierEntity
 from server.data.services.branch.branch import Employee, Vacation, SalaryChange, InsertBranch
+from server.data.services.product.product import InsertProductWithDescriptor, ProductDescriptor
 from server.data.services.supplier.supplier import InsertSupplier
+
+
+def entity_from_descriptor(descriptor: ProductDescriptor):
+    entity = ProductDescriptorEntity.construct()
+    entity.name = descriptor.name
+    entity.id = ObjectId()
+    return entity
+
+
+def entity_from_insert_product_with_descriptor(supplier_id: ObjectId,
+                                               product: InsertProductWithDescriptor) -> ProductEntity:
+    entity = ProductEntity.construct()
+    entity.id = ObjectId()
+    entity.descriptor = entity_from_descriptor(product.descriptor)
+    entity.price = product.price
+    entity.supplier_id = supplier_id
+    return entity
 
 
 def entity_from_salary_change(change: SalaryChange) -> SalaryChangeEntity:

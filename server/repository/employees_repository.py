@@ -8,7 +8,7 @@ from server.data.database.branch_entity import EmployeeEntity, from_employee_doc
 from server.database.mongo_connection import MongoConnection
 
 
-class EmployeesRepository:
+class EmployeeRepository:
 
     def __init__(self, connection: MongoConnection):
         self.collection = connection.get_branches()

@@ -6,14 +6,14 @@ from server.data.entity_mapper import entity_from_employee, entity_from_branch
 from server.data.services.branch.branch import Employee, InsertBranch, BranchQuery
 from server.data.services.branch.branch_indexed import EmployeeIndexed, from_employee_entity, from_branch_entity
 from server.repository.branch_repository import BranchRepository
-from server.repository.employees_repository import EmployeesRepository
+from server.repository.employees_repository import EmployeeRepository
 
 
 class EmployeesAccessor:
-    repository: EmployeesRepository
+    repository: EmployeeRepository
     branch_id: ObjectId
 
-    def __init__(self, repository: EmployeesRepository, branch_id: ObjectId):
+    def __init__(self, repository: EmployeeRepository, branch_id: ObjectId):
         self.repository = repository
         self.branch_id = branch_id
 
@@ -23,10 +23,10 @@ class EmployeesAccessor:
 
 
 class BranchService:
-    employees_repository: EmployeesRepository
+    employees_repository: EmployeeRepository
     branch_repository: BranchRepository
 
-    def __init__(self, employees_repository: EmployeesRepository, branch_repository: BranchRepository):
+    def __init__(self, employees_repository: EmployeeRepository, branch_repository: BranchRepository):
         self.employees_repository = employees_repository
         self.branch_repository = branch_repository
 

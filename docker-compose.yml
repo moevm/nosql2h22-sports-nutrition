@@ -4,7 +4,7 @@ services:
   server:
     container_name: server
     volumes:
-      - "./log:/log"
+      - log:/log
     ports:
       - "8080:8080"
     build: ./server
@@ -13,5 +13,8 @@ services:
   mongodb:
     container_name: mongo
     image: mongo:6.0.2
-    ports:
-      - "27017:27017"
+    volumes:
+      - mongo:/data/db
+volumes:
+  log:
+  mongo:

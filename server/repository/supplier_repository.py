@@ -18,4 +18,4 @@ class SupplierRepository:
 
     async def find_by_id(self, object_id: ObjectId) -> Optional:
         info(f"find by id: {object_id}")
-        return Optional(from_supplier_document((await self.collection.find_one({"_id": object_id}))))
+        return Optional(await self.collection.find_one({"_id": object_id})).map(from_supplier_document)

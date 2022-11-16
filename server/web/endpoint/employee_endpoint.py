@@ -17,9 +17,11 @@ app = web_server.get_underlying_server()
 @app.route("/employee/<branch_id:str>", methods=['POST'])
 @validate(json=InsertEmployeeDto)
 async def insert_employee(request: Request, branch_id: str, body: InsertEmployeeDto) -> HTTPResponse:
+    branch_id = ObjectId(branch_id)
+
     info(f"insert employee to branch {branch_id}: {body}")
 
-    inserted = await branch_service.employees(ObjectId(branch_id)).insert(from_employee_dto(body))
+    inserted = await branch_service.employees(branch_id).insert(from_employee_dto(body))
 
     info(f"inserted employee id {inserted}")
 
@@ -28,6 +30,8 @@ async def insert_employee(request: Request, branch_id: str, body: InsertEmployee
 
 @app.route("/employee/<employee_id:str>", methods=['GET'])
 async def get_employee_by_id(request: Request, employee_id: str) -> HTTPResponse:
+    employee_id = ObjectId(employee_id)
+
     info(f"get_employee_by_id: {employee_id}")
 
     employee = dto_indexed_from_employee_indexed(await branch_service.find_employee_by_id(ObjectId(employee_id)))
