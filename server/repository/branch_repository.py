@@ -34,13 +34,8 @@ class BranchRepository:
 
     async def page(self, page: Page) -> list:
         info(f"find page: {page.get_page()}, size: {page.size}")
-        result = []
-        cursor = self.collection.find({}).skip(page.get_page()).limit(page.size)
-
-        async for document in cursor:
-            result.append(from_branch_document(document))
-
-        return result
+        return [from_branch_document(document) async for document in
+                self.collection.find({}).skip(page.get_page()).limit(page.size)]
 
     async def insert(self, request: BranchEntity) -> BranchEntity:
         info(f"insert branch {request}")
