@@ -2,10 +2,12 @@ from bson import ObjectId
 
 from server.common.exceptions import EmployeeNotFound, ProductNotFound
 from server.common.logger import is_logged
+from server.data.database.query import EmployeeInBranchQuery
 from server.data.entity_mapper import entity_from_employee, entity_from_branch, entity_stock_from_product
 from server.data.services.branch.branch import Employee, InsertBranch, BranchQuery, AddProduct
 from server.data.services.branch.branch_indexed import EmployeeIndexed, from_employee_entity, from_branch_entity, \
     StockIndexed, from_stock_entity, BranchIndexed
+from server.data.services.common.page import Page
 from server.repository.branch_repository import BranchRepository
 from server.repository.employees_repository import EmployeeRepository
 from server.repository.product_repository import ProductRepository
@@ -22,6 +24,10 @@ class EmployeesAccessor:
     @is_logged(['class', 'request'])
     async def insert(self, request: Employee) -> EmployeeIndexed:
         return from_employee_entity(await self.repository.insert(self.branch_id, entity_from_employee(request)))
+
+    @is_logged(['class', 'request'])
+    async def find(self, request: EmployeeInBranchQuery) -> list:
+        return [from_employee_entity(entity) for entity in await self.repository.find_by_query(self.branch_id, request)]
 
 
 class StocksAccessor:
@@ -58,6 +64,10 @@ class BranchService:
     @is_logged(['class', 'branch_name'])
     def employees(self, branch_id: ObjectId) -> EmployeesAccessor:
         return EmployeesAccessor(self.employees_repository, branch_id)
+
+    @is_logged(['class', 'page'])
+    async def page(self, page: Page):
+        return [from_branch_entity(entity) for entity in await self.branch_repository.page(page)]
 
     @is_logged(['class', 'branch_id'])
     def stocks(self, branch_id: ObjectId) -> StocksAccessor:

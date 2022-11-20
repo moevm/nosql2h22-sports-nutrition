@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field
 
-from server.data.dto.constant import DtoConstant
+from server.data.dto.common.constant import DtoConstant
 
 
 class ProductDescriptorDto(BaseModel):
@@ -8,5 +8,5 @@ class ProductDescriptorDto(BaseModel):
 
 
 class InsertProductWithDescriptorDto(BaseModel):
-    price: float = Field(..., description="Price must be a non-negative value", gt=0)
-    descriptor: ProductDescriptorDto = Field(..., description="Descriptor must be present")
+    price: float = Field(..., gt=0)
+    descriptor: ProductDescriptorDto = Field(...)

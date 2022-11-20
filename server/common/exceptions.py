@@ -26,11 +26,6 @@ class SupplierNotFound(NotFound):
         super().__init__(f"Supplier with id '{supplier_id}' not found")
 
 
-class InvalidBranchQuery(InvalidUsage):
-    def __init__(self):
-        super().__init__("Query must have at least one condition. Name and City must contain less than 30 symbols")
-
-
-class InvalidSupplierQuery(InvalidUsage):
+class EmptyQuery(InvalidUsage):
     def __init__(self):
         super().__init__("Query must have at least one condition")

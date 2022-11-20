@@ -5,8 +5,8 @@ from bson import ObjectId
 from server.common.exceptions import BranchNotFound
 from server.data.database.branch_entity import BranchEntity, from_branch_document, StockEntity
 from server.data.services.branch.branch import BranchQuery
+from server.data.services.common.page import Page
 from server.database.mongo_connection import MongoConnection
-from server.repository.query_parser import parse_query_items
 
 
 class BranchRepository:
@@ -32,14 +32,24 @@ class BranchRepository:
 
         return stock
 
+    async def page(self, page: Page) -> list:
+        info(f"find page: {page.get_page()}, size: {page.size}")
+        result = []
+        cursor = self.collection.find({}).skip(page.get_page()).limit(page.size)
+
+        async for document in cursor:
+            result.append(from_branch_document(document))
+
+        return result
+
     async def insert(self, request: BranchEntity) -> BranchEntity:
         info(f"insert branch {request}")
         request.id = (await self.collection.insert_one(request.dict(by_alias=True))).inserted_id
         info(f"inserted: {request}")
         return request
 
-    async def find_by_query(self, query: BranchQuery) -> list:
-        parsed = parse_query_items(vars(query).items())
-        info(f"query: {parsed}")
+    async def find_by_query(self, request: BranchQuery) -> list:
+        query = request.get_json()
+        info(f"query: {query}")
         return [from_branch_document(document) for document in
-                await self.collection.find({"$and": parsed}).to_list(length=100)]
+                await self.collection.find({"$and": query}).to_list(length=None)]

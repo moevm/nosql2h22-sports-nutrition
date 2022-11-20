@@ -1,15 +1,13 @@
-from typing import Optional, Any
-
 from pydantic import BaseModel, Field
 
 from server.data.dto.branch.branch_dto import DtoConstant
 
 
 class SupplierQueryDto(BaseModel):
-    name: Optional[Any] = None
-    phone: Optional[Any] = None
-    email: Optional[Any] = None
-    id: Any = Field(None, alias="_id")
+    name: str = Field(max_length=DtoConstant.MAX_STRING_SIZE)
+    phone: str = Field(max_length=DtoConstant.MAX_STRING_SIZE)
+    email: str = Field(max_length=DtoConstant.MAX_STRING_SIZE)
+    id: str = Field(alias="_id")
 
 
 class InsertSupplierDto(BaseModel):

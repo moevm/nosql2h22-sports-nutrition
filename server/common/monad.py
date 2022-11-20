@@ -22,6 +22,11 @@ class Optional:
             raise exception_supplier()
         return self.value
 
+    def or_else(self, other_value):
+        if self.is_empty():
+            return other_value
+        return self.value
+
     def map(self, func):
         if self.value is None:
             return empty_optional

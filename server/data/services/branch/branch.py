@@ -2,20 +2,15 @@ from datetime import datetime
 
 from bson import ObjectId
 
-from server.common.exceptions import InvalidBranchQuery
+from server.common.exceptions import EmptyQuery
+from server.common.monad import Optional
+from server.data.database.query import FieldEqualsValueQueryRepresentation, IdQueryRepresentation, \
+    IntervalQueryRepresentation, \
+    IntervalHolder, EmployeeInBranchQuery, BranchQuery
 from server.data.datetime_formatter import get_datetime
 from server.data.dto.branch.branch_dto import InsertEmployeeDto, SalaryChangeDto, VacationDto, InsertBranchDto, \
     BranchQueryDto, \
-    DtoConstant, AddProductDto
-
-
-class BranchQuery:
-    name: str
-    city: str
-    _id: ObjectId
-
-    def __repr__(self) -> str:
-        return str(vars(self))
+    AddProductDto, EmployeeInBranchQueryDto
 
 
 class SalaryChange:
@@ -55,6 +50,13 @@ class AddProduct:
     product_id: ObjectId
     price: float
     amount: int
+
+
+def first(elements) -> Optional:
+    if elements is not None and len(elements) > 0:
+        return Optional(elements[0])
+    else:
+        return Optional(None)
 
 
 def from_add_product_dto(request: AddProductDto):
@@ -109,16 +111,61 @@ def from_insert_branch_dto(branch: InsertBranchDto) -> InsertBranch:
 def from_query_dto(query: BranchQueryDto) -> BranchQuery:
     internal = BranchQuery()
 
-    if hasattr(query, "name") and query.name and len(query.name) < DtoConstant.MAX_STRING_SIZE:
-        internal.name = query.name[0]
+    if query.name:
+        internal.name = FieldEqualsValueQueryRepresentation(query.name[0], 'name')
 
-    if hasattr(query, "city") and query.city and len(query.city) < DtoConstant.MAX_STRING_SIZE:
-        internal.city = query.city[0]
+    if query.city:
+        internal.city = FieldEqualsValueQueryRepresentation(query.city[0], 'city')
 
-    if hasattr(query, "id") and query.id:
-        internal._id = ObjectId(query.id[0])
+    if query.id:
+        internal.id = IdQueryRepresentation(ObjectId(query.id[0]))
 
     if not len(vars(internal)):
-        raise InvalidBranchQuery()
+        raise EmptyQuery()
+
+    return internal
+
+
+def from_employee_in_branch_query_dto(query: EmployeeInBranchQueryDto) -> EmployeeInBranchQuery:
+    internal = EmployeeInBranchQuery()
+
+    if query.name:
+        internal.name = FieldEqualsValueQueryRepresentation(query.name[0], "employees.name")
+
+    if query.patronymic:
+        internal.patronymic = FieldEqualsValueQueryRepresentation(query.patronymic[0], "employees.patronymic")
+
+    if query.surname:
+        internal.surname = FieldEqualsValueQueryRepresentation(query.surname[0], "employees.surname")
+
+    if query.role:
+        internal.role = FieldEqualsValueQueryRepresentation(query.role[0], "employees.role")
+
+    if query.phone_number:
+        internal.phone_number = FieldEqualsValueQueryRepresentation(query.phone_number[0], "employees.phone_number")
+
+    if query.id:
+        internal.id = IdQueryRepresentation(ObjectId(query.id[0]), "employees._id")
+
+    if query.salary_from or query.salary_to:
+        salary_from = first(query.salary_from).map(float).or_else(None)
+        salary_to = first(query.salary_to).map(float).or_else(None)
+        internal.salary = IntervalQueryRepresentation(IntervalHolder(salary_from, salary_to),
+                                                      "employees.salary")
+
+    if query.dismissal_date_from or query.dismissal_date_to:
+        date_from = first(query.dismissal_date_from).map(get_datetime).or_else(None)
+        date_to = first(query.dismissal_date_to).map(get_datetime).or_else(None)
+        internal.dismissal_date = IntervalQueryRepresentation(IntervalHolder(date_from, date_to),
+                                                              "employees.dismissal_date")
+
+    if query.employment_date_from or query.employment_date_to:
+        date_from = first(query.employment_date_from).map(get_datetime).or_else(None)
+        date_to = first(query.employment_date_to).map(get_datetime).or_else(None)
+        internal.dismissal_date = IntervalQueryRepresentation(IntervalHolder(date_from, date_to),
+                                                              "employees.employment_date")
+
+    if not len(vars(internal)):
+        raise EmptyQuery()
 
     return internal

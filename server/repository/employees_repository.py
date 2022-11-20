@@ -5,6 +5,7 @@ from bson import ObjectId
 from server.common.exceptions import BranchNotFound
 from server.common.monad import Optional
 from server.data.database.branch_entity import EmployeeEntity, from_employee_document
+from server.data.database.query import EmployeeInBranchQuery
 from server.database.mongo_connection import MongoConnection
 
 
@@ -30,6 +31,32 @@ class EmployeeRepository:
             raise BranchNotFound(branch_id)
 
         return request
+
+    async def find_by_query(self, branch_id: ObjectId, request: EmployeeInBranchQuery) -> list:
+        query = request.get_json()
+        query.append({"_id": branch_id})
+        info(f"query: {query}")
+        return [from_employee_document(document['employee']) for document in await self.collection.aggregate(
+            [
+                {
+                    "$match": {
+                        "_id": branch_id
+                    }
+                },
+                {
+                    "$unwind": "$employees"
+                },
+                {
+                    "$match": {
+                        "$and": query
+                    }
+                },
+                {
+                    "$project": {
+                        "employee": "$employees"
+                    }
+                }
+            ]).to_list(length=None)]
 
     async def find_by_id(self, employee_id: ObjectId) -> Optional:
         info(f"find_by_id: {employee_id}")

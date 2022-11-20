@@ -1,8 +1,8 @@
-from typing import List, Optional, Any
+from typing import List, Any
 
 from pydantic import BaseModel, validator, Field
 
-from server.data.dto.constant import DtoConstant
+from server.data.dto.common.constant import DtoConstant
 
 
 def check(argument, predicate, message):
@@ -11,26 +11,41 @@ def check(argument, predicate, message):
     return argument
 
 
+class EmployeeInBranchQueryDto(BaseModel):
+    id: Any = Field(None, alias="_id")
+    name: Any = Field(None)
+    surname: Any = Field(None)
+    patronymic: Any = Field(None)
+    role: Any = Field(None)
+    phone_number: Any = Field(None)
+    dismissal_date_from: Any = Field(None)
+    dismissal_date_to: Any = Field(None)
+    employment_date_from: Any = Field(None)
+    employment_date_to: Any = Field(None)
+    salary_from: Any = Field(None)
+    salary_to: Any = Field(None)
+
+
 class AddProductDto(BaseModel):
     product_id: str = Field(..., max_length=DtoConstant.MAX_STRING_SIZE, min_length=DtoConstant.MIN_STRING_SIZE)
-    price: float = Field(..., description="Price must be a non-negative value", gt=0)
-    amount: int = Field(..., description="Amount must be positive value", ge=0)
+    price: float = Field(..., ge=0)
+    amount: int = Field(..., ge=0)
 
 
 class BranchQueryDto(BaseModel):
-    name: Optional[Any] = None
-    city: Optional[Any] = None
+    name: Any = Field(None)
+    city: Any = Field(None)
     id: Any = Field(None, alias="_id")
 
 
 class SalaryChangeDto(BaseModel):
-    salary_before: float = Field(..., description="Salary before must be a non-negative value", gt=0)
-    salary_after: float = Field(..., description="Salary after must be a non-negative value", gt=0)
+    salary_before: float = Field(..., ge=0)
+    salary_after: float = Field(..., ge=0)
     date: str
 
 
 class VacationDto(BaseModel):
-    payments: float = Field(..., description="Payments must be a non-negative value", gt=0)
+    payments: float = Field(..., ge=0)
     start_date: str
     end_date: str
 
@@ -46,7 +61,7 @@ class InsertEmployeeDto(BaseModel):
     city: str = Field(..., max_length=DtoConstant.MAX_STRING_SIZE, min_length=DtoConstant.MIN_STRING_SIZE)
     employment_date: str = Field(..., max_length=DtoConstant.MAX_STRING_SIZE, min_length=DtoConstant.MIN_STRING_SIZE)
     dismissal_date: str = Field(..., max_length=DtoConstant.MAX_STRING_SIZE, min_length=DtoConstant.MIN_STRING_SIZE)
-    salary: float = Field(..., description="Salary must be a non-negative value", gt=0)
+    salary: float = Field(..., ge=0)
     shifts_history: List[str] = []
     vacation_history: List[VacationDto] = []
     salary_change_history: List[SalaryChangeDto] = []
