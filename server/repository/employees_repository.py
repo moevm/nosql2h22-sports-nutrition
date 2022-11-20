@@ -32,10 +32,11 @@ class EmployeeRepository:
         return request
 
     async def find_by_id(self, employee_id: ObjectId) -> Optional:
+        info(f"find_by_id: {employee_id}")
         return Optional(await self.collection.find_one(
             {
                 "employees._id": employee_id
             },
             {
                 "employees.$": 1
-            })).map(lambda branch: from_employee_document(branch['employees'][0]))
+            })).map(lambda branch: branch['employees'][0]).map(from_employee_document)

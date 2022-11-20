@@ -11,6 +11,12 @@ def check(argument, predicate, message):
     return argument
 
 
+class AddProductDto(BaseModel):
+    product_id: str = Field(..., max_length=DtoConstant.MAX_STRING_SIZE, min_length=DtoConstant.MIN_STRING_SIZE)
+    price: float = Field(..., description="Price must be a non-negative value", gt=0)
+    amount: int = Field(..., description="Amount must be positive value", ge=0)
+
+
 class BranchQueryDto(BaseModel):
     name: Optional[Any] = None
     city: Optional[Any] = None

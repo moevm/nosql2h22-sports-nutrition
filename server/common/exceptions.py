@@ -16,6 +16,11 @@ class BranchNotFound(NotFound):
         super().__init__(f"Branch with given description '{branch_description}' not found")
 
 
+class ProductNotFound(NotFound):
+    def __init__(self, product_id):
+        super().__init__(f"Product with id {product_id} not found")
+
+
 class SupplierNotFound(NotFound):
     def __init__(self, supplier_id):
         super().__init__(f"Supplier with id '{supplier_id}' not found")

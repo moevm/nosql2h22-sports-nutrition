@@ -1,46 +1,15 @@
-from bson import ObjectId
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
+
+from server.data.dto_mapper import dto_indexed_from_branch_indexed
 
 
-class BaseInsertResponseDto(BaseModel):
-    id: str = Field(alias='_id')
+class FindBranchResponseDto(BaseModel):
+    size: int
+    result: list
 
 
-class InsertEmployeeResponseDto(BaseInsertResponseDto):
-    pass
-
-
-class InsertBranchResponseDto(BaseInsertResponseDto):
-    pass
-
-
-class InsertSupplierResponseDto(BaseInsertResponseDto):
-    pass
-
-
-class InsertProductResponseDto(BaseInsertResponseDto):
-    pass
-
-
-def insert_branch_response(object_id: ObjectId) -> InsertBranchResponseDto:
-    response = InsertBranchResponseDto.construct()
-    response.id = str(object_id)
-    return response
-
-
-def insert_employee_response(object_id: ObjectId) -> InsertEmployeeResponseDto:
-    response = InsertEmployeeResponseDto.construct()
-    response.id = str(object_id)
-    return response
-
-
-def insert_supplier_response(object_id: ObjectId) -> InsertSupplierResponseDto:
-    response = InsertSupplierResponseDto.construct()
-    response.id = str(object_id)
-    return response
-
-
-def insert_product_response(object_id: ObjectId) -> InsertProductResponseDto:
-    response = InsertProductResponseDto.construct()
-    response.id = str(object_id)
+def find_branch_response(branches: list) -> FindBranchResponseDto:
+    response = FindBranchResponseDto.construct()
+    response.size = len(branches)
+    response.result = list(dto_indexed_from_branch_indexed(branch).dict(by_alias=True) for branch in branches)
     return response

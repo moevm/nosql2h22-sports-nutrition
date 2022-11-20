@@ -1,7 +1,7 @@
 from bson import ObjectId
 
 from server.data.database.branch_entity import EmployeeEntity, SalaryChangeEntity, VacationEntity, BranchEntity, \
-    ProductEntity, ProductDescriptorEntity
+    ProductEntity, ProductDescriptorEntity, StockEntity
 from server.data.database.supplier_entity import SupplierEntity
 from server.data.services.branch.branch import Employee, Vacation, SalaryChange, InsertBranch
 from server.data.services.product.product import InsertProductWithDescriptor, ProductDescriptor
@@ -72,4 +72,13 @@ def entity_from_supplier(supplier: InsertSupplier) -> SupplierEntity:
     entity.name = supplier.name
     entity.email = supplier.email
     entity.phone = supplier.phone
+    return entity
+
+
+def entity_stock_from_product(product: ProductEntity, price: float, amount: int) -> StockEntity:
+    entity = StockEntity.construct()
+    entity.product = product
+    entity.id = ObjectId()
+    entity.price = price
+    entity.amount = amount
     return entity

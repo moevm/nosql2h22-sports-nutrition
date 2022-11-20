@@ -12,9 +12,11 @@ class SupplierRepository:
     def __init__(self, connection: MongoConnection):
         self.collection = connection.get_suppliers()
 
-    async def insert(self, request: SupplierEntity) -> ObjectId:
+    async def insert(self, request: SupplierEntity) -> SupplierEntity:
         info(f"insert supplier {request}")
-        return (await self.collection.insert_one(request.dict(by_alias=True))).inserted_id
+        request.id = (await self.collection.insert_one(request.dict(by_alias=True))).inserted_id
+        info(f"inserted: {request}")
+        return request
 
     async def find_by_id(self, object_id: ObjectId) -> Optional:
         info(f"find by id: {object_id}")

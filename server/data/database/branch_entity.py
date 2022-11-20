@@ -64,6 +64,8 @@ class BranchEntity(BaseModel):
 
 
 def from_salary_change_document(document) -> SalaryChangeEntity:
+    info(f"parse document: {document}")
+
     entity = SalaryChangeEntity.construct()
     entity.salary_before = document['salary_before']
     entity.salary_after = document['salary_after']
@@ -72,6 +74,8 @@ def from_salary_change_document(document) -> SalaryChangeEntity:
 
 
 def from_vacation_document(document) -> VacationEntity:
+    info(f"parse document: {document}")
+
     entity = VacationEntity.construct()
     entity.payments = document['payments']
     entity.start_date = document['start_date']
@@ -101,6 +105,8 @@ def from_employee_document(document) -> EmployeeEntity:
 
 
 def from_product_descriptor_document(document) -> ProductDescriptorEntity:
+    info(f"parse document: {document}")
+
     entity = ProductDescriptorEntity.construct()
     entity.id = document['_id']
     entity.name = document['name']
@@ -108,6 +114,8 @@ def from_product_descriptor_document(document) -> ProductDescriptorEntity:
 
 
 def from_product_document(document) -> ProductEntity:
+    info(f"parse document: {document}")
+
     entity = ProductEntity.construct()
     entity.id = document['_id']
     entity.supplier_id = document['supplier_id']
@@ -117,6 +125,8 @@ def from_product_document(document) -> ProductEntity:
 
 
 def from_stock_document(document) -> StockEntity:
+    info(f"parse document: {document}")
+
     entity = StockEntity.construct()
     entity.id = document['_id']
     entity.amount = document['amount']

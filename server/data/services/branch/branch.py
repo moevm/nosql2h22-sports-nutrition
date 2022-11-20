@@ -6,7 +6,7 @@ from server.common.exceptions import InvalidBranchQuery
 from server.data.datetime_formatter import get_datetime
 from server.data.dto.branch.branch_dto import InsertEmployeeDto, SalaryChangeDto, VacationDto, InsertBranchDto, \
     BranchQueryDto, \
-    DtoConstant
+    DtoConstant, AddProductDto
 
 
 class BranchQuery:
@@ -49,6 +49,20 @@ class Employee:
 class InsertBranch:
     name: str
     city: str
+
+
+class AddProduct:
+    product_id: ObjectId
+    price: float
+    amount: int
+
+
+def from_add_product_dto(request: AddProductDto):
+    entity = AddProduct()
+    entity.price = request.price
+    entity.amount = request.amount
+    entity.product_id = ObjectId(request.product_id)
+    return entity
 
 
 def from_salary_change_dto(change: SalaryChangeDto) -> SalaryChange:

@@ -29,10 +29,10 @@ employee_repository = EmployeeRepository(mongo_connection)
 
 branch_repository = BranchRepository(mongo_connection)
 
-branch_service = BranchService(employee_repository, branch_repository)
+product_repository = ProductRepository(mongo_connection)
+
+branch_service = BranchService(employee_repository, branch_repository, product_repository)
 
 supplier_repository = SupplierRepository(mongo_connection)
-
-product_repository = ProductRepository(mongo_connection)
 
 supplier_service = SupplierService(supplier_repository, product_repository)

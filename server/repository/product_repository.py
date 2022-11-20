@@ -1,7 +1,10 @@
 from logging import info
 
+from bson import ObjectId
+
 from server.common.exceptions import SupplierNotFound
-from server.data.database.branch_entity import ProductEntity
+from server.common.monad import Optional
+from server.data.database.branch_entity import ProductEntity, from_product_document
 from server.database.mongo_connection import MongoConnection
 
 
@@ -27,3 +30,13 @@ class ProductRepository:
             raise SupplierNotFound(product_entity.supplier_id)
 
         return product_entity
+
+    async def find_by_id(self, product_id: ObjectId) -> Optional:
+        info(f"find_by_id: {product_id}")
+        return Optional(await self.collection.find_one(
+            {
+                "products._id": product_id
+            },
+            {
+                "products.$": 1
+            })).map(lambda supplier: supplier['products'][0]).map(from_product_document)
