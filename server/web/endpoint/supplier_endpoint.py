@@ -10,10 +10,11 @@ from server.data.dto.supplier.supplier_dto import InsertSupplierDto
 from server.data.dto_mapper import dto_indexed_from_supplier, dto_indexed_from_product_indexed
 from server.data.services.product.product import from_insert_product_with_descriptor_dto
 from server.data.services.supplier.supplier import from_insert_supplier_dto
+from server.web.cors.setup import setup_cors
 
 supplier_blueprint = Blueprint("supplier")
 app = web_server.get_underlying_server()
-
+setup_cors(app)
 
 @app.route("/supplier", methods=['POST'])
 @validate(json=InsertSupplierDto)
