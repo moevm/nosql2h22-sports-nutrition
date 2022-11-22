@@ -7,9 +7,8 @@ from sanic_ext import validate
 from server.common.factory import web_server, supplier_service
 from server.data.dto.product.product_dto import InsertProductWithDescriptorDto
 from server.data.dto.supplier.supplier_dto import InsertSupplierDto
-from server.data.dto_mapper import dto_indexed_from_supplier, dto_indexed_from_product_indexed
-from server.data.services.product.product import from_insert_product_with_descriptor_dto
-from server.data.services.supplier.supplier import from_insert_supplier_dto
+from server.data.dto_to_service_mapper import from_insert_supplier_dto, from_insert_product_with_descriptor_dto
+from server.data.service_to_dto_mapper import dto_indexed_from_supplier, dto_indexed_from_product_indexed
 
 supplier_blueprint = Blueprint("supplier")
 app = web_server.get_underlying_server()

@@ -4,7 +4,7 @@ from bson import ObjectId
 from sanic import response as res, Request, HTTPResponse, Blueprint
 
 from server.common.factory import branch_service, web_server
-from server.data.dto_mapper import dto_indexed_from_employee_indexed
+from server.data.service_to_dto_mapper import dto_indexed_from_employee_indexed
 
 employee_blueprint = Blueprint("employee")
 app = web_server.get_underlying_server()

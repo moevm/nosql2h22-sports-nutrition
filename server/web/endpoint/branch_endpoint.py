@@ -7,10 +7,10 @@ from server.data.dto.branch.branch_dto import InsertBranchDto, BranchQueryDto, A
     EmployeeInBranchQueryDto
 from server.data.dto.common.page_dto import PageDto
 from server.data.dto.common.response_dto import response_find_branch, response_find_page, response_find_employees
-from server.data.dto_mapper import dto_indexed_from_branch_indexed, dto_indexed_from_stock_indexed, \
+from server.data.dto_to_service_mapper import from_query_dto, from_employee_dto, from_employee_in_branch_query_dto, \
+    from_insert_branch_dto, from_add_product_dto
+from server.data.service_to_dto_mapper import dto_indexed_from_branch_indexed, dto_indexed_from_stock_indexed, \
     dto_indexed_from_employee_indexed
-from server.data.services.branch.branch import from_insert_branch_dto, from_query_dto, from_add_product_dto, \
-    from_employee_dto, from_employee_in_branch_query_dto
 from server.data.services.common.page import from_page_dto
 
 branch_blueprint = Blueprint("branch")

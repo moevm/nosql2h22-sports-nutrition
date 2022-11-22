@@ -4,7 +4,7 @@ from bson import ObjectId
 
 from server.common.exceptions import BranchNotFound
 from server.data.database.branch_entity import BranchEntity, from_branch_document, StockEntity
-from server.data.services.branch.branch import BranchQuery
+from server.data.database.query import BranchQuery
 from server.data.services.common.page import Page
 from server.database.mongo_connection import MongoConnection
 

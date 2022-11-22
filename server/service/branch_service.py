@@ -2,11 +2,11 @@ from bson import ObjectId
 
 from server.common.exceptions import EmployeeNotFound, ProductNotFound
 from server.common.logger import is_logged
-from server.data.database.query import EmployeeInBranchQuery
-from server.data.entity_mapper import entity_from_employee, entity_from_branch, entity_stock_from_product
-from server.data.services.branch.branch import Employee, InsertBranch, BranchQuery, AddProduct
-from server.data.services.branch.branch_indexed import EmployeeIndexed, from_employee_entity, from_branch_entity, \
-    StockIndexed, from_stock_entity, BranchIndexed
+from server.data.database.query import EmployeeInBranchQuery, BranchQuery
+from server.data.entity_to_service_mapper import from_employee_entity, from_stock_entity, from_branch_entity
+from server.data.service_to_entity_mapper import entity_from_employee, entity_from_branch, entity_stock_from_product
+from server.data.services.branch.branch import Employee, AddProduct, InsertBranch
+from server.data.services.branch.branch_indexed import EmployeeIndexed, StockIndexed, BranchIndexed
 from server.data.services.common.page import Page
 from server.repository.branch_repository import BranchRepository
 from server.repository.employees_repository import EmployeeRepository

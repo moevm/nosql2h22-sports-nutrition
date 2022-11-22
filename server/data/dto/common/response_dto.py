@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 from server.data.dto.common.page_dto import PageDto
-from server.data.dto_mapper import dto_indexed_from_branch_indexed, dto_indexed_from_employee_indexed
+from server.data.service_to_dto_mapper import dto_indexed_from_branch_indexed, dto_indexed_from_employee_indexed
 
 
 class FindListResponseDto(BaseModel):
