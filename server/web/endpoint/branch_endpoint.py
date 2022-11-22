@@ -12,11 +12,10 @@ from server.data.dto_mapper import dto_indexed_from_branch_indexed, dto_indexed_
 from server.data.services.branch.branch import from_insert_branch_dto, from_query_dto, from_add_product_dto, \
     from_employee_dto, from_employee_in_branch_query_dto
 from server.data.services.common.page import from_page_dto
-from server.web.cors.setup import setup_cors
 
 branch_blueprint = Blueprint("branch")
 app = web_server.get_underlying_server()
-setup_cors(app)
+
 
 @app.route("/branch", methods=['POST'])
 @validate(json=InsertBranchDto)

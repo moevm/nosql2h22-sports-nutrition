@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
 
 from sanic import Sanic
+from sanic_cors import CORS
+from sanic_ext import Extend
 
 from server.common.common import Worker
 from server.common.logger import is_logged
@@ -17,7 +19,16 @@ class SanicServer(InnerServer, ABC):
 
     def __init__(self, config: ProjectConfigWeb):
         self.config = config
-        self.server = Sanic("sports-nutrition")
+        self.server = self.create_server("sports-nutrition")
+
+    def cors_setup(self, server):
+        options = {"resources": r'/*', "origins": "*", "methods": ["GET", "POST", "HEAD", "OPTIONS"]}
+        Extend(server, extensions=[CORS], config={"CORS": False, "CORS_OPTIONS": options})
+
+    def create_server(self, server_name):
+        server = Sanic(server_name)
+        self.cors_setup(server)
+        return server
 
     @is_logged()
     def run(self) -> None:

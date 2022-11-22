@@ -8,13 +8,17 @@ from server.web.endpoint.supplier_endpoint import supplier_blueprint
 from server.web.exception_handler import exception_handler_blueprint
 
 
-def main():
-    configure_logging()
+def web_server_run():
     api = Blueprint.group(employee_blueprint, branch_blueprint, supplier_blueprint, exception_handler_blueprint)
 
     web_server.get_underlying_server().blueprint(api)
 
     web_server.run()
+
+
+def main():
+    configure_logging()
+    web_server_run()
 
 
 if __name__ == '__main__':

@@ -3,3 +3,4 @@ sanic-routing==22.3.0
 motor==3.1.1
 pydantic==1.10.2
 sanic_ext==22.6.2
+sanic_cors==2.2.0
