@@ -1,6 +1,9 @@
+from dataclasses import dataclass
+
 from server.data.dto.common.page_dto import PageDto
 
 
+@dataclass
 class Page:
     number: int
     size: int
@@ -10,7 +13,4 @@ class Page:
 
 
 def from_page_dto(page: PageDto) -> Page:
-    internal = Page()
-    internal.number = page.page
-    internal.size = page.size
-    return internal
+    return Page(page.page, page.size)

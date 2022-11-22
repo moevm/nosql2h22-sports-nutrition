@@ -1,6 +1,8 @@
 import json
 from abc import ABC, abstractmethod
 
+from bson import ObjectId
+
 
 class IntervalHolder:
 
@@ -56,6 +58,15 @@ class Query:
         return [value.represent() for key, value in vars(self).items()]
 
 
+class StockInBranchQuery(Query):
+    id: IdQueryRepresentation
+    supplier_id: FieldEqualsValueQueryRepresentation
+    product_id: FieldEqualsValueQueryRepresentation
+    name: FieldEqualsValueQueryRepresentation
+    amount: IntervalQueryRepresentation
+    price_from: IntervalQueryRepresentation
+
+
 class EmployeeInBranchQuery(Query):
     id: IdQueryRepresentation
     name: FieldEqualsValueQueryRepresentation
@@ -72,3 +83,9 @@ class BranchQuery(Query):
     name: FieldEqualsValueQueryRepresentation
     city: FieldEqualsValueQueryRepresentation
     id: IdQueryRepresentation
+
+
+def product_id_query(product_id: ObjectId) -> StockInBranchQuery:
+    query = StockInBranchQuery()
+    query.product_id = IdQueryRepresentation(product_id, "stocks.product._id")
+    return query

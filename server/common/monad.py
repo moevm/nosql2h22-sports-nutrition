@@ -32,5 +32,9 @@ class Optional:
             return empty_optional
         return Optional(func(self.value))
 
+    def raise_if_present(self, exception_supplier):
+        if self.value is not None:
+            raise exception_supplier()
+
 
 empty_optional = Optional(None)

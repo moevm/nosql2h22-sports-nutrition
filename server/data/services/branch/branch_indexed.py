@@ -1,8 +1,10 @@
+from dataclasses import dataclass
 from datetime import datetime
 
 from bson import ObjectId
 
 
+@dataclass
 class EmployeeIndexed:
     id: ObjectId
     name: str
@@ -20,11 +22,13 @@ class EmployeeIndexed:
     salary_change_history: list
 
 
+@dataclass
 class ProductDescriptorIndexed:
     id: ObjectId
     name: str
 
 
+@dataclass
 class ProductIndexed:
     id: ObjectId
     descriptor: ProductDescriptorIndexed
@@ -32,6 +36,7 @@ class ProductIndexed:
     price: float
 
 
+@dataclass
 class StockIndexed:
     id: ObjectId
     amount: int
@@ -39,6 +44,7 @@ class StockIndexed:
     product: ProductIndexed
 
 
+@dataclass
 class BranchIndexed:
     id: ObjectId
     name: str

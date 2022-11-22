@@ -26,6 +26,11 @@ class SupplierNotFound(NotFound):
         super().__init__(f"Supplier with id '{supplier_id}' not found")
 
 
+class ProductAlreadyExists(InvalidUsage):
+    def __init__(self, product_id, branch_id):
+        super().__init__(f"Product with id '{product_id}' alredy present in branch '{branch_id}'")
+
+
 class EmptyQuery(InvalidUsage):
     def __init__(self):
         super().__init__("Query must have at least one condition")

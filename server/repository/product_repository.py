@@ -1,8 +1,7 @@
-from logging import info
-
 from bson import ObjectId
 
 from server.common.exceptions import SupplierNotFound
+from server.common.logger import is_logged
 from server.common.monad import Optional
 from server.data.database.branch_entity import ProductEntity, from_product_document
 from server.database.mongo_connection import MongoConnection
@@ -13,9 +12,8 @@ class ProductRepository:
     def __init__(self, connection: MongoConnection):
         self.collection = connection.get_suppliers()
 
+    @is_logged(['class', 'entity'])
     async def insert_with_description(self, product_entity: ProductEntity) -> ProductEntity:
-        info(f"insert product_entity: {product_entity}")
-
         updated = (await self.collection.update_one(
             {
                 "_id": product_entity.supplier_id
@@ -31,8 +29,8 @@ class ProductRepository:
 
         return product_entity
 
+    @is_logged(['class', 'product_id'])
     async def find_by_id(self, product_id: ObjectId) -> Optional:
-        info(f"find_by_id: {product_id}")
         return Optional(await self.collection.find_one(
             {
                 "products._id": product_id

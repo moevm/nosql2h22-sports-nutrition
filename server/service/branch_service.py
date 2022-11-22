@@ -1,8 +1,9 @@
 from bson import ObjectId
 
-from server.common.exceptions import EmployeeNotFound, ProductNotFound
+from server.common.exceptions import EmployeeNotFound, ProductNotFound, ProductAlreadyExists
 from server.common.logger import is_logged
-from server.data.database.query import EmployeeInBranchQuery, BranchQuery
+from server.data.database.query import EmployeeInBranchQuery, BranchQuery, StockInBranchQuery, product_id_query
+from server.data.dto_to_service_mapper import first
 from server.data.entity_to_service_mapper import from_employee_entity, from_stock_entity, from_branch_entity
 from server.data.service_to_entity_mapper import entity_from_employee, entity_from_branch, entity_stock_from_product
 from server.data.services.branch.branch import Employee, AddProduct, InsertBranch
@@ -42,10 +43,23 @@ class StocksAccessor:
 
     @is_logged(['class', 'request'])
     async def add(self, request: AddProduct) -> StockIndexed:
+        await self.check_stock_not_present(request.product_id)
+
         product = (await self.product_repository.find_by_id(request.product_id)) \
             .or_raise(lambda: ProductNotFound(request.product_id))
         stock = entity_stock_from_product(product, request.price, request.amount)
+
         return from_stock_entity(await self.branch_repository.add_stock(self.branch_id, stock))
+
+    @is_logged(['class', 'request'])
+    async def find(self, request: StockInBranchQuery) -> list:
+        return [from_stock_entity(entity) for entity in
+                await self.branch_repository.find_stock(self.branch_id, request)]
+
+    @is_logged(['class', 'product_id'])
+    async def check_stock_not_present(self, product_id: ObjectId):
+        first(await self.find(product_id_query(product_id))) \
+            .raise_if_present(lambda: ProductAlreadyExists(product_id, self.branch_id))
 
 
 class BranchService:
@@ -82,7 +96,7 @@ class BranchService:
         return [from_branch_entity(entity) for entity in await self.branch_repository.find_by_query(query)]
 
     @is_logged(['class', 'employee_id'])
-    async def find_employee_by_id(self, employee_id: ObjectId) -> EmployeeIndexed:
+    async def find_employee(self, employee_id: ObjectId) -> EmployeeIndexed:
         return (await self.employees_repository.find_by_id(employee_id)) \
             .map(from_employee_entity) \
             .or_raise(lambda: EmployeeNotFound(employee_id))

@@ -11,6 +11,17 @@ def check(argument, predicate, message):
     return argument
 
 
+class StockInBranchQueryDto(BaseModel):
+    id: Any = Field(None, alias="_id")
+    supplier_id: Any = Field(None)
+    product_id: Any = Field(None)
+    name: Any = Field(None)
+    amount_from: Any = Field(None)
+    amount_to: Any = Field(None)
+    price_from: Any = Field(None)
+    price_to: Any = Field(None)
+
+
 class EmployeeInBranchQueryDto(BaseModel):
     id: Any = Field(None, alias="_id")
     name: Any = Field(None)

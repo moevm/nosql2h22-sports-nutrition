@@ -1,7 +1,7 @@
 import functools
 import os
 from dataclasses import dataclass
-from logging import basicConfig, DEBUG, debug
+from logging import basicConfig, DEBUG, info
 
 
 @dataclass
@@ -18,14 +18,14 @@ def configure_logging():
                 force=True)
 
 
-def is_logged(names: list = [], level=debug):
+def is_logged(names: list = [], level=info):
     def is_logged_decorator(func):
         @functools.wraps(func)
         def wrapper_is_logged(*args, **kwargs):
             signature = parse_signature(names, " ,", args, kwargs)
-            level(f"Calling {func.__name__}({signature})")
+            level(f"Calling function '{func.__name__}({signature})'")
             value = func(*args, **kwargs)
-            level(f"{func.__name__} result: {value}")
+            level(f"Function '{func.__name__}' return value: {value}")
             return value
 
         return wrapper_is_logged
