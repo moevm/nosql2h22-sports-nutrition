@@ -1,24 +1,17 @@
 from bson import ObjectId
 
 from server.common.exceptions import EmptyQuery
-from server.common.monad import Optional
 from server.data.database.query import BranchQuery, FieldEqualsValueQueryRepresentation, IdQueryRepresentation, \
     EmployeeInBranchQuery, IntervalQueryRepresentation, IntervalHolder, StockInBranchQuery
 from server.data.datetime_formatter import get_datetime
 from server.data.dto.branch.branch_dto import AddProductDto, SalaryChangeDto, VacationDto, InsertEmployeeDto, \
     InsertBranchDto, BranchQueryDto, EmployeeInBranchQueryDto, StockInBranchQueryDto
+from server.data.dto.common.util import first
 from server.data.dto.product.product_dto import ProductDescriptorDto, InsertProductWithDescriptorDto
 from server.data.dto.supplier.supplier_dto import InsertSupplierDto
 from server.data.services.branch.branch import AddProduct, SalaryChange, Vacation, Employee, InsertBranch
 from server.data.services.product.product import ProductDescriptor, InsertProductWithDescriptor
 from server.data.services.supplier.supplier import InsertSupplier
-
-
-def first(elements) -> Optional:
-    if elements is not None and len(elements) > 0:
-        return Optional(elements[0])
-    else:
-        return Optional(None)
 
 
 def from_add_product_dto(request: AddProductDto):

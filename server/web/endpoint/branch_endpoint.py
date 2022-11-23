@@ -63,9 +63,9 @@ async def add_product(request: Request, branch_id: str, body: AddProductDto):
 
 
 @branch_blueprint.route("/branch/page", methods=['GET'])
-@validate(json=PageDto)
-async def get_page(request: Request, body: PageDto) -> HTTPResponse:
+@validate(query=PageDto)
+async def get_page(request: Request, query: PageDto) -> HTTPResponse:
     branches = [dto_indexed_from_branch_indexed(document) for document in
-                await branch_service.page(from_page_dto(body))]
+                await branch_service.page(from_page_dto(query))]
 
-    return res.json(response_find_page(body, branches).dict(by_alias=True))
+    return res.json(response_find_page(query, branches).dict(by_alias=True))

@@ -27,6 +27,11 @@ class Optional:
             return other_value
         return self.value
 
+    def filter(self, predicate):
+        if self.value is not None and predicate(self.value):
+            return self
+        return empty_optional
+
     def map(self, func):
         if self.value is None:
             return empty_optional
