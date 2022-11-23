@@ -2,7 +2,7 @@ from pydantic import BaseModel
 
 from server.data.dto.common.page_dto import PageDto
 from server.data.service_to_dto_mapper import dto_indexed_from_branch_indexed, dto_indexed_from_employee_indexed, \
-    dto_indexed_from_stock_indexed
+    dto_indexed_from_stock_indexed, dto_indexed_from_supplier
 
 
 class FindListResponseDto(BaseModel):
@@ -40,8 +40,16 @@ def response_find_stocks(stocks: list) -> FindListResponseDto:
     return response
 
 
-def response_find_branch(branches: list) -> FindListResponseDto:
+def response_find_list(data: list, mapper) -> FindListResponseDto:
     response = FindListResponseDto.construct()
-    response.size = len(branches)
-    response.result = list(dto_indexed_from_branch_indexed(branch).dict(by_alias=True) for branch in branches)
+    response.size = len(data)
+    response.result = list(mapper(element).dict(by_alias=True) for element in data)
     return response
+
+
+def response_find_branch(branches: list) -> FindListResponseDto:
+    return response_find_list(branches, dto_indexed_from_branch_indexed)
+
+
+def response_find_supplier(suppliers: list) -> FindListResponseDto:
+    return response_find_list(suppliers, dto_indexed_from_supplier)

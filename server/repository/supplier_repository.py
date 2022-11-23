@@ -19,3 +19,7 @@ class SupplierRepository:
     @is_logged(['class', 'supplier_id'])
     async def find_by_id(self, supplier_id: ObjectId) -> Optional:
         return Optional(await self.collection.find_one({"_id": supplier_id})).map(from_supplier_document)
+
+    async def find_all(self) -> list:
+        return [from_supplier_document(document) for document in
+                await self.collection.find().to_list(length=None)]

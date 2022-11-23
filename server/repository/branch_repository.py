@@ -74,3 +74,7 @@ class BranchRepository:
                     }
                 }
             ]).to_list(length=None)]
+
+    async def find_all(self) -> list:
+        return [from_branch_document(document) for document in
+                await self.collection.find().to_list(length=None)]
