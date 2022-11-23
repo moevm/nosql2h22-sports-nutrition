@@ -17,3 +17,9 @@ class SupplierIndexed:
     email: str
     phone: str
     products: list
+
+
+@dataclass
+class SupplierInfo:
+    id: ObjectId
+    name: str

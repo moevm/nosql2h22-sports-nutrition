@@ -4,7 +4,8 @@ from server.common.exceptions import EmployeeNotFound, ProductNotFound, ProductA
 from server.common.logger import is_logged
 from server.data.database.query import EmployeeInBranchQuery, BranchQuery, StockInBranchQuery, product_id_query
 from server.data.dto_to_service_mapper import first
-from server.data.entity_to_service_mapper import from_employee_entity, from_stock_entity, from_branch_entity
+from server.data.entity_to_service_mapper import from_employee_entity, from_stock_entity, from_branch_entity, \
+    from_branch_entity_to_info
 from server.data.service_to_entity_mapper import entity_from_employee, entity_from_branch, entity_stock_from_product
 from server.data.services.branch.branch import Employee, AddProduct, InsertBranch
 from server.data.services.branch.branch_indexed import EmployeeIndexed, StockIndexed, BranchIndexed
@@ -80,8 +81,8 @@ class BranchService:
         return EmployeesAccessor(self.employees_repository, branch_id)
 
     @is_logged(['class', 'page'])
-    async def page(self, page: Page):
-        return [from_branch_entity(entity) for entity in await self.branch_repository.page(page)]
+    async def page_info(self, page: Page):
+        return [from_branch_entity_to_info(entity) for entity in await self.branch_repository.page(page)]
 
     @is_logged(['class', 'branch_id'])
     def stocks(self, branch_id: ObjectId) -> StocksAccessor:

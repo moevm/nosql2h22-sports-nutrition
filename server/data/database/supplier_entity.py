@@ -25,3 +25,12 @@ def from_supplier_document(document) -> SupplierEntity:
     entity.phone = document['phone']
     entity.products = list(map(from_product_document, document['products']))
     return entity
+
+
+def from_supplier_info_document(document) -> SupplierEntity:
+    info(f"parse document: {document}")
+
+    entity = SupplierEntity.construct()
+    entity.id = document['_id']
+    entity.name = document['name']
+    return entity

@@ -2,7 +2,8 @@ from bson import ObjectId
 
 from server.common.exceptions import SupplierNotFound
 from server.common.logger import is_logged
-from server.data.entity_to_service_mapper import from_product_entity, from_supplier_entity_to_indexed
+from server.data.entity_to_service_mapper import from_product_entity, from_supplier_entity_to_info, \
+    from_supplier_entity_to_indexed
 from server.data.service_to_entity_mapper import entity_from_supplier, entity_from_insert_product_with_descriptor
 from server.data.services.branch.branch_indexed import ProductIndexed
 from server.data.services.common.page import Page
@@ -39,8 +40,8 @@ class SupplierService:
         return ProductsAccessor(self.product_repository, supplier_id)
 
     @is_logged(['class', 'page'])
-    async def page(self, page: Page):
-        return [from_supplier_entity_to_indexed(entity) for entity in await self.supplier_repository.page(page)]
+    async def page(self, page: Page) -> list:
+        return [from_supplier_entity_to_info(entity) for entity in await self.supplier_repository.page(page)]
 
     @is_logged(['class', 'request'])
     async def insert(self, request: InsertSupplier) -> SupplierIndexed:

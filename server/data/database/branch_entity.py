@@ -145,3 +145,13 @@ def from_branch_document(document) -> BranchEntity:
     entity.employees = list(map(from_employee_document, document['employees']))
     entity.stocks = list(map(from_stock_document, document['stocks']))
     return entity
+
+
+def from_branch_info_document(document) -> BranchEntity:
+    info(f"parse document: {document}")
+
+    entity = BranchEntity.construct()
+    entity.id = document['_id']
+    entity.name = document['name']
+    entity.city = document['city']
+    return entity

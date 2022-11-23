@@ -4,7 +4,8 @@ from bson import ObjectId
 
 from server.common.exceptions import BranchNotFound
 from server.common.logger import is_logged
-from server.data.database.branch_entity import BranchEntity, from_branch_document, StockEntity, from_stock_document
+from server.data.database.branch_entity import BranchEntity, from_branch_document, StockEntity, from_stock_document, \
+    from_branch_info_document
 from server.data.database.query import BranchQuery, StockInBranchQuery
 from server.data.services.common.page import Page
 from server.database.mongo_connection import MongoConnection
@@ -34,8 +35,8 @@ class BranchRepository:
 
     @is_logged(['class', 'page'])
     async def page(self, page: Page) -> list:
-        return [from_branch_document(document) async for document in
-                self.collection.find({}).skip(page.get_page()).limit(page.size)]
+        return [from_branch_info_document(document) async for document in
+                self.collection.find({}, {"name": 1, "city": 1}).skip(page.get_page()).limit(page.size)]
 
     @is_logged(['class', 'entity'])
     async def insert(self, request: BranchEntity) -> BranchEntity:
@@ -74,4 +75,3 @@ class BranchRepository:
                     }
                 }
             ]).to_list(length=None)]
-

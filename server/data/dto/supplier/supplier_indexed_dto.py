@@ -7,3 +7,8 @@ class SupplierIndexedDto(BaseModel):
     email: str
     phone: str
     products: list
+
+
+class SupplierInfoDto(BaseModel):
+    id: str = Field(alias='_id')
+    name: str

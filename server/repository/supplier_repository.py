@@ -2,7 +2,7 @@ from bson import ObjectId
 
 from server.common.logger import is_logged
 from server.common.monad import Optional
-from server.data.database.supplier_entity import SupplierEntity, from_supplier_document
+from server.data.database.supplier_entity import SupplierEntity, from_supplier_document, from_supplier_info_document
 from server.data.services.common.page import Page
 from server.database.mongo_connection import MongoConnection
 
@@ -19,8 +19,8 @@ class SupplierRepository:
 
     @is_logged(['class', 'page'])
     async def page(self, page: Page) -> list:
-        return [from_supplier_document(document) async for document in
-                self.collection.find({}).skip(page.get_page()).limit(page.size)]
+        return [from_supplier_info_document(document) async for document in
+                self.collection.find({}, {"name": 1}).skip(page.get_page()).limit(page.size)]
 
     @is_logged(['class', 'supplier_id'])
     async def find_by_id(self, supplier_id: ObjectId) -> Optional:

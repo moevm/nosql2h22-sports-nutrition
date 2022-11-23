@@ -2,13 +2,13 @@ from server.data.datetime_formatter import get_string
 from server.data.dto.branch.branch_dto import SalaryChangeDto, VacationDto
 from server.data.dto.branch.branch_indexed_dto import EmployeeIndexedDto, ProductDescriptorIndexedDto, \
     ProductIndexedDto, \
-    StockIndexedDto, BranchIndexedDto
-from server.data.dto.supplier.supplier_indexed_dto import SupplierIndexedDto
+    StockIndexedDto, BranchIndexedDto, BranchInfoDto
+from server.data.dto.supplier.supplier_indexed_dto import SupplierIndexedDto, SupplierInfoDto
 from server.data.services.branch.branch import SalaryChange, Vacation
 from server.data.services.branch.branch_indexed import EmployeeIndexed, ProductDescriptorIndexed, ProductIndexed, \
     StockIndexed, \
-    BranchIndexed
-from server.data.services.supplier.supplier import SupplierIndexed
+    BranchIndexed, BranchInfo
+from server.data.services.supplier.supplier import SupplierIndexed, SupplierInfo
 
 
 def dto_from_salary_change(change: SalaryChange) -> SalaryChangeDto:
@@ -81,6 +81,14 @@ def dto_indexed_from_branch_indexed(branch: BranchIndexed) -> BranchIndexedDto:
     return dto
 
 
+def dto_info_from_branch_info(branch: BranchInfo) -> BranchInfoDto:
+    dto = BranchInfoDto.construct()
+    dto.id = str(branch.id)
+    dto.name = branch.name
+    dto.city = branch.city
+    return dto
+
+
 def dto_indexed_from_supplier(supplier: SupplierIndexed) -> SupplierIndexedDto:
     dto = SupplierIndexedDto.construct()
     dto.id = str(supplier.id)
@@ -88,4 +96,11 @@ def dto_indexed_from_supplier(supplier: SupplierIndexed) -> SupplierIndexedDto:
     dto.email = supplier.email
     dto.phone = supplier.phone
     dto.products = list(map(dto_indexed_from_product_indexed, supplier.products))
+    return dto
+
+
+def dto_info_from_supplier(supplier: SupplierInfo) -> SupplierInfoDto:
+    dto = SupplierIndexedDto.construct()
+    dto.id = str(supplier.id)
+    dto.name = supplier.name
     return dto

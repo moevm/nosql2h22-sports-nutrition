@@ -6,6 +6,7 @@ from server.common.web_config import ProjectConfigWeb
 from server.database.mongo_connection import MongoConnection
 from server.repository.branch_repository import BranchRepository
 from server.repository.employees_repository import EmployeeRepository
+from server.repository.maintenance_repository import MaintenanceRepository
 from server.repository.product_repository import ProductRepository
 from server.repository.supplier_repository import SupplierRepository
 from server.service.branch_service import BranchService
@@ -32,10 +33,12 @@ branch_repository = BranchRepository(mongo_connection)
 
 product_repository = ProductRepository(mongo_connection)
 
+maintenance_repository = MaintenanceRepository(mongo_connection)
+
 branch_service = BranchService(employee_repository, branch_repository, product_repository)
 
 supplier_repository = SupplierRepository(mongo_connection)
 
-maintenance_service = MaintenanceService(branch_repository, supplier_repository)
+maintenance_service = MaintenanceService(maintenance_repository)
 
 supplier_service = SupplierService(supplier_repository, product_repository)

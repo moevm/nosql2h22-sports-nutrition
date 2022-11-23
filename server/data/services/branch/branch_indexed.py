@@ -51,3 +51,10 @@ class BranchIndexed:
     city: str
     stocks: list
     employees: list
+
+
+@dataclass
+class BranchInfo:
+    id: ObjectId
+    name: str
+    city: str

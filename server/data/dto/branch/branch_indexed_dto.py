@@ -41,6 +41,12 @@ class StockIndexedDto(BaseModel):
     product: ProductIndexedDto
 
 
+class BranchInfoDto(BaseModel):
+    id: str = Field(alias='_id')
+    name: str
+    city: str
+
+
 class BranchIndexedDto(BaseModel):
     id: str = Field(alias='_id')
     name: str

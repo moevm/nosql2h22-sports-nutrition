@@ -1,11 +1,17 @@
-from server.repository.branch_repository import BranchRepository
-from server.repository.supplier_repository import SupplierRepository
+from server.data.entity_to_service_mapper import from_branch_entity, from_supplier_entity_to_indexed
+from server.data.services.common.page import Page
+from server.repository.maintenance_repository import MaintenanceRepository
 
 
 class MaintenanceService:
-    branch_repository: BranchRepository
-    supplier_repository: SupplierRepository
+    maintenance_repository: MaintenanceRepository
 
-    def __init__(self, branch_repository: BranchRepository, supplier_repository: SupplierRepository):
-        self.branch_repository = branch_repository
-        self.supplier_repository = supplier_repository
+    def __init__(self, maintenance_repository: MaintenanceRepository):
+        self.maintenance_repository = maintenance_repository
+
+    async def branch_page(self, page: Page):
+        return [from_branch_entity(entity) for entity in await self.maintenance_repository.page_branches(page)]
+
+    async def supplier_page(self, page: Page):
+        return [from_supplier_entity_to_indexed(entity) for entity in
+                await self.maintenance_repository.page_suppliers(page)]

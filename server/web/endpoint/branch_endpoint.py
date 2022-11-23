@@ -11,7 +11,7 @@ from server.data.dto.common.response_dto import response_find_branch, response_f
 from server.data.dto_to_service_mapper import from_query_dto, from_employee_dto, from_employee_in_branch_query_dto, \
     from_insert_branch_dto, from_add_product_dto, from_stock_in_branch_query_dto
 from server.data.service_to_dto_mapper import dto_indexed_from_branch_indexed, dto_indexed_from_stock_indexed, \
-    dto_indexed_from_employee_indexed
+    dto_indexed_from_employee_indexed, dto_info_from_branch_info
 from server.data.services.common.page import from_page_dto
 
 branch_blueprint = Blueprint("branch")
@@ -65,7 +65,7 @@ async def add_product(request: Request, branch_id: str, body: AddProductDto):
 @branch_blueprint.route("/branch/page", methods=['GET'])
 @validate(query=PageDto)
 async def get_page(request: Request, query: PageDto) -> HTTPResponse:
-    branches = [dto_indexed_from_branch_indexed(document) for document in
-                await branch_service.page(from_page_dto(query))]
+    branches = [dto_info_from_branch_info(document) for document in
+                await branch_service.page_info(from_page_dto(query))]
 
     return res.json(response_find_page(query, branches).dict(by_alias=True))
