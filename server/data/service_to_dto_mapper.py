@@ -2,7 +2,7 @@ from server.data.datetime_formatter import get_string
 from server.data.dto.branch.branch_dto import SalaryChangeDto, VacationDto
 from server.data.dto.branch.branch_indexed_dto import EmployeeIndexedDto, ProductDescriptorIndexedDto, \
     ProductIndexedDto, \
-    StockIndexedDto, BranchIndexedDto, BranchInfoDto
+    StockIndexedDto, BranchInfoDto, BranchIndexedDto
 from server.data.dto.supplier.supplier_indexed_dto import SupplierIndexedDto, SupplierInfoDto
 from server.data.services.branch.branch import SalaryChange, Vacation
 from server.data.services.branch.branch_indexed import EmployeeIndexed, ProductDescriptorIndexed, ProductIndexed, \
@@ -100,7 +100,7 @@ def dto_indexed_from_supplier(supplier: SupplierIndexed) -> SupplierIndexedDto:
 
 
 def dto_info_from_supplier(supplier: SupplierInfo) -> SupplierInfoDto:
-    dto = SupplierIndexedDto.construct()
+    dto = SupplierInfoDto.construct()
     dto.id = str(supplier.id)
     dto.name = supplier.name
     return dto

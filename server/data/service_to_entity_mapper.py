@@ -4,15 +4,25 @@ from server.data.database.branch_entity import EmployeeEntity, SalaryChangeEntit
     ProductEntity, ProductDescriptorEntity, StockEntity
 from server.data.database.supplier_entity import SupplierEntity
 from server.data.services.branch.branch import Employee, Vacation, SalaryChange, InsertBranch
+from server.data.services.branch.branch_indexed import StockIndexed, ProductIndexed, \
+    ProductDescriptorIndexed, EmployeeIndexed, Branch
 from server.data.services.product.product import InsertProductWithDescriptor, ProductDescriptor
-from server.data.services.supplier.supplier import InsertSupplier
+from server.data.services.supplier.supplier import InsertSupplier, Supplier
 
 
-def entity_from_descriptor(descriptor: ProductDescriptor):
+def get_descriptor_entity(descriptor, id: ObjectId) -> ProductDescriptorEntity:
     entity = ProductDescriptorEntity.construct()
     entity.name = descriptor.name
-    entity.id = ObjectId()
+    entity.id = id
     return entity
+
+
+def entity_from_descriptor_indexed(descriptor: ProductDescriptorIndexed) -> ProductDescriptorEntity:
+    return get_descriptor_entity(descriptor, descriptor.id)
+
+
+def entity_from_descriptor(descriptor: ProductDescriptor) -> ProductDescriptorEntity:
+    return get_descriptor_entity(descriptor, ObjectId())
 
 
 def entity_from_insert_product_with_descriptor(supplier_id: ObjectId,
@@ -42,8 +52,16 @@ def entity_from_vacation(vacation: Vacation) -> VacationEntity:
 
 
 def entity_from_employee(employee: Employee) -> EmployeeEntity:
+    return get_employee_entity(employee, ObjectId(), entity_from_vacation, entity_from_salary_change)
+
+
+def entity_from_employee_indexed(employee: EmployeeIndexed) -> EmployeeEntity:
+    return get_employee_entity(employee, employee.id, entity_from_vacation, entity_from_salary_change)
+
+
+def get_employee_entity(employee, id: ObjectId, vacation_mapper, salary_change_mapper) -> EmployeeEntity:
     entity = EmployeeEntity.construct()
-    entity.id = ObjectId()
+    entity.id = id
     entity.name = employee.name
     entity.surname = employee.surname
     entity.patronymic = employee.patronymic
@@ -55,15 +73,59 @@ def entity_from_employee(employee: Employee) -> EmployeeEntity:
     entity.dismissal_date = employee.dismissal_date
     entity.salary = employee.salary
     entity.shifts_history = employee.shifts_history
-    entity.vacation_history = list(map(entity_from_vacation, employee.vacation_history))
-    entity.salary_change_history = list(map(entity_from_salary_change, employee.salary_change_history))
+    entity.vacation_history = list(map(vacation_mapper, employee.vacation_history))
+    entity.salary_change_history = list(map(salary_change_mapper, employee.salary_change_history))
     return entity
 
 
-def entity_from_branch(branch: InsertBranch) -> BranchEntity:
+def entity_from_insert_branch(branch: InsertBranch) -> BranchEntity:
     entity = BranchEntity.construct()
     entity.name = branch.name
     entity.city = branch.city
+    return entity
+
+
+def entity_from_product_indexed(product: ProductIndexed) -> ProductEntity:
+    entity = ProductEntity.construct()
+    entity.id = product.id
+    entity.price = product.price
+    entity.descriptor = entity_from_descriptor_indexed(product.descriptor)
+    entity.supplier_id = product.supplier_id
+    return entity
+
+
+def entity_from_stock_indexed(stock: StockIndexed) -> StockEntity:
+    entity = StockEntity.construct()
+    entity.id = stock.id
+    entity.price = stock.price
+    entity.amount = stock.amount
+    entity.product = entity_from_product_indexed(stock.product)
+    return entity
+
+
+def entity_from_branch(branch: Branch) -> BranchEntity:
+    entity = BranchEntity.construct()
+    entity.name = branch.name
+    entity.city = branch.city
+    entity.stocks = list(map(entity_from_stock_indexed, branch.stocks))
+    entity.employees = list(map(entity_from_employee_indexed, branch.employees))
+    return entity
+
+
+def bson_from_supplier(supplier: Supplier):
+    return entity_from_supplier(supplier).dict(by_alias=True)
+
+
+def bson_from_branch(branch: Branch):
+    return entity_from_branch(branch).dict(by_alias=True)
+
+
+def entity_from_supplier(supplier: Supplier) -> SupplierEntity:
+    entity = SupplierEntity.construct()
+    entity.name = supplier.name
+    entity.email = supplier.email
+    entity.phone = supplier.phone
+    entity.products = list(map(entity_from_product_indexed, supplier.products))
     return entity
 
 

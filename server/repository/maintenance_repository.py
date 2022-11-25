@@ -14,9 +14,17 @@ class MaintenanceRepository:
     @is_logged(['class', 'page'])
     async def page_branches(self, page: Page) -> list:
         return [from_branch_document(document) async for document in
-                self.branches.find().skip(page.get_page()).limit(page.size)]
+                self.branches.find().skip(page.calculate_page()).limit(page.size)]
 
     @is_logged(['class', 'page'])
     async def page_suppliers(self, page: Page) -> list:
         return [from_supplier_document(document) async for document in
-                self.suppliers.find().skip(page.get_page()).limit(page.size)]
+                self.suppliers.find().skip(page.calculate_page()).limit(page.size)]
+
+    @is_logged(['class', 'suppliers'])
+    async def insert_suppliers(self, suppliers: list) -> list:
+        return (await self.suppliers.insert_many(suppliers)).inserted_ids
+
+    @is_logged(['class', 'branches'])
+    async def insert_branches(self, branches: list) -> list:
+        return (await self.branches.insert_many(branches)).inserted_ids

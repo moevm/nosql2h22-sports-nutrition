@@ -1,11 +1,13 @@
+from bson import ObjectId
 from pydantic import BaseModel
 
+from server.data.database.common import SerializableObjectId
 from server.data.dto.common.page_dto import PageDto
 from server.data.service_to_dto_mapper import dto_indexed_from_branch_indexed, dto_indexed_from_employee_indexed, \
     dto_indexed_from_stock_indexed, dto_indexed_from_supplier
 
 
-class FindListResponseDto(BaseModel):
+class ListResponseDto(BaseModel):
     size: int
     result: list
 
@@ -26,30 +28,34 @@ def response_find_page(page: PageDto, response: list) -> PageResponseDto:
     return result
 
 
-def response_find_employees(employees: list) -> FindListResponseDto:
-    response = FindListResponseDto.construct()
-    response.size = len(employees)
-    response.result = list(dto_indexed_from_employee_indexed(employee).dict(by_alias=True) for employee in employees)
+def response_find_employees(employees: list) -> ListResponseDto:
+    return response_find_list(employees, dto_indexed_from_employee_indexed)
+
+
+def response_find_stocks(stocks: list) -> ListResponseDto:
+    return response_find_list(stocks, dto_indexed_from_stock_indexed)
+
+
+def response_insert_ids(object_ids: list) -> ListResponseDto:
+    return response_find_list(object_ids, to_serializable_object_id)
+
+
+def to_serializable_object_id(object_id: ObjectId) -> SerializableObjectId:
+    response = SerializableObjectId.construct()
+    response.id = str(object_id)
     return response
 
 
-def response_find_stocks(stocks: list) -> FindListResponseDto:
-    response = FindListResponseDto.construct()
-    response.size = len(stocks)
-    response.result = list(dto_indexed_from_stock_indexed(stock).dict(by_alias=True) for stock in stocks)
-    return response
-
-
-def response_find_list(data: list, mapper) -> FindListResponseDto:
-    response = FindListResponseDto.construct()
+def response_find_list(data: list, mapper) -> ListResponseDto:
+    response = ListResponseDto.construct()
     response.size = len(data)
     response.result = list(mapper(element).dict(by_alias=True) for element in data)
     return response
 
 
-def response_find_branch(branches: list) -> FindListResponseDto:
+def response_find_branch(branches: list) -> ListResponseDto:
     return response_find_list(branches, dto_indexed_from_branch_indexed)
 
 
-def response_find_supplier(suppliers: list) -> FindListResponseDto:
+def response_find_supplier(suppliers: list) -> ListResponseDto:
     return response_find_list(suppliers, dto_indexed_from_supplier)

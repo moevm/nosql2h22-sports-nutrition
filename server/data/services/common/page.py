@@ -8,8 +8,8 @@ class Page:
     number: int
     size: int
 
-    def get_page(self) -> int:
-        return self.number - 1
+    def calculate_page(self) -> int:
+        return (self.number - 1) * self.size
 
 
 def from_page_dto(page: PageDto) -> Page:

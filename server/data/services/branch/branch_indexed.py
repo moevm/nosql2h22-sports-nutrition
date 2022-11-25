@@ -45,6 +45,14 @@ class StockIndexed:
 
 
 @dataclass
+class Branch:
+    name: str
+    city: str
+    stocks: list
+    employees: list
+
+
+@dataclass
 class BranchIndexed:
     id: ObjectId
     name: str

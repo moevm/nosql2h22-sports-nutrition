@@ -1,4 +1,5 @@
 from bson import ObjectId
+from pydantic import Field, BaseModel
 
 
 class PydanticObjectId(ObjectId):
@@ -11,3 +12,7 @@ class PydanticObjectId(ObjectId):
         if not isinstance(v, ObjectId):
             raise TypeError('ObjectId required')
         return str(v)
+
+
+class SerializableObjectId(BaseModel):
+    id: str = Field(alias='_id')

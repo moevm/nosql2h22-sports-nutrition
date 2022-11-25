@@ -1,4 +1,8 @@
+from typing import List
+
 from pydantic import Field, BaseModel
+
+from server.data.dto.branch.branch_indexed_dto import ProductIndexedDto
 
 
 class SupplierIndexedDto(BaseModel):
@@ -6,7 +10,18 @@ class SupplierIndexedDto(BaseModel):
     name: str
     email: str
     phone: str
-    products: list
+    products: List[ProductIndexedDto] = []
+
+
+class SupplierDto(BaseModel):
+    name: str
+    email: str
+    phone: str
+    products: List[ProductIndexedDto] = []
+
+
+class SuppliersDto(BaseModel):
+    suppliers: List[SupplierDto] = []
 
 
 class SupplierInfoDto(BaseModel):

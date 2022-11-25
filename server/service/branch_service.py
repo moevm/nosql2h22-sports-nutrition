@@ -6,7 +6,7 @@ from server.data.database.query import EmployeeInBranchQuery, BranchQuery, Stock
 from server.data.dto_to_service_mapper import first
 from server.data.entity_to_service_mapper import from_employee_entity, from_stock_entity, from_branch_entity, \
     from_branch_entity_to_info
-from server.data.service_to_entity_mapper import entity_from_employee, entity_from_branch, entity_stock_from_product
+from server.data.service_to_entity_mapper import entity_from_employee, entity_from_insert_branch, entity_stock_from_product
 from server.data.services.branch.branch import Employee, AddProduct, InsertBranch
 from server.data.services.branch.branch_indexed import EmployeeIndexed, StockIndexed, BranchIndexed
 from server.data.services.common.page import Page
@@ -90,7 +90,7 @@ class BranchService:
 
     @is_logged(['class', 'request'])
     async def insert(self, request: InsertBranch) -> BranchIndexed:
-        return from_branch_entity(await self.branch_repository.insert(entity_from_branch(request)))
+        return from_branch_entity(await self.branch_repository.insert(entity_from_insert_branch(request)))
 
     @is_logged(['class', 'query'])
     async def find_branches(self, query: BranchQuery) -> list:

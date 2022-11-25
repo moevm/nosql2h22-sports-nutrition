@@ -11,6 +11,14 @@ class InsertSupplier:
 
 
 @dataclass
+class Supplier:
+    name: str
+    email: str
+    phone: str
+    products: list
+
+
+@dataclass
 class SupplierIndexed:
     id: ObjectId
     name: str

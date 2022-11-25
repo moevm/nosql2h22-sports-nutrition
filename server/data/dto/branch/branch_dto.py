@@ -3,12 +3,7 @@ from typing import List, Any
 from pydantic import BaseModel, validator, Field
 
 from server.data.dto.common.constant import DtoConstant
-
-
-def check(argument, predicate, message):
-    if not predicate(argument):
-        raise ValueError(message)
-    return argument
+from server.data.dto.common.util import check
 
 
 class StockInBranchQueryDto(BaseModel):

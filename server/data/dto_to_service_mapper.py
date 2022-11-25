@@ -6,15 +6,47 @@ from server.data.database.query import BranchQuery, FieldEqualsValueQueryReprese
 from server.data.datetime_formatter import get_datetime
 from server.data.dto.branch.branch_dto import AddProductDto, SalaryChangeDto, VacationDto, InsertEmployeeDto, \
     InsertBranchDto, BranchQueryDto, EmployeeInBranchQueryDto, StockInBranchQueryDto
+from server.data.dto.branch.branch_indexed_dto import IndexedBranchesDto, BranchDto, StockIndexedDto, \
+    ProductIndexedDto, ProductDescriptorIndexedDto, EmployeeIndexedDto
 from server.data.dto.common.util import first
 from server.data.dto.product.product_dto import ProductDescriptorDto, InsertProductWithDescriptorDto
 from server.data.dto.supplier.supplier_dto import InsertSupplierDto
+from server.data.dto.supplier.supplier_indexed_dto import SupplierDto
 from server.data.services.branch.branch import AddProduct, SalaryChange, Vacation, Employee, InsertBranch
+from server.data.services.branch.branch_indexed import StockIndexed, ProductIndexed, \
+    ProductDescriptorIndexed, EmployeeIndexed, Branch
 from server.data.services.product.product import ProductDescriptor, InsertProductWithDescriptor
-from server.data.services.supplier.supplier import InsertSupplier
+from server.data.services.supplier.supplier import InsertSupplier, Supplier
 
 
-def from_add_product_dto(request: AddProductDto):
+def from_product_descriptor_indexed_dto(request: ProductDescriptorIndexedDto) -> ProductDescriptorIndexed:
+    return ProductDescriptorIndexed(ObjectId(request.id), request.name)
+
+
+def from_product_indexed_dto(request: ProductIndexedDto) -> ProductIndexed:
+    return ProductIndexed(ObjectId(request.id), from_product_descriptor_indexed_dto(request.descriptor),
+                          ObjectId(request.supplier_id), request.price)
+
+
+def from_stock_indexed_dto(request: StockIndexedDto) -> StockIndexed:
+    return StockIndexed(ObjectId(request.id), request.amount, request.price, from_product_indexed_dto(request.product))
+
+
+def from_branch_dto(request: BranchDto) -> Branch:
+    return Branch(request.name, request.city,
+                  list(map(from_stock_indexed_dto, request.stocks)),
+                  list(map(from_employee_indexed_dto, request.employees)))
+
+
+def from_supplier_dto(request: SupplierDto) -> Supplier:
+    return Supplier(request.name, request.email, request.phone, list(map(from_product_indexed_dto, request.products)))
+
+
+def from_branches_indexed_dto(request: IndexedBranchesDto) -> list:
+    return list(map(from_branch_dto, request.branches))
+
+
+def from_add_product_dto(request: AddProductDto) -> AddProduct:
     return AddProduct(ObjectId(request.product_id), request.price, request.amount)
 
 
@@ -24,6 +56,16 @@ def from_salary_change_dto(change: SalaryChangeDto) -> SalaryChange:
 
 def from_vacation_dto(vacation: VacationDto) -> Vacation:
     return Vacation(vacation.payments, get_datetime(vacation.start_date), get_datetime(vacation.end_date))
+
+
+def from_employee_indexed_dto(employee: EmployeeIndexedDto) -> EmployeeIndexed:
+    return EmployeeIndexed(ObjectId(employee.id), employee.name, employee.surname, employee.patronymic,
+                           employee.passport, employee.phone,
+                           employee.role, employee.city, get_datetime(employee.employment_date),
+                           get_datetime(employee.dismissal_date), employee.salary,
+                           list(map(get_datetime, employee.shifts_history)),
+                           list(map(from_vacation_dto, employee.vacation_history)),
+                           list(map(from_salary_change_dto, employee.salary_change_history)))
 
 
 def from_employee_dto(employee: InsertEmployeeDto) -> Employee:
@@ -97,6 +139,10 @@ def from_stock_in_branch_query_dto(query: StockInBranchQueryDto) -> StockInBranc
         price_to = first(query.price_to).map(int).or_else(None)
         internal.amount = IntervalQueryRepresentation(IntervalHolder(price_from, price_to),
                                                       "stocks.price")
+
+    if not len(vars(internal)):
+        raise EmptyQuery()
+
     return internal
 
 
