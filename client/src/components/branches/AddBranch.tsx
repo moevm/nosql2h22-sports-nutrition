@@ -30,8 +30,7 @@ export const AddBranch = () => {
   const [city, setCity] = useState('');
 
   const doRequest = useCallback((nameReq: string, cityReq: string) => {
-    console.log('Do request: ', nameReq, cityReq);
-    fetch(`http://localhost:8080/branch`, {
+    fetch('http://localhost:8080/branch', {
       method: 'POST',
       mode: 'cors',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
@@ -41,6 +40,7 @@ export const AddBranch = () => {
       .then((json) => {
         const parsedJson = convertToObject(json);
         setData(parsedJson);
+        navigate('/branches');
       });
   }, []);
   return (

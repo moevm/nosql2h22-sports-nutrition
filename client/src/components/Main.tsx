@@ -7,7 +7,7 @@ export const Main = () => {
   const [value, setValue] = useState(undefined);
   return <Box>
     <h1> Welcome to Sport nutrition information system! </h1>
-    <Tabs value={value} indicatorColor="secondary" textColor="inherit">
+    <Tabs  indicatorColor="secondary" textColor="inherit">
       <Tab
         component={RouterLink}
         to="/branches"
