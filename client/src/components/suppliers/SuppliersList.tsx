@@ -1,6 +1,8 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { Pagination } from "../pagination/Pagination";
+import { HOST } from "../../constants";
+import { getSupplierPage } from "../../api/supplier";
 
 const pageSize = 15;
 
@@ -10,12 +12,7 @@ export const SuppliersList = () => {
   const [lastPage, setLastPage] = useState(false);
 
   useEffect(() => {
-    console.log("Current page: ", currentPage);
-    fetch(`http://localhost:8008/supplier/page?size=${pageSize}&page=${currentPage}`, {
-      method: "GET",
-      mode: "cors",
-      headers: { "Content-Type": "application/json", Accept: "application/json" }
-    })
+    getSupplierPage(pageSize, currentPage)
       .then((response) => response.json())
       .then((json) => {
         if (json.items.length) {
@@ -37,8 +34,11 @@ export const SuppliersList = () => {
         <tbody>
         {data.map((item) => {
           return (
-            <tr key={item._id} className="branches-table">
-              <td className="cell-id">{item._id}</td>
+            <tr key={item._id} className="suppliers-table">
+              <td className="cell-id">
+                <a href={`${HOST}8080/supplier/${item._id}`}>
+                  {item._id}
+                </a></td>
               <td>{item.name}</td>
             </tr>
           );

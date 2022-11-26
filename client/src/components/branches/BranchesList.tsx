@@ -2,6 +2,8 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import "./Branches.scss";
 import { Pagination } from "../pagination/Pagination";
+import { HOST } from "../../constants";
+import { getBranchesPage } from "../../api/branch";
 
 const pageSize = 15;
 
@@ -11,12 +13,7 @@ export const BranchesList = () => {
   const [lastPage, setLastPage] = useState(false);
 
   useEffect(() => {
-    console.log("Current page: ", currentPage);
-    fetch(`http://localhost:8008/branch/page?size=${pageSize}&page=${currentPage}`, {
-      method: "GET",
-      mode: "cors",
-      headers: { "Content-Type": "application/json", Accept: "application/json" }
-    })
+    getBranchesPage(pageSize, currentPage)
       .then((response) => response.json())
       .then((json) => {
         if (json.items.length) {
@@ -24,7 +21,7 @@ export const BranchesList = () => {
           setLastPage(json.items.length < pageSize);
         }
       });
-  }, [currentPage]);
+  }, [currentPage, getBranchesPage]);
 
   return (
     <>
@@ -41,7 +38,10 @@ export const BranchesList = () => {
         {data.map((item) => {
           return (
             <tr key={item._id} className="branches-table">
-              <td className="cell-id">{item._id}</td>
+              <td className="cell-id"
+              ><a href={`${HOST}:8080/branch?_id=${item._id}`}>
+                {item._id}
+              </a></td>
               <td>{item.name}</td>
               <td>0</td>
               <td>{item.city}</td>

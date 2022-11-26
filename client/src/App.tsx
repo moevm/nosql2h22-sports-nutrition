@@ -9,6 +9,8 @@ import { AddBranch } from "./components/branches/AddBranch";
 import { AddSupplier } from "./components/suppliers/AddSupplier";
 import { Suppliers } from "./components/suppliers/Suppliers";
 import { SupplierPage } from "./components/suppliers/SupplierPage";
+import { FilteredBranchesList } from "./components/branches/FilteredBranchesList";
+import { BranchPage } from "./components/branches/BranchPage";
 
 function App() {
   return (
@@ -22,6 +24,9 @@ function App() {
         <Route path="/branches/add" element={<AddBranch />} />
         <Route path="/suppliers/add" element={<AddSupplier />} />
         <Route path="/supplier/:id" element={<SupplierPage />} />
+        <Route path="/branch/:city/:name/:_id" element={<FilteredBranchesList />} />
+        <Route path="/branch/:city/:name" element={<FilteredBranchesList />} />
+        <Route path="/branch/:city" element={<FilteredBranchesList />} />
       </Routes>
     </Router>
   );

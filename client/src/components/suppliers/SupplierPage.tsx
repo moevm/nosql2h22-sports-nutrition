@@ -31,7 +31,7 @@ export const SupplierPage = () => {
         InputProps={{
           readOnly: true
         }}
-        value={supplier._id + "4"}
+        value={supplier._id}
       />
       <TextField
         style={{ width: "80%" }}

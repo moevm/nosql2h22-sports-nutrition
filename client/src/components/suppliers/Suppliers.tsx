@@ -32,7 +32,6 @@ export const Suppliers = () => {
           label="Find supplier by id"
           onClick={() => setOpenForm(!isOpenForm)}
         />
-
       </Tabs>
       <FindSupplierDialog isOpen={isOpenForm} setOpen={setOpenForm} />
       <SuppliersList />

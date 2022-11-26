@@ -4,6 +4,7 @@ import { useCallback, useState } from "react";
 import CancelIcon from "@mui/icons-material/Cancel";
 import AddIcon from "@mui/icons-material/Add";
 import { useNavigate } from "react-router-dom";
+import { postBranch } from "../../api/branch";
 
 export interface IAddBranchResponse {
   id: string;
@@ -30,19 +31,14 @@ export const AddBranch = () => {
   const [city, setCity] = useState("");
 
   const doRequest = useCallback((nameReq: string, cityReq: string) => {
-    fetch("http://localhost:8008/branch", {
-      method: "POST",
-      mode: "cors",
-      headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify({ name: nameReq, city: cityReq })
-    })
+    postBranch(nameReq, cityReq)
       .then((response) => response.json())
       .then((json) => {
         const parsedJson = convertToObject(json);
         setData(parsedJson);
         navigate("/branches");
       });
-  }, []);
+  }, [postBranch, convertToObject]);
   return (
     <Box style={{ width: "60%" }}>
       <Stack spacing={2}>

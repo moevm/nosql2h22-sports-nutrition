@@ -4,6 +4,7 @@ import { useCallback, useState } from "react";
 import CancelIcon from "@mui/icons-material/Cancel";
 import AddIcon from "@mui/icons-material/Add";
 import { useNavigate } from "react-router-dom";
+import { postSupplier } from "../../api/supplier";
 
 export interface IAddBranchResponse {
   id: string;
@@ -31,19 +32,14 @@ export const AddSupplier = () => {
   const [email, setEmail] = useState("");
 
   const doRequest = useCallback((nameReq: string, phoneReq: string, emailReq: string) => {
-    fetch("http://localhost:8008/supplier", {
-      method: "POST",
-      mode: "cors",
-      headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify({ name: nameReq, phone: phoneReq, email: emailReq })
-    })
+    postSupplier(nameReq, phoneReq, emailReq)
       .then((response) => response.json())
       .then((json) => {
         const parsedJson = convertToObject(json);
         setData(parsedJson);
         navigate("/suppliers");
       });
-  }, [convertToObject]);
+  }, [convertToObject, postSupplier]);
   return (
     <Box style={{ width: "60%" }}>
       <Stack spacing={2}>

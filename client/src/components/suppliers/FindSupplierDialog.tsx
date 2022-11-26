@@ -10,13 +10,14 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import "../dialog.scss";
 
-const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+export const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
-    padding: theme.spacing(2)
+    padding: theme.spacing(4)
   },
   "& .MuiDialogActions-root": {
-    padding: theme.spacing(1)
+    padding: theme.spacing(2)
   }
 }));
 
@@ -26,11 +27,11 @@ export interface DialogTitleProps {
   onClose: () => void;
 }
 
-function BootstrapDialogTitle(props: DialogTitleProps) {
+export function BootstrapDialogTitle(props: DialogTitleProps) {
   const { children, onClose, ...other } = props;
 
   return (
-    <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
+    <DialogTitle sx={{ m: 2, p: 2 }} {...other}>
       {children}
       {onClose ? (
         <IconButton
@@ -38,7 +39,7 @@ function BootstrapDialogTitle(props: DialogTitleProps) {
           onClick={onClose}
           sx={{
             position: "absolute",
-            right: 8,
+            right: 12,
             top: 8,
             color: (theme) => theme.palette.grey[500]
           }}
@@ -58,7 +59,6 @@ export function FindSupplierDialog({ isOpen, setOpen }: {
 
   const navigate = useNavigate();
   const [value, setValue] = useState("");
-  const [message, setMessage] = useState("");
 
   const handleClose = () => {
     setOpen(false);
@@ -70,35 +70,32 @@ export function FindSupplierDialog({ isOpen, setOpen }: {
   };
 
   return (
-    <div>
-      <BootstrapDialog
-        onClose={handleClose}
-        aria-labelledby="customized-dialog-title"
-        open={isOpen}
-      >
-        <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
-          Find supplier form
-        </BootstrapDialogTitle>
-        <DialogContent dividers>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Enter supplier's id"
-            fullWidth
-            onChange={(val) =>
-              setValue(val.target.value)}
-            variant="standard"
-          />
-          <div> {message}</div>
-        </DialogContent>
-        <DialogActions>
-          <Button autoFocus onClick={findSupplier}
-                  disabled={!value.length}>
-            Find
-          </Button>
-        </DialogActions>
-      </BootstrapDialog>
-    </div>
+    <BootstrapDialog
+      onClose={handleClose}
+      aria-labelledby="customized-dialog-title"
+      open={isOpen}
+    >
+      <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
+        Find supplier form
+      </BootstrapDialogTitle>
+      <DialogContent dividers>
+        <TextField
+          autoFocus
+          margin="dense"
+          id="name"
+          label="Enter supplier's id"
+          fullWidth
+          onChange={(val) =>
+            setValue(val.target.value)}
+          variant="standard"
+        />
+      </DialogContent>
+      <DialogActions>
+        <Button autoFocus onClick={findSupplier}
+                disabled={!value.length}>
+          Find
+        </Button>
+      </DialogActions>
+    </BootstrapDialog>
   );
 }
