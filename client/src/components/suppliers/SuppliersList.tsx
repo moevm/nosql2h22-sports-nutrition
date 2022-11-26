@@ -11,7 +11,7 @@ export const SuppliersList = () => {
 
   useEffect(() => {
     console.log("Current page: ", currentPage);
-    fetch(`http://localhost:8080/supplier/page?size=${pageSize}&page=${currentPage}`, {
+    fetch(`http://localhost:8008/supplier/page?size=${pageSize}&page=${currentPage}`, {
       method: "GET",
       mode: "cors",
       headers: { "Content-Type": "application/json", Accept: "application/json" },

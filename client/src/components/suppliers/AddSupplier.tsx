@@ -31,7 +31,7 @@ export const AddSupplier = () => {
   const [email, setEmail] = useState('');
 
   const doRequest = useCallback((nameReq: string, phoneReq: string, emailReq: string) => {
-    fetch('http://localhost:8080/supplier', {
+    fetch('http://localhost:8008/supplier', {
       method: 'POST',
       mode: 'cors',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },

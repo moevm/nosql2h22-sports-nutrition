@@ -8,7 +8,7 @@ export const SupplierPage = () => {
   const [supplier, setSupplier] = useState<any>(undefined);
   const params = useParams();
   useEffect(() => {
-    fetch(`http://localhost:8080/supplier/${params.id}`, {
+    fetch(`http://localhost:8008/supplier/${params.id}`, {
       method: "GET",
       mode: "cors",
       headers: { "Content-Type": "application/json", Accept: "application/json" },
