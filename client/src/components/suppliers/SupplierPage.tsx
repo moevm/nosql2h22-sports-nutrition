@@ -1,23 +1,21 @@
 import * as React from "react";
-import {  Stack, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
+import { Stack, TextField } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { NotFound } from "../NotFound";
+import { getSupplier } from "../../api/supplier";
 
 export const SupplierPage = () => {
-  const [supplier, setSupplier] = useState<any>(undefined);
   const params = useParams();
+  const [supplier, setSupplier] = useState<any>(undefined);
   useEffect(() => {
-    fetch(`http://localhost:8008/supplier/${params.id}`, {
-      method: "GET",
-      mode: "cors",
-      headers: { "Content-Type": "application/json", Accept: "application/json" },
-    })
+    getSupplier(params.id!)
       .then((response) => response.json())
       .then((json) => {
         setSupplier(json);
       });
   }, [params]);
+
   if (!supplier) {
     return <NotFound />;
   }
@@ -31,9 +29,9 @@ export const SupplierPage = () => {
         label="Id"
         variant="outlined"
         InputProps={{
-          readOnly: true,
+          readOnly: true
         }}
-        value={supplier._id}
+        value={supplier._id + "4"}
       />
       <TextField
         style={{ width: "80%" }}
@@ -41,7 +39,7 @@ export const SupplierPage = () => {
         label="Name"
         variant="outlined"
         InputProps={{
-          readOnly: true,
+          readOnly: true
         }}
         value={supplier.name}
       />
@@ -51,7 +49,7 @@ export const SupplierPage = () => {
         label="Phone"
         variant="outlined"
         InputProps={{
-          readOnly: true,
+          readOnly: true
         }}
         value={supplier.phone}
       />
@@ -61,7 +59,7 @@ export const SupplierPage = () => {
         label="City"
         variant="outlined"
         InputProps={{
-          readOnly: true,
+          readOnly: true
         }}
         value={supplier.email}
       />

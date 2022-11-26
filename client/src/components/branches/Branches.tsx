@@ -7,10 +7,10 @@ import { BranchesList } from "./BranchesList";
 export const Branches = () => {
   return (
     <Box>
-      <Box flexDirection={"row"} >
-      <h1> Branches page </h1>
+      <Box flexDirection={"row"}>
+        <h1> Branches page </h1>
         <Tab
-          sx={{display: "flex", marginRight: 0, alignSelf: "end"}}
+          sx={{ display: "flex", marginRight: 0, alignSelf: "end" }}
           component={RouterLink}
           to="/branches/add"
           value="add"

@@ -1,9 +1,9 @@
-import { Box, IconButton, Stack, TextField } from '@mui/material';
-import * as React from 'react';
-import CancelIcon from '@mui/icons-material/Cancel';
-import AddIcon from '@mui/icons-material/Add';
-import { useNavigate } from 'react-router-dom';
-import { useCallback, useState } from 'react';
+import { Box, IconButton, Stack, TextField } from "@mui/material";
+import * as React from "react";
+import { useCallback, useState } from "react";
+import CancelIcon from "@mui/icons-material/Cancel";
+import AddIcon from "@mui/icons-material/Add";
+import { useNavigate } from "react-router-dom";
 
 export interface IAddBranchResponse {
   id: string;
@@ -19,37 +19,37 @@ const convertToObject = (json: any): IAddBranchResponse => {
     name: json.name,
     city: json.city,
     employees: [],
-    stocks: [],
+    stocks: []
   };
 };
 
 export const AddSupplier = () => {
   const navigate = useNavigate();
   const [data, setData] = useState<IAddBranchResponse>();
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [email, setEmail] = useState('');
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
 
   const doRequest = useCallback((nameReq: string, phoneReq: string, emailReq: string) => {
-    fetch('http://localhost:8008/supplier', {
-      method: 'POST',
-      mode: 'cors',
-      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify({ name: nameReq, phone: phoneReq, email: emailReq }),
+    fetch("http://localhost:8008/supplier", {
+      method: "POST",
+      mode: "cors",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify({ name: nameReq, phone: phoneReq, email: emailReq })
     })
       .then((response) => response.json())
       .then((json) => {
         const parsedJson = convertToObject(json);
         setData(parsedJson);
-        navigate('/suppliers');
+        navigate("/suppliers");
       });
   }, [convertToObject]);
   return (
-    <Box style={{ width: '60%' }}>
+    <Box style={{ width: "60%" }}>
       <Stack spacing={2}>
         <h2> Add new supplier </h2>
         <TextField
-          style={{ width: '80%' }}
+          style={{ width: "80%" }}
           id="outlined-basic"
           label="Name"
           variant="outlined"
@@ -57,7 +57,7 @@ export const AddSupplier = () => {
           onChange={(e) => setName(e.target.value)}
         />
         <TextField
-          style={{ width: '80%' }}
+          style={{ width: "80%" }}
           id="filled-basic"
           label="Phone"
           variant="outlined"
@@ -66,7 +66,7 @@ export const AddSupplier = () => {
           onChange={(e) => setPhone(e.target.value)}
         />
         <TextField
-          style={{ width: '80%' }}
+          style={{ width: "80%" }}
           id="filled-basic"
           label="Email"
           variant="outlined"
@@ -74,7 +74,7 @@ export const AddSupplier = () => {
           type="email"
           onChange={(e) => setEmail(e.target.value)}
         />
-        <Box style={{ marginLeft: '35%' }} flexDirection="row">
+        <Box style={{ marginLeft: "35%" }} flexDirection="row">
           <IconButton
             title="Add new supplier"
             component="span"
@@ -83,7 +83,7 @@ export const AddSupplier = () => {
             <AddIcon />
           </IconButton>
 
-          <IconButton component="span" title="Cancel" onClick={() => navigate('/suppliers')}>
+          <IconButton component="span" title="Cancel" onClick={() => navigate("/suppliers")}>
             <CancelIcon />
           </IconButton>
         </Box>

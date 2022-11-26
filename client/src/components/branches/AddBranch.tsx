@@ -1,9 +1,9 @@
 import { Box, IconButton, Stack, TextField } from "@mui/material";
-import * as React from 'react';
-import CancelIcon from '@mui/icons-material/Cancel';
-import AddIcon from '@mui/icons-material/Add';
-import { useNavigate } from 'react-router-dom';
-import { useCallback, useState } from 'react';
+import * as React from "react";
+import { useCallback, useState } from "react";
+import CancelIcon from "@mui/icons-material/Cancel";
+import AddIcon from "@mui/icons-material/Add";
+import { useNavigate } from "react-router-dom";
 
 export interface IAddBranchResponse {
   id: string;
@@ -26,51 +26,51 @@ const convertToObject = (json: any): IAddBranchResponse => {
 export const AddBranch = () => {
   const navigate = useNavigate();
   const [data, setData] = useState<IAddBranchResponse>();
-  const [name, setName] = useState('');
-  const [city, setCity] = useState('');
+  const [name, setName] = useState("");
+  const [city, setCity] = useState("");
 
   const doRequest = useCallback((nameReq: string, cityReq: string) => {
-    fetch('http://localhost:8008/branch', {
-      method: 'POST',
-      mode: 'cors',
-      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify({ name: nameReq, city: cityReq }),
+    fetch("http://localhost:8008/branch", {
+      method: "POST",
+      mode: "cors",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify({ name: nameReq, city: cityReq })
     })
       .then((response) => response.json())
       .then((json) => {
         const parsedJson = convertToObject(json);
         setData(parsedJson);
-        navigate('/branches');
+        navigate("/branches");
       });
   }, []);
   return (
-    <Box style={{width: "60%"}}>
+    <Box style={{ width: "60%" }}>
       <Stack spacing={2}>
-      <h2> Add new branch </h2>
-      <TextField
-        style={{width: "80%"}}
-        id="outlined-basic"
-        label="Name"
-        variant="outlined"
-        required
-        onChange={(e) => setName(e.target.value)}
-      />
-      <TextField
-        style={{width: "80%"}}
-        id="filled-basic"
-        label="City"
-        variant="outlined"
-        required
-        onChange={(e) => setCity(e.target.value)}
-      />
-        <Box style={{marginLeft: "35%"}} flexDirection="row">
-      <IconButton title="Add new branch" component="span" onClick={() => doRequest(name, city)}>
-        <AddIcon />
-      </IconButton>
-      <IconButton
-          component="span" title="Cancel" onClick={() => navigate('/branches')}>
-        <CancelIcon />
-      </IconButton>
+        <h2> Add new branch </h2>
+        <TextField
+          style={{ width: "80%" }}
+          id="outlined-basic"
+          label="Name"
+          variant="outlined"
+          required
+          onChange={(e) => setName(e.target.value)}
+        />
+        <TextField
+          style={{ width: "80%" }}
+          id="filled-basic"
+          label="City"
+          variant="outlined"
+          required
+          onChange={(e) => setCity(e.target.value)}
+        />
+        <Box style={{ marginLeft: "35%" }} flexDirection="row">
+          <IconButton title="Add new branch" component="span" onClick={() => doRequest(name, city)}>
+            <AddIcon />
+          </IconButton>
+          <IconButton
+            component="span" title="Cancel" onClick={() => navigate("/branches")}>
+            <CancelIcon />
+          </IconButton>
         </Box>
       </Stack>
     </Box>

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import "./Branches.scss";
 import { Pagination } from "../pagination/Pagination";
 
@@ -15,7 +15,7 @@ export const BranchesList = () => {
     fetch(`http://localhost:8008/branch/page?size=${pageSize}&page=${currentPage}`, {
       method: "GET",
       mode: "cors",
-      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      headers: { "Content-Type": "application/json", Accept: "application/json" }
     })
       .then((response) => response.json())
       .then((json) => {
@@ -30,24 +30,24 @@ export const BranchesList = () => {
     <>
       <table>
         <thead>
-          <tr>
-            <th>Branch Id</th>
-            <th>Name </th>
-            <th>Employees </th>
-            <th>Location</th>
-          </tr>
+        <tr>
+          <th>Branch Id</th>
+          <th>Name</th>
+          <th>Employees</th>
+          <th>Location</th>
+        </tr>
         </thead>
         <tbody>
-          {data.map((item) => {
-            return (
-              <tr key={item._id} className="branches-table">
-                <td className="cell-id">{item._id}</td>
-                <td>{item.name}</td>
-                <td>0</td>
-                <td>{item.city}</td>
-              </tr>
-            );
-          })}
+        {data.map((item) => {
+          return (
+            <tr key={item._id} className="branches-table">
+              <td className="cell-id">{item._id}</td>
+              <td>{item.name}</td>
+              <td>0</td>
+              <td>{item.city}</td>
+            </tr>
+          );
+        })}
         </tbody>
       </table>
       <Pagination

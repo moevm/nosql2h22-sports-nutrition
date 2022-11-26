@@ -1,6 +1,6 @@
+import * as React from "react";
 import { useEffect, useState } from "react";
 import { Pagination } from "../pagination/Pagination";
-import * as React from "react";
 
 const pageSize = 15;
 
@@ -14,7 +14,7 @@ export const SuppliersList = () => {
     fetch(`http://localhost:8008/supplier/page?size=${pageSize}&page=${currentPage}`, {
       method: "GET",
       mode: "cors",
-      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      headers: { "Content-Type": "application/json", Accept: "application/json" }
     })
       .then((response) => response.json())
       .then((json) => {
@@ -31,7 +31,7 @@ export const SuppliersList = () => {
         <thead>
         <tr>
           <th>Supplier Id</th>
-          <th>Name </th>
+          <th>Name</th>
         </tr>
         </thead>
         <tbody>

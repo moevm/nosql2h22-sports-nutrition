@@ -1,13 +1,13 @@
-import React from 'react';
-import classnames from 'classnames';
-import './pagination.scss';
+import React from "react";
+import classnames from "classnames";
+import "./pagination.scss";
 
 export const Pagination = ({
-  onPageChange,
-  currentPage,
-  className,
-  lastPage
-}: {
+                             onPageChange,
+                             currentPage,
+                             className,
+                             lastPage
+                           }: {
   onPageChange: (page: number) => void;
   currentPage: number;
   lastPage: boolean;
@@ -23,11 +23,11 @@ export const Pagination = ({
   };
 
   return (
-    <ul className={classnames('pagination-container', { [className]: className })}>
+    <ul className={classnames("pagination-container", { [className]: className })}>
       <li
-        key={currentPage+className}
-        className={classnames('pagination-item', {
-          disabled: currentPage === 1,
+        key={currentPage + className}
+        className={classnames("pagination-item", {
+          disabled: currentPage === 1
         })}
         onClick={onPrevious}
       >
@@ -35,19 +35,20 @@ export const Pagination = ({
       </li>
       <li
         key={currentPage}
-        className={classnames('pagination-item')}
-        >
+        className={classnames("pagination-item")}
+      >
         {currentPage}
-        </li>
+      </li>
 
       <li
-        key={'pagination-item-disabled'}
-        className={classnames('pagination-item', {
+        key={"pagination-item-disabled"}
+        className={classnames("pagination-item", {
           disabled: lastPage
         })}
         onClick={() => {
           console.log("LastPage :", lastPage);
-          onNext()}}
+          onNext();
+        }}
       >
         <div className="arrow right" />
       </li>
