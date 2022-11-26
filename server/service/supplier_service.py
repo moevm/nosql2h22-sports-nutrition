@@ -36,8 +36,8 @@ class SupplierService:
         self.product_repository = product_repository
 
     @is_logged(['class', 'supplier_id'])
-    def products(self, supplier_id: ObjectId):
-        return ProductsAccessor(self.product_repository, supplier_id)
+    async def products(self, supplier_id: ObjectId) -> ProductsAccessor:
+        return await self.access(supplier_id, lambda: ProductsAccessor(self.product_repository, supplier_id))
 
     @is_logged(['class', 'page'])
     async def page(self, page: Page) -> list:
@@ -48,7 +48,11 @@ class SupplierService:
         return from_supplier_entity_to_indexed(await self.supplier_repository.insert(entity_from_supplier(request)))
 
     @is_logged(['class', 'object_id'])
-    async def find_by_id(self, object_id: ObjectId) -> SupplierIndexed:
-        return (await self.supplier_repository.find_by_id(object_id)) \
+    async def find_by_id(self, supplier_id: ObjectId) -> SupplierIndexed:
+        return (await self.supplier_repository.find_by_id(supplier_id)) \
             .map(from_supplier_entity_to_indexed) \
-            .or_raise(lambda: SupplierNotFound(object_id))
+            .or_raise(lambda: SupplierNotFound(supplier_id))
+
+    async def access(self, supplier_id: ObjectId, accessor_function):
+        (await self.supplier_repository.find_by_id(supplier_id)).or_raise(lambda: SupplierNotFound(supplier_id))
+        return accessor_function()

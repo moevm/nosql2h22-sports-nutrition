@@ -48,7 +48,7 @@ async def insert_product_with_descriptor(request: Request,
 
     info(f'insert new product to supplier {supplier_id}: {body}')
 
-    inserted = await supplier_service.products(supplier_id) \
+    inserted = await (await supplier_service.products(supplier_id)) \
         .insert_with_descriptor(from_insert_product_with_descriptor_dto(body))
 
     return res.json(dto_indexed_from_product_indexed(inserted).dict(by_alias=True))
