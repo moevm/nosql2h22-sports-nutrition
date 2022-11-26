@@ -4,9 +4,11 @@ from bson import ObjectId
 
 from server.common.exceptions import BranchNotFound
 from server.common.logger import is_logged
+from server.common.monad import Optional
 from server.data.database.branch_entity import BranchEntity, from_branch_document, StockEntity, from_stock_document, \
     from_branch_info_document
-from server.data.database.query import BranchQuery, StockInBranchQuery
+from server.data.database.query import BranchQuery, StockInBranchQuery, IdQueryRepresentation
+from server.data.dto.common.util import first
 from server.data.services.common.page import Page
 from server.database.mongo_connection import MongoConnection
 
@@ -49,6 +51,12 @@ class BranchRepository:
         info(f"query: {query}")
         return [from_branch_document(document) for document in
                 await self.collection.find({"$and": query}).to_list(length=None)]
+
+    @is_logged(['class', 'id'])
+    async def find_by_id(self, branch_id: ObjectId) -> Optional:
+        query = BranchQuery()
+        query.id = IdQueryRepresentation(branch_id)
+        return first(await self.find_by_query(query))
 
     @is_logged(['class', 'branch_id'])
     async def find_stock(self, branch_id: ObjectId, request: StockInBranchQuery) -> list:

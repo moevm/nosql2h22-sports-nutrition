@@ -1,12 +1,13 @@
 from bson import ObjectId
 
-from server.common.exceptions import EmployeeNotFound, ProductNotFound, ProductAlreadyExists
+from server.common.exceptions import EmployeeNotFound, ProductNotFound, ProductAlreadyExists, BranchNotFound
 from server.common.logger import is_logged
 from server.data.database.query import EmployeeInBranchQuery, BranchQuery, StockInBranchQuery, product_id_query
 from server.data.dto_to_service_mapper import first
 from server.data.entity_to_service_mapper import from_employee_entity, from_stock_entity, from_branch_entity, \
     from_branch_entity_to_info
-from server.data.service_to_entity_mapper import entity_from_employee, entity_from_insert_branch, entity_stock_from_product
+from server.data.service_to_entity_mapper import entity_from_employee, entity_from_insert_branch, \
+    entity_stock_from_product
 from server.data.services.branch.branch import Employee, AddProduct, InsertBranch
 from server.data.services.branch.branch_indexed import EmployeeIndexed, StockIndexed, BranchIndexed
 from server.data.services.common.page import Page
@@ -77,16 +78,17 @@ class BranchService:
         self.product_repository = product_repository
 
     @is_logged(['class', 'branch_name'])
-    def employees(self, branch_id: ObjectId) -> EmployeesAccessor:
-        return EmployeesAccessor(self.employees_repository, branch_id)
+    async def employees(self, branch_id: ObjectId) -> EmployeesAccessor:
+        return await self.access(branch_id, lambda: EmployeesAccessor(self.employees_repository, branch_id))
 
     @is_logged(['class', 'page'])
     async def page_info(self, page: Page):
         return [from_branch_entity_to_info(entity) for entity in await self.branch_repository.page(page)]
 
     @is_logged(['class', 'branch_id'])
-    def stocks(self, branch_id: ObjectId) -> StocksAccessor:
-        return StocksAccessor(branch_id, self.branch_repository, self.product_repository)
+    async def stocks(self, branch_id: ObjectId) -> StocksAccessor:
+        return await self.access(branch_id,
+                                 lambda: StocksAccessor(branch_id, self.branch_repository, self.product_repository))
 
     @is_logged(['class', 'request'])
     async def insert(self, request: InsertBranch) -> BranchIndexed:
@@ -101,3 +103,7 @@ class BranchService:
         return (await self.employees_repository.find_by_id(employee_id)) \
             .map(from_employee_entity) \
             .or_raise(lambda: EmployeeNotFound(employee_id))
+
+    async def access(self, branch_id: ObjectId, accessor_function):
+        (await self.branch_repository.find_by_id(branch_id)).or_raise(lambda: BranchNotFound(branch_id))
+        return accessor_function()

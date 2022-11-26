@@ -33,7 +33,7 @@ async def find_branch(request: Request, query: BranchQueryDto) -> HTTPResponse:
 @branch_blueprint.route("/branch/<branch_id:str>/employee", methods=['POST'])
 @validate(json=InsertEmployeeDto)
 async def insert_employee(request: Request, branch_id: str, body: InsertEmployeeDto) -> HTTPResponse:
-    inserted = await branch_service.employees(ObjectId(branch_id)).insert(from_employee_dto(body))
+    inserted = await (await branch_service.employees(ObjectId(branch_id))).insert(from_employee_dto(body))
 
     return res.json(dto_indexed_from_employee_indexed(inserted).dict(by_alias=True))
 
@@ -41,7 +41,8 @@ async def insert_employee(request: Request, branch_id: str, body: InsertEmployee
 @branch_blueprint.route("/branch/<branch_id:str>/employee", methods=['GET'])
 @validate(query=EmployeeInBranchQueryDto)
 async def find_employee(request: Request, branch_id: str, query: EmployeeInBranchQueryDto) -> HTTPResponse:
-    inserted = await branch_service.employees(ObjectId(branch_id)).find(from_employee_in_branch_query_dto(query))
+    inserted = await (await branch_service.employees(ObjectId(branch_id))) \
+        .find(from_employee_in_branch_query_dto(query))
 
     return res.json(response_find_employees(inserted).dict(by_alias=True))
 
@@ -49,7 +50,7 @@ async def find_employee(request: Request, branch_id: str, query: EmployeeInBranc
 @branch_blueprint.route("/branch/<branch_id:str>/stock", methods=['GET'])
 @validate(query=StockInBranchQueryDto)
 async def find_stock(request: Request, branch_id: str, query: StockInBranchQueryDto) -> HTTPResponse:
-    inserted = await branch_service.stocks(ObjectId(branch_id)).find(from_stock_in_branch_query_dto(query))
+    inserted = await (await branch_service.stocks(ObjectId(branch_id))).find(from_stock_in_branch_query_dto(query))
 
     return res.json(response_find_stocks(inserted).dict(by_alias=True))
 
@@ -57,7 +58,7 @@ async def find_stock(request: Request, branch_id: str, query: StockInBranchQuery
 @branch_blueprint.route("/branch/<branch_id:str>/stock", methods=['POST'])
 @validate(json=AddProductDto)
 async def add_product(request: Request, branch_id: str, body: AddProductDto):
-    stock = await branch_service.stocks(ObjectId(branch_id)).add(from_add_product_dto(body))
+    stock = await (await branch_service.stocks(ObjectId(branch_id))).add(from_add_product_dto(body))
 
     return res.json(dto_indexed_from_stock_indexed(stock).dict(by_alias=True))
 
