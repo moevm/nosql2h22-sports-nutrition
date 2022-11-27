@@ -1,9 +1,9 @@
 from datetime import datetime
-from logging import info
 from typing import List
 
 from pydantic import BaseModel, Field
 
+from server.common.logger import is_logged
 from server.data.database.common import PydanticObjectId
 
 
@@ -63,9 +63,16 @@ class BranchEntity(BaseModel):
     employees: List[EmployeeEntity] = []
 
 
-def from_salary_change_document(document) -> SalaryChangeEntity:
-    info(f"parse document: {document}")
+class BranchInfoEntity(BaseModel):
+    id: PydanticObjectId = Field(alias='_id')
+    name: str
+    city: str
+    employees: int
+    stocks: int
 
+
+@is_logged(['document'])
+def from_salary_change_document(document) -> SalaryChangeEntity:
     entity = SalaryChangeEntity.construct()
     entity.salary_before = document['salary_before']
     entity.salary_after = document['salary_after']
@@ -73,9 +80,8 @@ def from_salary_change_document(document) -> SalaryChangeEntity:
     return entity
 
 
+@is_logged(['document'])
 def from_vacation_document(document) -> VacationEntity:
-    info(f"parse document: {document}")
-
     entity = VacationEntity.construct()
     entity.payments = document['payments']
     entity.start_date = document['start_date']
@@ -83,9 +89,8 @@ def from_vacation_document(document) -> VacationEntity:
     return entity
 
 
+@is_logged(['document'])
 def from_employee_document(document) -> EmployeeEntity:
-    info(f"parse document: {document}")
-
     entity = EmployeeEntity.construct()
     entity.id = document['_id']
     entity.name = document['name']
@@ -104,18 +109,16 @@ def from_employee_document(document) -> EmployeeEntity:
     return entity
 
 
+@is_logged(['document'])
 def from_product_descriptor_document(document) -> ProductDescriptorEntity:
-    info(f"parse document: {document}")
-
     entity = ProductDescriptorEntity.construct()
     entity.id = document['_id']
     entity.name = document['name']
     return entity
 
 
+@is_logged(['document'])
 def from_product_document(document) -> ProductEntity:
-    info(f"parse document: {document}")
-
     entity = ProductEntity.construct()
     entity.id = document['_id']
     entity.supplier_id = document['supplier_id']
@@ -124,9 +127,8 @@ def from_product_document(document) -> ProductEntity:
     return entity
 
 
+@is_logged(['document'])
 def from_stock_document(document) -> StockEntity:
-    info(f"parse document: {document}")
-
     entity = StockEntity.construct()
     entity.id = document['_id']
     entity.amount = document['amount']
@@ -135,9 +137,8 @@ def from_stock_document(document) -> StockEntity:
     return entity
 
 
+@is_logged(['document'])
 def from_branch_document(document) -> BranchEntity:
-    info(f"parse document: {document}")
-
     entity = BranchEntity.construct()
     entity.id = document['_id']
     entity.name = document['name']
@@ -147,11 +148,12 @@ def from_branch_document(document) -> BranchEntity:
     return entity
 
 
-def from_branch_info_document(document) -> BranchEntity:
-    info(f"parse document: {document}")
-
-    entity = BranchEntity.construct()
+@is_logged(['document'])
+def from_branch_info_document(document) -> BranchInfoEntity:
+    entity = BranchInfoEntity.construct()
     entity.id = document['_id']
     entity.name = document['name']
     entity.city = document['city']
+    entity.employees = document['employees']
+    entity.stocks = document['stocks']
     return entity

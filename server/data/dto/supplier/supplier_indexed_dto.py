@@ -27,3 +27,6 @@ class SuppliersDto(BaseModel):
 class SupplierInfoDto(BaseModel):
     id: str = Field(alias='_id')
     name: str
+    email: str
+    phone: str
+    products: int

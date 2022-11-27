@@ -1,6 +1,6 @@
 from server.data.database.branch_entity import SalaryChangeEntity, VacationEntity, EmployeeEntity, \
-    ProductDescriptorEntity, ProductEntity, StockEntity, BranchEntity
-from server.data.database.supplier_entity import SupplierEntity
+    ProductDescriptorEntity, ProductEntity, StockEntity, BranchEntity, BranchInfoEntity
+from server.data.database.supplier_entity import SupplierEntity, SupplierInfoEntity
 from server.data.services.branch.branch import SalaryChange, Vacation
 from server.data.services.branch.branch_indexed import EmployeeIndexed, ProductDescriptorIndexed, ProductIndexed, \
     StockIndexed, BranchIndexed, BranchInfo
@@ -16,8 +16,8 @@ def from_supplier_entity_to_indexed(supplier: SupplierEntity) -> SupplierIndexed
                            list(map(from_product_entity, supplier.products)))
 
 
-def from_supplier_entity_to_info(supplier: SupplierEntity) -> SupplierInfo:
-    return SupplierInfo(supplier.id, supplier.name)
+def from_supplier_entity_to_info(supplier: SupplierInfoEntity) -> SupplierInfo:
+    return SupplierInfo(supplier.id, supplier.name, supplier.email, supplier.phone, supplier.products)
 
 
 def from_vacation_entity(vacation: VacationEntity) -> Vacation:
@@ -50,5 +50,5 @@ def from_branch_entity(branch: BranchEntity) -> BranchIndexed:
                          list(map(from_employee_entity, branch.employees)))
 
 
-def from_branch_entity_to_info(branch: BranchEntity) -> BranchInfo:
-    return BranchInfo(branch.id, branch.name, branch.city)
+def from_branch_entity_to_info(branch: BranchInfoEntity) -> BranchInfo:
+    return BranchInfo(branch.id, branch.name, branch.city, branch.employees, branch.stocks)

@@ -82,7 +82,7 @@ class BranchService:
         return await self.access(branch_id, lambda: EmployeesAccessor(self.employees_repository, branch_id))
 
     @is_logged(['class', 'page'])
-    async def page_info(self, page: Page):
+    async def page(self, page: Page):
         return [from_branch_entity_to_info(entity) for entity in await self.branch_repository.page(page)]
 
     @is_logged(['class', 'branch_id'])

@@ -66,3 +66,5 @@ class BranchInfo:
     id: ObjectId
     name: str
     city: str
+    employees: int
+    stocks: int

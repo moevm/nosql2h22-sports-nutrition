@@ -67,6 +67,6 @@ async def add_product(request: Request, branch_id: str, body: AddProductDto):
 @validate(query=PageDto)
 async def get_page(request: Request, query: PageDto) -> HTTPResponse:
     branches = [dto_info_from_branch_info(document) for document in
-                await branch_service.page_info(from_page_dto(query))]
+                await branch_service.page(from_page_dto(query))]
 
     return res.json(response_find_page(query, branches).dict(by_alias=True))
