@@ -43,7 +43,7 @@ export const BranchesList = () => {
                 {item._id}
               </a></td>
               <td>{item.name}</td>
-              <td>0</td>
+              <td>{item.employees}</td>
               <td>{item.city}</td>
             </tr>
           );
