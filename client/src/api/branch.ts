@@ -10,6 +10,16 @@ export const postBranch = (nameReq: string, cityReq: string) => {
   });
 };
 
+export const postStock = (branchId: string, productId: string, price: number,
+                          amount: number) => {
+  return fetch(`${HOST}${SERVER_PORT}/branch/${branchId}/stock`, {
+    method: "POST",
+    mode: "cors",
+    headers: { "Content-Type": "application/json", Accept: "application/json" },
+    body: JSON.stringify({ product_id: productId, price, amount })
+  });
+};
+
 export const getBranchesPage = (pageSize: number, currentPage: number) => {
   return fetch(`${HOST}${SERVER_PORT}/branch/page?size=${pageSize}&page=${currentPage}`, {
     method: "GET",

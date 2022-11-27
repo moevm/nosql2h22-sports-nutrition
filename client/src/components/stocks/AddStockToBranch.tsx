@@ -1,34 +1,35 @@
 import { useState } from "react";
+import { BootstrapDialog, BootstrapDialogTitle } from "../suppliers/FindSupplierDialog";
 import DialogContent from "@mui/material/DialogContent";
 import { TextField } from "@mui/material";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import * as React from "react";
-import { BootstrapDialog, BootstrapDialogTitle } from "../suppliers/FindSupplierDialog";
-import { postProduct } from "../../api/supplier";
+import { postStock } from "../../api/branch";
 
-export function AddProductToSupplier({ isOpen, setOpen, supplierId, products, setProducts }: {
-                                     isOpen: boolean,
-                                     setOpen: (action: boolean) => void,
-  supplierId: string,
-  products: any[],
-  setProducts: (list: any[]) => void
-                                   }
+export function AddStockToBranch({ isOpen, setOpen, branchId, stocks, setStocks }: {
+                                       isOpen: boolean,
+                                       setOpen: (action: boolean) => void,
+                                       branchId: string,
+                                       stocks: any[],
+                                       setStocks: (list: any[]) => void
+                                     }
 ) {
 
   const [price, setPrice] = useState(-1);
-  const [name, setName] = useState("");
+  const [amount, setAmount] = useState(-1);
+  const [productId, setProductId] = useState("");
 
   const handleClose = () => {
     setOpen(false);
   };
 
   const addProduct = () => {
-    postProduct(supplierId, name, price)
+    postStock(branchId, productId, price, amount)
       .then((response) => response.ok ? response.json() : undefined)
       .then((json) => {
         if (json) {
-          setProducts(products.concat([json]));
+          setStocks(stocks.concat([json]));
           handleClose();
         }
       });
@@ -41,33 +42,43 @@ export function AddProductToSupplier({ isOpen, setOpen, supplierId, products, se
       open={isOpen}
     >
       <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
-        Add new product to supplier
+        Add new stock to branch
       </BootstrapDialogTitle>
       <DialogContent dividers>
         <TextField
           autoFocus
           margin="dense"
           id="name"
-          label="Enter product's name"
+          label="Enter product's id"
           fullWidth
           onChange={(val) =>
-            setName(val.target.value)}
+            setProductId(val.target.value)}
           variant="standard"
         />
         <TextField
           type="number"
           margin="dense"
           id="price"
-          label="Enter product's price"
+          label="Enter price"
           fullWidth
           onChange={(val) =>
             setPrice(Number(val.target.value))}
           variant="standard"
         />
+        <TextField
+          type="number"
+          margin="dense"
+          id="price"
+          label="Enter amount"
+          fullWidth
+          onChange={(val) =>
+            setAmount(Number(val.target.value))}
+          variant="standard"
+        />
       </DialogContent>
       <DialogActions>
         <Button autoFocus onClick={addProduct}
-                disabled={!name.length || price < 0}>
+                disabled={!productId.length || price < 0 || amount < 0}>
           Add
         </Button>
       </DialogActions>
