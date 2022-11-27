@@ -24,3 +24,12 @@ export const getSupplierPage = (pageSize: number, currentPage: number) => {
     headers: { "Content-Type": "application/json", Accept: "application/json" }
   });
 };
+
+export const postProduct = (id: string, name: string, price: number) => {
+  return fetch(`${HOST}${SERVER_PORT}/supplier/${id}/product`, {
+    method: "POST",
+    mode: "cors",
+    headers: { "Content-Type": "application/json", Accept: "application/json" },
+    body: JSON.stringify({ price, descriptor: { name}})
+  });
+};

@@ -23,6 +23,8 @@ export const FilteredBranchesList = () => {
   }
 
   return (
+    <>
+      <h2> Filtered branches </h2>
     <table>
       <thead>
       <tr>
@@ -37,7 +39,7 @@ export const FilteredBranchesList = () => {
         return (
           <tr key={item._id} className="branches-table">
             <td className="cell-id"
-            ><a href={`${HOST}:8080/branch/id?_id=${item._id}`}>
+            ><a href={`${HOST}8080/branch/id/${item._id}`}>
               {item._id}
             </a></td>
             <td>{item.name}</td>
@@ -48,6 +50,7 @@ export const FilteredBranchesList = () => {
       })}
       </tbody>
     </table>
+  </>
   );
 
 };

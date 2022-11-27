@@ -21,12 +21,12 @@ function App() {
         <Route path="/suppliers" element={<Suppliers />} />
         <Route path="/sales" element={<Sales />} />
         <Route path="*" element={<NotFound />} />
-        <Route path="/branches/add" element={<AddBranch />} />
         <Route path="/suppliers/add" element={<AddSupplier />} />
         <Route path="/supplier/:id" element={<SupplierPage />} />
         <Route path="/branch/:city/:name/:_id" element={<FilteredBranchesList />} />
         <Route path="/branch/:city/:name" element={<FilteredBranchesList />} />
         <Route path="/branch/:city" element={<FilteredBranchesList />} />
+        <Route path="/branch/id/:_id" element={<BranchPage />} />
       </Routes>
     </Router>
   );

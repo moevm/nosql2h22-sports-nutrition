@@ -36,7 +36,7 @@ export const AddBranch = () => {
       .then((json) => {
         const parsedJson = convertToObject(json);
         setData(parsedJson);
-        navigate("/branches");
+       // navigate("/branches");
       });
   }, [postBranch, convertToObject]);
   return (

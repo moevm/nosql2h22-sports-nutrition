@@ -1,20 +1,27 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { Stack, TextField } from "@mui/material";
+import { IconButton, Stack, TextField } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { NotFound } from "../NotFound";
 import { getSupplier } from "../../api/supplier";
+import { ProductsList } from "../products/ProductsList";
+import { AddProductToSupplier } from "../products/AddProductToSupplier";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 
 export const SupplierPage = () => {
   const params = useParams();
   const [supplier, setSupplier] = useState<any>(undefined);
+  const [products, setProducts] = useState<any[]>([]);
+  const [isOpenForm, setOpenForm] = useState(false);
+
   useEffect(() => {
     getSupplier(params.id!)
       .then((response) => response.json())
       .then((json) => {
         setSupplier(json);
+        setProducts(json.products);
       });
-  }, [params]);
+  }, [params, getSupplier]);
 
   if (!supplier) {
     return <NotFound />;
@@ -22,7 +29,6 @@ export const SupplierPage = () => {
   return (
     <Stack spacing={2}>
       <h2> Supplier {supplier.name} </h2>
-      <a> Show products</a>
       <TextField
         style={{ width: "80%" }}
         id="outlined-basic"
@@ -63,6 +69,15 @@ export const SupplierPage = () => {
         }}
         value={supplier.email}
       />
+      <h2> Products of supplier </h2>
+      <IconButton color="inherit" title="Add new product"
+                  style={{ width: "2em" }}
+                  onClick={() => setOpenForm(!isOpenForm)}>
+        <AddCircleOutlineIcon />
+      </IconButton>
+      <AddProductToSupplier isOpen={isOpenForm} setOpen={setOpenForm} supplierId={supplier._id}
+                            products={products} setProducts={setProducts} />
+      <ProductsList products={products} />
     </Stack>
   );
 };
