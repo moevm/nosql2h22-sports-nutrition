@@ -60,6 +60,8 @@ class BranchInfoDto(BaseModel):
     id: str = Field(alias='_id')
     name: str
     city: str
+    employees: int
+    stocks: int
 
 
 class BranchIndexedDto(BaseModel):

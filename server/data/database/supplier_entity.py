@@ -1,8 +1,8 @@
-from logging import info
 from typing import List
 
 from pydantic import BaseModel, Field
 
+from server.common.logger import is_logged
 from server.data.database.branch_entity import ProductEntity, from_product_document
 from server.data.database.common import PydanticObjectId
 
@@ -15,9 +15,16 @@ class SupplierEntity(BaseModel):
     products: List[ProductEntity] = []
 
 
-def from_supplier_document(document) -> SupplierEntity:
-    info(f"parse document: {document}")
+class SupplierInfoEntity(BaseModel):
+    id: PydanticObjectId = Field(alias='_id')
+    name: str
+    email: str
+    phone: str
+    products: int
 
+
+@is_logged(['document'])
+def from_supplier_document(document) -> SupplierEntity:
     entity = SupplierEntity.construct()
     entity.id = document['_id']
     entity.name = document['name']
@@ -27,10 +34,12 @@ def from_supplier_document(document) -> SupplierEntity:
     return entity
 
 
-def from_supplier_info_document(document) -> SupplierEntity:
-    info(f"parse document: {document}")
-
-    entity = SupplierEntity.construct()
+@is_logged(['document'])
+def from_supplier_info_document(document) -> SupplierInfoEntity:
+    entity = SupplierInfoEntity.construct()
     entity.id = document['_id']
     entity.name = document['name']
+    entity.email = document['email']
+    entity.phone = document['phone']
+    entity.products = document['products']
     return entity

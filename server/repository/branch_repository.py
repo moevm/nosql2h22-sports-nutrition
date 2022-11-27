@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from logging import info
 
 from bson import ObjectId
@@ -11,6 +12,12 @@ from server.data.database.query import BranchQuery, StockInBranchQuery, IdQueryR
 from server.data.dto.common.util import first
 from server.data.services.common.page import Page
 from server.database.mongo_connection import MongoConnection
+
+
+@dataclass
+class Token:
+    EMPLOYEES: str = "$employees"
+    STOCKS: str = "$stocks"
 
 
 class BranchRepository:
@@ -37,8 +44,42 @@ class BranchRepository:
 
     @is_logged(['class', 'page'])
     async def page(self, page: Page) -> list:
-        return [from_branch_info_document(document) async for document in
-                self.collection.find({}, {"name": 1, "city": 1}).skip(page.calculate_page()).limit(page.size)]
+        return [from_branch_info_document(document) for document in await self.collection.aggregate([
+            {
+                "$project": {
+                    "name": 1,
+                    "city": 1,
+                    "employees": {
+                        "$cond": {
+                            "if": {
+                                "$isArray": Token.EMPLOYEES
+                            },
+                            "then": {
+                                "$size": Token.EMPLOYEES
+                            },
+                            "else": "-1"
+                        }
+                    },
+                    "stocks": {
+                        "$cond": {
+                            "if": {
+                                "$isArray": Token.STOCKS
+                            },
+                            "then": {
+                                "$size": Token.STOCKS
+                            },
+                            "else": "-1"
+                        }
+                    }
+                }
+            },
+            {
+                "$skip": page.calculate_page()
+            },
+            {
+                "$limit": page.size
+            }
+        ]).to_list(length=None)]
 
     @is_logged(['class', 'entity'])
     async def insert(self, request: BranchEntity) -> BranchEntity:
@@ -70,7 +111,7 @@ class BranchRepository:
                     }
                 },
                 {
-                    "$unwind": "$stocks"
+                    "$unwind": Token.STOCKS
                 },
                 {
                     "$match": {
@@ -79,7 +120,7 @@ class BranchRepository:
                 },
                 {
                     "$project": {
-                        "stock": "$stocks"
+                        "stock": Token.STOCKS
                     }
                 }
             ]).to_list(length=None)]

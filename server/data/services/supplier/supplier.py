@@ -31,3 +31,6 @@ class SupplierIndexed:
 class SupplierInfo:
     id: ObjectId
     name: str
+    email: str
+    phone: str
+    products: int
