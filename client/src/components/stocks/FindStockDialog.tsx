@@ -4,7 +4,7 @@ import { Box, IconButton, TextField, Typography } from "@mui/material";
 import DialogActions from "@mui/material/DialogActions";
 import * as React from "react";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import { FilterStocksCriteria, isFilterEmpty } from "api/branch";
+import { FilterStocksCriteria, isObjEmpty } from "api/branch";
 
 export function FindStockDialog({onChange, value}: {onChange: (val: FilterStocksCriteria) => void,
                                 value: FilterStocksCriteria},
@@ -103,7 +103,7 @@ export function FindStockDialog({onChange, value}: {onChange: (val: FilterStocks
         <DialogActions>
           <IconButton
             onClick={() => onChange(curValue)}
-            disabled={isFilterEmpty(curValue)}
+            disabled={isObjEmpty(curValue)}
             color="inherit" title="Find stocks"
                       style={{ width: "2em", margin: "10px" }}>
             <SearchOutlinedIcon />

@@ -12,7 +12,22 @@ export interface FilterStocksCriteria {
   price_to?: string;
 }
 
-export const isFilterEmpty = (filter: FilterStocksCriteria) => {
+export interface FilterEmployeesCriteria {
+  _id?: string;
+  role?: string;
+  phone_number?: string;
+  name?: string;
+  employment_date_from?: string;
+  employment_date_to?: string;
+  salary_from?: string;
+  salary_to?: string;
+  surname?: string;
+  patronymic?: string;
+  dismissal_date_from?: string;
+  dismissal_date_to?: string;
+}
+
+export const isObjEmpty = (filter: any) => {
   return  Object.values(filter).every(el => el === undefined);
 }
 
@@ -54,8 +69,18 @@ export const getBranch = (res: GetBranchDto): Promise<Response> => {
 
 export const getFilteredStocks = (branchId: string, filter: FilterStocksCriteria) => {
   const query = objToQueryString(filter);
-  console.log("PATH: ", `${HOST}${SERVER_PORT}/branch/${branchId}/stock?${query}`);
   return fetch(`${HOST}${SERVER_PORT}/branch/${branchId}/stock?${query}`,
+    {
+      method: "GET",
+      mode: "cors",
+      headers: { "Content-Type": "application/json", Accept: "application/json" }
+    });
+};
+
+export const getFilteredEmployees = (filter: FilterEmployeesCriteria, branchId?: string) => {
+  const query = objToQueryString(filter);
+  console.log("PATH: ", `${HOST}${SERVER_PORT}/branch/${branchId}/employee?${query}`);
+  return fetch(`${HOST}${SERVER_PORT}/branch/${branchId}/employee?${query}`,
     {
       method: "GET",
       mode: "cors",

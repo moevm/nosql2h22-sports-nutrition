@@ -3,7 +3,13 @@ import { Box, IconButton, Tab, Tabs } from "@mui/material";
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getBranch, getFilteredStocks, isFilterEmpty } from "../../api/branch";
+import {
+  FilterEmployeesCriteria,
+  getBranch,
+  getFilteredEmployees,
+  getFilteredStocks,
+  isObjEmpty
+} from "../../api/branch";
 import { makeBranchDtoFromParams } from "../../api/functions";
 import { TabPanel } from "components/tabs/tabs";
 import { BranchInfo } from "./BranchInfo";
@@ -13,6 +19,7 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { EmployeesList } from "../employees/EmployeesList";
 import { FindStockDialog } from "../stocks/FindStockDialog";
 import { FilterStocksCriteria } from "api/branch";
+import { FindEmployeesDialog } from "../employees/FindEmployeesDialog";
 
 export const BranchPage = () => {
   const params = useParams();
@@ -21,7 +28,9 @@ export const BranchPage = () => {
   const [tabValue, setTabValue] = useState(0);
   const [isOpenForm, setOpenForm] = useState(false);
   const [stocks, setStocks] = useState<any[]>([]);
+  const [employees, setEmployees] = useState<any[]>([]);
   const [stockFilterCriteria, setStockFilterCriteria] = useState<FilterStocksCriteria>({});
+  const [employeeFilterCriteria, setEmployeeFilterCriteria] = useState<FilterEmployeesCriteria>({});
 
   useEffect(() => {
     getBranch(makeBranchDtoFromParams(params))
@@ -29,11 +38,12 @@ export const BranchPage = () => {
       .then((json) => {
         setBranch(json.result[0]);
         setStocks(json.result[0].stocks);
+        setEmployees(json.result[0].employees);
       });
   }, [params, getBranch, makeBranchDtoFromParams]);
 
   useEffect(() => {
-    if (!branch || isFilterEmpty(stockFilterCriteria)) {
+    if (!branch || isObjEmpty(stockFilterCriteria)) {
       return;
     }
     getFilteredStocks(branch._id, stockFilterCriteria)
@@ -42,6 +52,17 @@ export const BranchPage = () => {
         setStocks(json.result);
       });
   }, [stockFilterCriteria]);
+
+  useEffect(() => {
+    if (!branch || isObjEmpty(employeeFilterCriteria)) {
+      return;
+    }
+    getFilteredEmployees(employeeFilterCriteria, branch._id)
+      .then((response) => response.json())
+      .then((json) => {
+        setEmployees(json.result);
+      });
+  }, [employeeFilterCriteria]);
 
   if (!branch) {
     return <NotFound />;
@@ -71,7 +92,9 @@ export const BranchPage = () => {
         <BranchInfo branch={branch} />
       </TabPanel>
       <TabPanel value={tabValue} index={1}>
-        <EmployeesList employees={branch.employees} />
+        <FindEmployeesDialog onChange={setEmployeeFilterCriteria}
+                         value={employeeFilterCriteria} />
+        <EmployeesList employees={employees} />
       </TabPanel>
       <TabPanel value={tabValue} index={2}>
         <Box flexDirection="row" >
@@ -83,7 +106,7 @@ export const BranchPage = () => {
         </Box>
         <AddStockToBranch isOpen={isOpenForm} setOpen={setOpenForm} branchId={branch._id}
                           stocks={stocks} setStocks={setStocks} />
-       <FindStockDialog onChange={setStockFilterCriteria}
+        <FindStockDialog onChange={setStockFilterCriteria}
        value={stockFilterCriteria} />
         <StocksList stocks={stocks} />
       </TabPanel>
