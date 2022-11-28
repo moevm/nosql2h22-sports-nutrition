@@ -14,6 +14,7 @@ export const EmployeesList = ({ employees}: {employees: any[]}) => {
               <TableCell align="right">Name</TableCell>
               <TableCell align="right">Role</TableCell>
               <TableCell align="right">Phone</TableCell>
+              <TableCell align="right">Salary</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -28,6 +29,7 @@ export const EmployeesList = ({ employees}: {employees: any[]}) => {
                 <TableCell align="right">{row.surname + " " + row.name + " "+ row.patronymic}</TableCell>
                 <TableCell align="right">{row.role}</TableCell>
                 <TableCell align="right">{row.phone}</TableCell>
+                <TableCell align="right">{row.salary}</TableCell>
               </TableRow>
             ))}
           </TableBody>
