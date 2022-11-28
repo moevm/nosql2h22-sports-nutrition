@@ -1,6 +1,7 @@
 from bson import ObjectId
 
 from server.common.exceptions import EmptyQuery
+from server.common.monad import Optional
 from server.data.database.query import BranchQuery, FieldEqualsValueQueryRepresentation, IdQueryRepresentation, \
     EmployeeInBranchQuery, IntervalQueryRepresentation, IntervalHolder, StockInBranchQuery
 from server.data.datetime_formatter import get_datetime
@@ -71,7 +72,7 @@ def from_employee_indexed_dto(employee: EmployeeIndexedDto) -> EmployeeIndexed:
 def from_employee_dto(employee: InsertEmployeeDto) -> Employee:
     return Employee(employee.name, employee.surname, employee.patronymic, employee.passport, employee.phone,
                     employee.role, employee.city, get_datetime(employee.employment_date),
-                    get_datetime(employee.dismissal_date), employee.salary,
+                    Optional(employee.dismissal_date).map(get_datetime).or_else(None), employee.salary,
                     list(map(get_datetime, employee.shifts_history)),
                     list(map(from_vacation_dto, employee.vacation_history)),
                     list(map(from_salary_change_dto, employee.salary_change_history)))
