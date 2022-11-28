@@ -3,8 +3,8 @@ import { useState } from "react";
 import { Box, Tab, Tabs } from "@mui/material";
 import { SuppliersList } from "./SuppliersList";
 import { FindSupplierDialog } from "./FindSupplierDialog";
-import { TabPanel } from "../tabs";
 import { AddSupplier } from "./AddSupplier";
+import { TabPanel } from "components/tabs/tabs";
 
 export const Suppliers = () => {
   const [isOpenForm, setOpenForm] = useState(false);

@@ -31,6 +31,7 @@ export const BranchesList = () => {
           <th>Branch Id</th>
           <th>Name</th>
           <th>Employees</th>
+          <th>Stocks</th>
           <th>Location</th>
         </tr>
         </thead>
@@ -44,6 +45,7 @@ export const BranchesList = () => {
               </a></td>
               <td>{item.name}</td>
               <td>{item.employees}</td>
+              <td>{item.stocks}</td>
               <td>{item.city}</td>
             </tr>
           );
