@@ -66,7 +66,8 @@ class InsertEmployeeDto(BaseModel):
     role: str = Field(..., max_length=DtoConstant.MAX_STRING_SIZE, min_length=DtoConstant.MIN_STRING_SIZE)
     city: str = Field(..., max_length=DtoConstant.MAX_STRING_SIZE, min_length=DtoConstant.MIN_STRING_SIZE)
     employment_date: str = Field(..., max_length=DtoConstant.MAX_STRING_SIZE, min_length=DtoConstant.MIN_STRING_SIZE)
-    dismissal_date: Optional[str] = None
+    dismissal_date: Optional[str] = Field(None, max_length=DtoConstant.MAX_STRING_SIZE,
+                                          min_length=DtoConstant.MIN_STRING_SIZE)
     salary: float = Field(..., ge=0)
     shifts_history: List[str] = []
     vacation_history: List[VacationDto] = []
