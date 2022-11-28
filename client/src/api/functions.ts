@@ -19,7 +19,6 @@ export interface GetBranchDto {
 }
 
 export const makeBranchDtoFromParams = (params: Readonly<Params<string>>): GetBranchDto => {
-  console.log("params: ", params);
   return {
     name: params.name,
     city: params.city,

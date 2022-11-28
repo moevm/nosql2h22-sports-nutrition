@@ -4,7 +4,7 @@ import { Box, IconButton, Tab, Tabs, Typography } from "@mui/material";
 import { BranchesList } from "./BranchesList";
 import { FindBranchDialog } from "./FindBranchDialog";
 import { AddBranch } from "./AddBranch";
-import { TabPanel } from "components/tabs";
+import { TabPanel } from "components/tabs/tabs";
 
 export const Branches = () => {
   const [isOpenForm, setOpenForm] = useState(false);
