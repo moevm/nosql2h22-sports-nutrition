@@ -137,8 +137,8 @@ def from_stock_in_branch_query_dto(query: StockInBranchQueryDto) -> StockInBranc
     if query.price_from or query.price_to:
         price_from = first(query.price_from).map(int).or_else(None)
         price_to = first(query.price_to).map(int).or_else(None)
-        internal.amount = IntervalQueryRepresentation(IntervalHolder(price_from, price_to),
-                                                      "stocks.price")
+        internal.price = IntervalQueryRepresentation(IntervalHolder(price_from, price_to),
+                                                     "stocks.price")
 
     if not len(vars(internal)):
         raise EmptyQuery()
