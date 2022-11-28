@@ -1,10 +1,10 @@
+import * as React from "react";
 import { useState } from "react";
 import { BootstrapDialog, BootstrapDialogTitle } from "../suppliers/FindSupplierDialog";
 import DialogContent from "@mui/material/DialogContent";
 import { TextField } from "@mui/material";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
-import * as React from "react";
 import { postStock } from "../../api/branch";
 
 export function AddStockToBranch({ isOpen, setOpen, branchId, stocks, setStocks }: {

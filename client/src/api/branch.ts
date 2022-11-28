@@ -76,14 +76,3 @@ export const getFilteredStocks = (branchId: string, filter: FilterStocksCriteria
       headers: { "Content-Type": "application/json", Accept: "application/json" }
     });
 };
-
-export const getFilteredEmployees = (filter: FilterEmployeesCriteria, branchId?: string) => {
-  const query = objToQueryString(filter);
-  console.log("PATH: ", `${HOST}${SERVER_PORT}/branch/${branchId}/employee?${query}`);
-  return fetch(`${HOST}${SERVER_PORT}/branch/${branchId}/employee?${query}`,
-    {
-      method: "GET",
-      mode: "cors",
-      headers: { "Content-Type": "application/json", Accept: "application/json" }
-    });
-};

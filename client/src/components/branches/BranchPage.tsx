@@ -3,13 +3,7 @@ import { Box, IconButton, Tab, Tabs } from "@mui/material";
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import {
-  FilterEmployeesCriteria,
-  getBranch,
-  getFilteredEmployees,
-  getFilteredStocks,
-  isObjEmpty
-} from "../../api/branch";
+import { FilterEmployeesCriteria, getBranch, getFilteredStocks, isObjEmpty } from "../../api/branch";
 import { makeBranchDtoFromParams } from "../../api/functions";
 import { TabPanel } from "components/tabs/tabs";
 import { BranchInfo } from "./BranchInfo";
@@ -20,6 +14,7 @@ import { EmployeesList } from "../employees/EmployeesList";
 import { FindStockDialog } from "../stocks/FindStockDialog";
 import { FilterStocksCriteria } from "api/branch";
 import { FindEmployeesDialog } from "../employees/FindEmployeesDialog";
+import { getFilteredEmployees } from "../../api/employee";
 
 export const BranchPage = () => {
   const params = useParams();
@@ -27,6 +22,7 @@ export const BranchPage = () => {
   const [branch, setBranch] = useState<any>(undefined);
   const [tabValue, setTabValue] = useState(0);
   const [isOpenForm, setOpenForm] = useState(false);
+  const [isOpenEmployeeForm, setOpenEmployeeForm] = useState(false);
   const [stocks, setStocks] = useState<any[]>([]);
   const [employees, setEmployees] = useState<any[]>([]);
   const [stockFilterCriteria, setStockFilterCriteria] = useState<FilterStocksCriteria>({});
@@ -91,11 +87,18 @@ export const BranchPage = () => {
       <TabPanel value={tabValue} index={0}>
         <BranchInfo branch={branch} />
       </TabPanel>
+
       <TabPanel value={tabValue} index={1}>
+        <IconButton color="inherit" title="Add new employee"
+                    style={{ width: "2em", margin: "10px" }}
+                    onClick={() => setOpenEmployeeForm(!isOpenEmployeeForm)}>
+          <AddCircleOutlineIcon />
+        </IconButton>
         <FindEmployeesDialog onChange={setEmployeeFilterCriteria}
                          value={employeeFilterCriteria} />
         <EmployeesList employees={employees} />
       </TabPanel>
+
       <TabPanel value={tabValue} index={2}>
         <Box flexDirection="row" >
         <IconButton color="inherit" title="Add new stock"

@@ -1,10 +1,10 @@
-import { FilterEmployeesCriteria, FilterStocksCriteria, isObjEmpty } from "../../api/branch";
+import { FilterEmployeesCriteria, isObjEmpty } from "../../api/branch";
+import * as React from "react";
 import { useEffect, useState } from "react";
 import { Box, IconButton, TextField, Typography } from "@mui/material";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import * as React from "react";
 
 export function FindEmployeesDialog({onChange, value}: {onChange: (val: FilterEmployeesCriteria) => void,
   value: FilterEmployeesCriteria},

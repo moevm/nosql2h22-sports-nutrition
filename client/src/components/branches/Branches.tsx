@@ -1,10 +1,11 @@
 import * as React from "react";
 import { useState } from "react";
-import { Box, IconButton, Tab, Tabs, Typography } from "@mui/material";
+import { Box, Tab, Tabs, Typography } from "@mui/material";
 import { BranchesList } from "./BranchesList";
 import { FindBranchDialog } from "./FindBranchDialog";
 import { AddBranch } from "./AddBranch";
 import { TabPanel } from "components/tabs/tabs";
+import { FindEmployeeInAllBranches } from "../employees/FindEmployeeInAllBranches";
 
 export const Branches = () => {
   const [isOpenForm, setOpenForm] = useState(false);
@@ -16,7 +17,7 @@ export const Branches = () => {
 
   return (
     <Box>
-      <h1> Branches page </h1>
+      <Typography variant="h3"> Branches page </Typography>
       <Box flexDirection={"row"}>
         <Tabs value={tabValue} onChange={handleChange}>
           <Tab
@@ -29,6 +30,9 @@ export const Branches = () => {
             label="Find branches"
             onClick={() => setOpenForm(!isOpenForm)}
           />
+          <Tab
+            label="Find employee"
+          />
         </Tabs>
       </Box>
       <TabPanel value={tabValue} index={0}>
@@ -39,6 +43,9 @@ export const Branches = () => {
       </TabPanel>
       <TabPanel value={tabValue} index={2}>
         <FindBranchDialog isOpen={isOpenForm} setOpen={setOpenForm} />
+      </TabPanel>
+      <TabPanel value={tabValue} index={3}>
+        <FindEmployeeInAllBranches />
       </TabPanel>
     </Box>
   );

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useState } from "react";
-import { Box, Tab, Tabs } from "@mui/material";
+import { Box, Tab, Tabs, Typography } from "@mui/material";
 import { SuppliersList } from "./SuppliersList";
 import { FindSupplierDialog } from "./FindSupplierDialog";
 import { AddSupplier } from "./AddSupplier";
@@ -16,7 +16,7 @@ export const Suppliers = () => {
 
   return (
     <Box>
-      <h1> Suppliers page </h1>
+      <Typography variant="h3"> Suppliers page </Typography>
       <Box flexDirection={"row"}>
         <Tabs value={tabValue} onChange={handleChange}>
           <Tab
