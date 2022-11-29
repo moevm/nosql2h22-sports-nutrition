@@ -39,7 +39,7 @@ export const Branches = () => {
         <BranchesList />
       </TabPanel>
       <TabPanel value={tabValue} index={1}>
-       <AddBranch />
+        <AddBranch />
       </TabPanel>
       <TabPanel value={tabValue} index={2}>
         <FindBranchDialog isOpen={isOpenForm} setOpen={setOpenForm} />

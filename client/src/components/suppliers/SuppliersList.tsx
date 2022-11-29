@@ -3,6 +3,9 @@ import { useEffect, useState } from "react";
 import { Pagination } from "../pagination/Pagination";
 import { HOST } from "../../constants";
 import { getSupplierPage } from "../../api/supplier";
+import { Box, Button } from "@mui/material";
+import { ExportPage } from "../export/ExportPage";
+import { exportSuppliersPage } from "../../api/export";
 
 const pageSize = 15;
 
@@ -10,6 +13,7 @@ export const SuppliersList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [data, setData] = useState<any[]>([]);
   const [lastPage, setLastPage] = useState(false);
+  const [exportDialogOpen, setExportDialogOpen] = useState(false);
 
   useEffect(() => {
     getSupplierPage(pageSize, currentPage)
@@ -23,7 +27,10 @@ export const SuppliersList = () => {
   }, [currentPage]);
 
   return (
-    <>
+    <Box>
+      <Button onClick={() => setExportDialogOpen(!exportDialogOpen)}> Export </Button>
+      <ExportPage isOpen={exportDialogOpen} setOpen={setExportDialogOpen}
+                  requestFunc={exportSuppliersPage} />
       <table>
         <thead>
         <tr>
@@ -51,6 +58,6 @@ export const SuppliersList = () => {
         currentPage={currentPage}
         onPageChange={(page: number) => setCurrentPage(page)}
       />
-    </>
+    </Box>
   );
 };

@@ -6,18 +6,20 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 
-export function FindEmployeesDialog({onChange, value}: {onChange: (val: FilterEmployeesCriteria) => void,
-  value: FilterEmployeesCriteria},
+export function FindEmployeesDialog({ onChange, value }: {
+                                      onChange: (val: FilterEmployeesCriteria) => void,
+                                      value: FilterEmployeesCriteria
+                                    }
 ) {
 
   const [curValue, setCurValue] = useState<FilterEmployeesCriteria>(value);
 
   useEffect(() => {
     setCurValue(value);
-  }, [value])
+  }, [value]);
 
   const updateField = (field: string, data: string) => {
-    const copy: FilterEmployeesCriteria = {...curValue};
+    const copy: FilterEmployeesCriteria = { ...curValue };
 
     if (["_id", "role", "phone_number", "name",
       "employment_date_from", "employment_date_to",
@@ -30,7 +32,7 @@ export function FindEmployeesDialog({onChange, value}: {onChange: (val: FilterEm
   };
 
   return (
-    <Box sx={{width: "60%"}}>
+    <Box sx={{ width: "60%" }}>
       <Typography variant="h5">
         Filter employees
       </Typography>

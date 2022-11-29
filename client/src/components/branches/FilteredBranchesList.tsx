@@ -25,32 +25,32 @@ export const FilteredBranchesList = () => {
   return (
     <>
       <h2> Filtered branches </h2>
-    <table>
-      <thead>
-      <tr>
-        <th>Branch Id</th>
-        <th>Name</th>
-        <th>Employees</th>
-        <th>Location</th>
-      </tr>
-      </thead>
-      <tbody>
-      {branches.map((item) => {
-        return (
-          <tr key={item._id} className="branches-table">
-            <td className="cell-id"
-            ><a href={`${HOST}8080/branch/id/${item._id}`}>
-              {item._id}
-            </a></td>
-            <td>{item.name}</td>
-            <td>0</td>
-            <td>{item.city}</td>
-          </tr>
-        );
-      })}
-      </tbody>
-    </table>
-  </>
+      <table>
+        <thead>
+        <tr>
+          <th>Branch Id</th>
+          <th>Name</th>
+          <th>Employees</th>
+          <th>Location</th>
+        </tr>
+        </thead>
+        <tbody>
+        {branches.map((item) => {
+          return (
+            <tr key={item._id} className="branches-table">
+              <td className="cell-id"
+              ><a href={`${HOST}8080/branch/id/${item._id}`}>
+                {item._id}
+              </a></td>
+              <td>{item.name}</td>
+              <td>0</td>
+              <td>{item.city}</td>
+            </tr>
+          );
+        })}
+        </tbody>
+      </table>
+    </>
   );
 
 };

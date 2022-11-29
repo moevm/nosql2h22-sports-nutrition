@@ -1,5 +1,5 @@
 import { NotFound } from "../NotFound";
-import { Box, IconButton, Tab, Tabs } from "@mui/material";
+import { Box, IconButton, Tab, Tabs, Typography } from "@mui/material";
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -15,6 +15,7 @@ import { FindStockDialog } from "../stocks/FindStockDialog";
 import { FilterStocksCriteria } from "api/branch";
 import { FindEmployeesDialog } from "../employees/FindEmployeesDialog";
 import { getFilteredEmployees } from "../../api/employee";
+import { AddEmployee } from "../employees/AddEmployee";
 
 export const BranchPage = () => {
   const params = useParams();
@@ -70,7 +71,7 @@ export const BranchPage = () => {
 
   return (
     <Box>
-      <h2> Branch {branch.name} </h2>
+      <Typography variant="h4"> Branch {branch.name} </Typography>
       <Box flexDirection={"row"}>
         <Tabs value={tabValue} onChange={handleChange}>
           <Tab
@@ -94,23 +95,26 @@ export const BranchPage = () => {
                     onClick={() => setOpenEmployeeForm(!isOpenEmployeeForm)}>
           <AddCircleOutlineIcon />
         </IconButton>
+        <AddEmployee isOpen={isOpenEmployeeForm} setOpen={setOpenEmployeeForm} branchId={branch._id}
+                     employees={employees}
+                     setEmployees={setEmployees} />
         <FindEmployeesDialog onChange={setEmployeeFilterCriteria}
-                         value={employeeFilterCriteria} />
+                             value={employeeFilterCriteria} />
         <EmployeesList employees={employees} />
       </TabPanel>
 
       <TabPanel value={tabValue} index={2}>
-        <Box flexDirection="row" >
-        <IconButton color="inherit" title="Add new stock"
-                    style={{ width: "2em", margin: "10px" }}
-                    onClick={() => setOpenForm(!isOpenForm)}>
-          <AddCircleOutlineIcon />
-        </IconButton>
+        <Box flexDirection="row">
+          <IconButton color="inherit" title="Add new stock"
+                      style={{ width: "2em", margin: "10px" }}
+                      onClick={() => setOpenForm(!isOpenForm)}>
+            <AddCircleOutlineIcon />
+          </IconButton>
         </Box>
         <AddStockToBranch isOpen={isOpenForm} setOpen={setOpenForm} branchId={branch._id}
                           stocks={stocks} setStocks={setStocks} />
         <FindStockDialog onChange={setStockFilterCriteria}
-       value={stockFilterCriteria} />
+                         value={stockFilterCriteria} />
         <StocksList stocks={stocks} />
       </TabPanel>
     </Box>

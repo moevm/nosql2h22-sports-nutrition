@@ -8,12 +8,12 @@ import Button from "@mui/material/Button";
 import { postStock } from "../../api/branch";
 
 export function AddStockToBranch({ isOpen, setOpen, branchId, stocks, setStocks }: {
-                                       isOpen: boolean,
-                                       setOpen: (action: boolean) => void,
-                                       branchId: string,
-                                       stocks: any[],
-                                       setStocks: (list: any[]) => void
-                                     }
+                                   isOpen: boolean,
+                                   setOpen: (action: boolean) => void,
+                                   branchId: string,
+                                   stocks: any[],
+                                   setStocks: (list: any[]) => void
+                                 }
 ) {
 
   const [price, setPrice] = useState(-1);
@@ -33,7 +33,7 @@ export function AddStockToBranch({ isOpen, setOpen, branchId, stocks, setStocks 
           handleClose();
         }
       });
-  }
+  };
 
   return (
     <BootstrapDialog

@@ -46,7 +46,7 @@ export function FindEmployeeInAllBranches() {
           </Button>
         </DialogActions>
       </Box>
-      {employee && <EmployeesList employees={[employee]} /> }
+      {employee && <EmployeesList employees={[employee]} />}
     </Box>
   );
 }
