@@ -80,4 +80,4 @@ class BranchDto(BaseModel):
 
 
 class IndexedBranchesDto(BaseModel):
-    branches: List[BranchDto] = []
+    branches: List[BranchDto]
