@@ -7,3 +7,7 @@
 ### Прототип “Хранение и представление”
 
 [ScreenCast работоспособности](https://drive.google.com/file/d/1RHNZGhalkQIiUVcLhJt3XPwabkkwsXn9/view?usp=drivesdk)
+
+### Прототип “Анализ”
+
+[ScreenCast работоспособности](https://drive.google.com/file/d/1L3RwAVvIi1jZ-Qks8hhGfW67S9wlWxee/view?usp=sharing)
