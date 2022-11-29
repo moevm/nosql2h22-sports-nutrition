@@ -46,7 +46,6 @@ export const Pagination = ({
           disabled: lastPage
         })}
         onClick={() => {
-          console.log("LastPage :", lastPage);
           onNext();
         }}
       >

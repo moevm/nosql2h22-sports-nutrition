@@ -46,26 +46,23 @@ export const AddSupplier = () => {
         <h2> Add new supplier </h2>
         <TextField
           style={{ width: "80%" }}
-          id="outlined-basic"
           label="Name"
-          variant="outlined"
+          variant="standard"
           required
           onChange={(e) => setName(e.target.value)}
         />
         <TextField
           style={{ width: "80%" }}
-          id="filled-basic"
           label="Phone"
-          variant="outlined"
+          variant="standard"
           required
           type="phone"
           onChange={(e) => setPhone(e.target.value)}
         />
         <TextField
           style={{ width: "80%" }}
-          id="filled-basic"
           label="Email"
-          variant="outlined"
+          variant="standard"
           required
           type="email"
           onChange={(e) => setEmail(e.target.value)}

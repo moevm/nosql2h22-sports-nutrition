@@ -11,10 +11,8 @@ export function FindEmployeeInAllBranches() {
 
   const [id, setId] = useState("");
   const [employee, setEmployee] = useState(undefined);
-  const [isClicked, setIsClicked] = useState(false);
 
   const getEmployee = useCallback(() => {
-    setIsClicked(true);
     findEmployee(id)
       .then((response) => response.ok ? response.json() : undefined)
       .then((json) => {

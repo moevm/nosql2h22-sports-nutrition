@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { IconButton, Stack, TextField } from "@mui/material";
+import { IconButton, Stack, TextField, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { NotFound } from "../NotFound";
 import { getSupplier } from "../../api/supplier";
@@ -28,12 +28,11 @@ export const SupplierPage = () => {
   }
   return (
     <Stack spacing={2}>
-      <h2> Supplier {supplier.name} </h2>
+      <Typography variant={"h4"}> Supplier {supplier.name} </Typography>
       <TextField
         style={{ width: "80%" }}
-        id="outlined-basic"
         label="Id"
-        variant="outlined"
+        variant="standard"
         InputProps={{
           readOnly: true
         }}
@@ -41,9 +40,8 @@ export const SupplierPage = () => {
       />
       <TextField
         style={{ width: "80%" }}
-        id="outlined-basic"
         label="Name"
-        variant="outlined"
+        variant="standard"
         InputProps={{
           readOnly: true
         }}
@@ -51,9 +49,8 @@ export const SupplierPage = () => {
       />
       <TextField
         style={{ width: "80%" }}
-        id="filled-basic"
         label="Phone"
-        variant="outlined"
+        variant="standard"
         InputProps={{
           readOnly: true
         }}
@@ -61,15 +58,14 @@ export const SupplierPage = () => {
       />
       <TextField
         style={{ width: "80%" }}
-        id="filled-basic"
         label="City"
-        variant="outlined"
+        variant="standard"
         InputProps={{
           readOnly: true
         }}
         value={supplier.email}
       />
-      <h2> Products of supplier </h2>
+      <Typography variant={"h5"}> Products of supplier </Typography>
       <IconButton color="inherit" title="Add new product"
                   style={{ width: "2em" }}
                   onClick={() => setOpenForm(!isOpenForm)}>

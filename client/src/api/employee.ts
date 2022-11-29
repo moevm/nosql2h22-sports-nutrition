@@ -1,4 +1,4 @@
-import { objToQueryString } from "./functions";
+import { toQueryString } from "./functions";
 import { HOST, SERVER_PORT } from "../constants";
 import { FilterEmployeesCriteria } from "./branch";
 import { modeAndHeaders } from "./constants";
@@ -16,7 +16,7 @@ export interface EmployeeData {
 }
 
 export const getFilteredEmployees = (filter: FilterEmployeesCriteria, branchId?: string) => {
-  const query = objToQueryString(filter);
+  const query = toQueryString(filter);
   return fetch(`${HOST}${SERVER_PORT}/branch/${branchId}/employee?${query}`,
     {
       method: "GET",
@@ -33,6 +33,7 @@ export const findEmployee = (id: string) => {
 };
 
 export const postEmployee = (id: string, employeeData: EmployeeData) => {
+  console.log("Body: ", JSON.stringify(employeeData));
   return fetch(`${HOST}${SERVER_PORT}/branch/${id}/employee`,
     {
       method: "POST",

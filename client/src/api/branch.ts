@@ -1,5 +1,5 @@
 import { HOST, SERVER_PORT } from "../constants";
-import { GetBranchDto, objToQueryString } from "./functions";
+import { GetBranchDto, toQueryString } from "./functions";
 import { modeAndHeaders } from "./constants";
 
 export interface FilterStocksCriteria {
@@ -57,7 +57,7 @@ export const getBranchesPage = (pageSize: number, currentPage: number) => {
 };
 
 export const getBranch = (res: GetBranchDto): Promise<Response> => {
-  return fetch(`${HOST}${SERVER_PORT}/branch?${objToQueryString(res)}`,
+  return fetch(`${HOST}${SERVER_PORT}/branch?${toQueryString(res)}`,
     {
       method: "GET",
       ...modeAndHeaders
@@ -65,10 +65,18 @@ export const getBranch = (res: GetBranchDto): Promise<Response> => {
 };
 
 export const getFilteredStocks = (branchId: string, filter: FilterStocksCriteria) => {
-  const query = objToQueryString(filter);
+  const query = toQueryString(filter);
   return fetch(`${HOST}${SERVER_PORT}/branch/${branchId}/stock?${query}`,
     {
       method: "GET",
       ...modeAndHeaders
     });
+};
+
+export const importBranches = (obj: any) => {
+  return fetch(`${HOST}${SERVER_PORT}/maintenance/branch`, {
+    method: "POST",
+    ...modeAndHeaders,
+    body: obj
+  });
 };

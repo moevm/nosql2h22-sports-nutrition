@@ -30,3 +30,11 @@ export const postProduct = (id: string, name: string, price: number) => {
     body: JSON.stringify({ price, descriptor: { name } })
   });
 };
+
+export const importSuppliers = (obj: any) => {
+  return fetch(`${HOST}${SERVER_PORT}/maintenance/supplier`, {
+    method: "POST",
+    ...modeAndHeaders,
+    body: obj
+  });
+};

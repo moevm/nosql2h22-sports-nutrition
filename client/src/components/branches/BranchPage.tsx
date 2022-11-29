@@ -4,7 +4,7 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { FilterEmployeesCriteria, getBranch, getFilteredStocks, isObjEmpty } from "../../api/branch";
-import { makeBranchDtoFromParams } from "../../api/functions";
+import { branchDtoFromParams } from "../../api/functions";
 import { TabPanel } from "components/tabs/tabs";
 import { BranchInfo } from "./BranchInfo";
 import { StocksList } from "../stocks/StocksList";
@@ -30,14 +30,14 @@ export const BranchPage = () => {
   const [employeeFilterCriteria, setEmployeeFilterCriteria] = useState<FilterEmployeesCriteria>({});
 
   useEffect(() => {
-    getBranch(makeBranchDtoFromParams(params))
+    getBranch(branchDtoFromParams(params))
       .then((response) => response.json())
       .then((json) => {
         setBranch(json.result[0]);
         setStocks(json.result[0].stocks);
         setEmployees(json.result[0].employees);
       });
-  }, [params, getBranch, makeBranchDtoFromParams]);
+  }, [params, getBranch, branchDtoFromParams]);
 
   useEffect(() => {
     if (!branch || isObjEmpty(stockFilterCriteria)) {

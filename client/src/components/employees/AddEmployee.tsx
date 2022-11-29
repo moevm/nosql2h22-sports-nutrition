@@ -6,6 +6,7 @@ import { TextField } from "@mui/material";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import { EmployeeData, postEmployee } from "../../api/employee";
+import { checkObjOnDefault, toServerDateFormat } from "../../api/functions";
 
 export const AddEmployee = ({ isOpen, setOpen, branchId, employees, setEmployees }: {
                               isOpen: boolean,
@@ -44,8 +45,8 @@ export const AddEmployee = ({ isOpen, setOpen, branchId, employees, setEmployees
         passport: "",
         phone: "",
         city: "",
-        employment_date: "",
-        salary: 0,
+        employment_date: "",  //2022-12-11T12:43
+        salary: -1,
         role: ""
       };
 
@@ -64,9 +65,19 @@ export const AddEmployee = ({ isOpen, setOpen, branchId, employees, setEmployees
       open={isOpen}
     >
       <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
-        Add new stock to branch
+        Add new employee to branch
       </BootstrapDialogTitle>
       <DialogContent dividers>
+        <TextField
+          required
+          margin="dense"
+          id="surname"
+          label="Surname"
+          fullWidth
+          onChange={(val) =>
+            updateField("surname", val.target.value)}
+          variant="standard"
+        />
         <TextField
           required
           margin="dense"
@@ -85,16 +96,6 @@ export const AddEmployee = ({ isOpen, setOpen, branchId, employees, setEmployees
           fullWidth
           onChange={(val) =>
             updateField("patronymic", val.target.value)}
-          variant="standard"
-        />
-        <TextField
-          required
-          margin="dense"
-          id="surname"
-          label="Surname"
-          fullWidth
-          onChange={(val) =>
-            updateField("surname", val.target.value)}
           variant="standard"
         />
         <TextField
@@ -144,24 +145,28 @@ export const AddEmployee = ({ isOpen, setOpen, branchId, employees, setEmployees
           id="employment_date"
           label="Employment Date"
           fullWidth
-          onChange={(val) =>
-            updateField("employment_date", val.target.value)}
-          variant="standard"
+          placeholder="dd/mm/yyyy"
+          onChange={(val) => {
+            console.log("Date: ", val.target.value);
+            console.log("Server date: ", toServerDateFormat(val.target.value));
+            updateField("employment_date", toServerDateFormat(val.target.value));
+          }
+          }
         />
         <TextField
           required
           type="number"
           margin="dense"
-          id="price"
-          label="Enter amount"
+          id="salary"
+          label="Salary"
           fullWidth
           onChange={(val) =>
-            updateField("price", val.target.value)}
+            updateField("salary", val.target.value)}
           variant="standard"
         />
       </DialogContent>
       <DialogActions>
-        <Button autoFocus onClick={addEmployee}>
+        <Button disabled={!checkObjOnDefault(postData)} autoFocus onClick={addEmployee}>
           Add
         </Button>
       </DialogActions>
