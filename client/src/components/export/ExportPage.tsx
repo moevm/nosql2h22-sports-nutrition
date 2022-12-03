@@ -74,7 +74,7 @@ export const ExportPage = ({ isOpen, setOpen, requestFunc }: {
       <DialogActions>
         <Button autoFocus onClick={clickToExport}
                 disabled={size < 1 && pageNumber < 1}>
-          Find
+          Export
         </Button>
       </DialogActions>
     </BootstrapDialog>

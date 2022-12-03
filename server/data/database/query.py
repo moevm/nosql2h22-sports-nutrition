@@ -50,17 +50,22 @@ class IntervalQueryRepresentation(QueryRepresentation):
     def __init__(self, interval: IntervalHolder, field_name: str):
         self.interval = interval
         self.field_name = field_name
+        self.query = {}
+
+    def lazy_get_field_query_json(self):
+        if not len(self.query):
+            self.query[self.field_name] = {}
+
+        return self.query[self.field_name]
 
     def represent(self) -> json:
-        json_query = {}
-
         if self.interval.value_from:
-            json_query[self.field_name] = {"$gt": self.interval.value_from}
+            self.lazy_get_field_query_json()["$gt"] = self.interval.value_from
 
         if self.interval.value_to:
-            json_query[self.field_name] = {"$lt": self.interval.value_to}
+            self.lazy_get_field_query_json()["$lt"] = self.interval.value_to
 
-        return json_query
+        return self.query
 
 
 class Query:

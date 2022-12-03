@@ -96,7 +96,7 @@ export const ImportPage = ({
       <DialogActions>
         <Button autoFocus onClick={clickToExport}
                 disabled={!fileData}>
-          Find
+          Import
         </Button>
       </DialogActions>
     </BootstrapDialog>
