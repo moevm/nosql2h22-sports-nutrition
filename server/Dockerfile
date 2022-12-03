@@ -1,6 +1,7 @@
 FROM python:3.8-slim-buster
 
 ENV PYTHONPATH "${PYTHONPATH}:/"
+ENV DATABASE_URI ${DATABASE_URI}
 
 COPY . ./server
 RUN apt-get update \
