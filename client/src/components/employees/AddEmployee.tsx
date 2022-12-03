@@ -7,6 +7,7 @@ import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import { EmployeeData, postEmployee } from "../../api/employee";
 import { checkObjOnDefault, toServerDateFormat } from "../../api/functions";
+import { regexPhone } from "api/constants";
 
 export const AddEmployee = ({ isOpen, setOpen, branchId, employees, setEmployees }: {
                               isOpen: boolean,
@@ -133,9 +134,12 @@ export const AddEmployee = ({ isOpen, setOpen, branchId, employees, setEmployees
           margin="dense"
           id="phone"
           label="Phone"
+          placeholder="+79997775566"
           fullWidth
-          onChange={(val) =>
-            updateField("phone", val.target.value)}
+          onChange={(val) => {
+            updateField("phone", val.target.value)
+          }
+          }
           variant="standard"
         />
         <TextField
@@ -166,7 +170,8 @@ export const AddEmployee = ({ isOpen, setOpen, branchId, employees, setEmployees
         />
       </DialogContent>
       <DialogActions>
-        <Button disabled={!checkObjOnDefault(postData)} autoFocus onClick={addEmployee}>
+        <Button disabled={checkObjOnDefault(postData)
+        || !regexPhone.test(postData?.phone!)} autoFocus onClick={addEmployee}>
           Add
         </Button>
       </DialogActions>

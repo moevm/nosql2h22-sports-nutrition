@@ -16,6 +16,9 @@ import { FilterStocksCriteria } from "api/branch";
 import { FindEmployeesDialog } from "../employees/FindEmployeesDialog";
 import { getFilteredEmployees } from "../../api/employee";
 import { AddEmployee } from "../employees/AddEmployee";
+import { logDOM } from "@testing-library/react";
+
+const ERROR_MESSAGE = "Error in entered params";
 
 export const BranchPage = () => {
   const params = useParams();
@@ -28,6 +31,7 @@ export const BranchPage = () => {
   const [employees, setEmployees] = useState<any[]>([]);
   const [stockFilterCriteria, setStockFilterCriteria] = useState<FilterStocksCriteria>({});
   const [employeeFilterCriteria, setEmployeeFilterCriteria] = useState<FilterEmployeesCriteria>({});
+  const [errorStock, setErrorStock] = useState("");
 
   useEffect(() => {
     getBranch(branchDtoFromParams(params))
@@ -44,10 +48,17 @@ export const BranchPage = () => {
       return;
     }
     getFilteredStocks(branch._id, stockFilterCriteria)
-      .then((response) => response.json())
+      .then((response) => response.ok ? response.json() : undefined)
       .then((json) => {
-        setStocks(json.result);
-      });
+         if (json) {
+           setErrorStock("");
+           setStocks(json.result);
+         }
+         else {
+           setErrorStock(ERROR_MESSAGE);
+         }
+      })
+      .catch((err) => setErrorStock(ERROR_MESSAGE));
   }, [stockFilterCriteria]);
 
   useEffect(() => {
@@ -58,7 +69,8 @@ export const BranchPage = () => {
       .then((response) => response.json())
       .then((json) => {
         setEmployees(json.result);
-      });
+      })
+      .catch((err) => setEmployees([]));
   }, [employeeFilterCriteria]);
 
   if (!branch) {
@@ -113,6 +125,7 @@ export const BranchPage = () => {
         </Box>
         <AddStockToBranch isOpen={isOpenForm} setOpen={setOpenForm} branchId={branch._id}
                           stocks={stocks} setStocks={setStocks} />
+        {errorStock}
         <FindStockDialog onChange={setStockFilterCriteria}
                          value={stockFilterCriteria} />
         <StocksList stocks={stocks} />

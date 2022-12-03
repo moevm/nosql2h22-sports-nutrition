@@ -51,13 +51,22 @@ export const toServerDateFormat = (date: string) => {
 
 export const checkObjOnDefault = (obj: any) => {
   if (!obj) {
-    return false;
+    return true;
   }
   for (const [key, value] of Object.entries(obj)) {
     if (typeof value === "string" && value.length === 0 ||
       typeof value === "number" && value < 0) {
-      return false;
+      return true;
     }
   }
-  return true;
+  return false;
+};
+
+export const checkObjOnNegativeNumbers = (obj: any) => {
+  for (const [key, value] of Object.entries(obj)) {
+    if (value && typeof value === "number" && value < 0) {
+      return true;
+    }
+  }
+  return false;
 };

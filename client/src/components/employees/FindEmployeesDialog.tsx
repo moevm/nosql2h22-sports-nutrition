@@ -5,6 +5,7 @@ import { Box, IconButton, TextField, Typography } from "@mui/material";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import { regexPhone } from "../../api/constants";
 
 export function FindEmployeesDialog({ onChange, value }: {
                                       onChange: (val: FilterEmployeesCriteria) => void,
@@ -86,7 +87,8 @@ export function FindEmployeesDialog({ onChange, value }: {
       <DialogActions>
         <IconButton
           onClick={() => onChange(curValue)}
-          disabled={isObjEmpty(curValue)}
+          disabled={isObjEmpty(curValue) ||
+            Number(curValue.salary_from) > Number(curValue.salary_to)}
           color="inherit" title="Find stocks"
           style={{ width: "2em", margin: "10px" }}>
           <SearchOutlinedIcon />

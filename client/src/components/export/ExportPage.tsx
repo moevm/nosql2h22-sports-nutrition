@@ -54,8 +54,9 @@ export const ExportPage = ({ isOpen, setOpen, requestFunc }: {
             margin="dense"
             id="page"
             label="Page number"
-            onChange={(val) =>
-              setPageNumber(Number(val.target.value))}
+            onChange={(val) => {
+              setPageNumber(Number(val.target.value))
+            }}
             variant="standard"
           />
           <TextField

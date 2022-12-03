@@ -7,6 +7,7 @@ import { Box, Button } from "@mui/material";
 import { ExportPage } from "../export/ExportPage";
 import { exportSuppliersPage } from "../../api/export";
 import { ImportPage } from "../import/ImportPage";
+import "./Suppliers.scss";
 
 const pageSize = 15;
 
@@ -43,7 +44,7 @@ export const SuppliersList = () => {
                   dataList={data}
                   pageSize={pageSize}
                   getPageApi={getSupplierPage} />
-      <table>
+      <table >
         <thead>
         <tr>
           <th>Supplier Id</th>

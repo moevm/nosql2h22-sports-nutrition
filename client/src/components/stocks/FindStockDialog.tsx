@@ -5,6 +5,7 @@ import { Box, IconButton, TextField, Typography } from "@mui/material";
 import DialogActions from "@mui/material/DialogActions";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import { FilterStocksCriteria, isObjEmpty } from "api/branch";
+import { checkObjOnNegativeNumbers } from "../../api/functions";
 
 export function FindStockDialog({ onChange, value }: {
                                   onChange: (val: FilterStocksCriteria) => void,
@@ -105,7 +106,10 @@ export function FindStockDialog({ onChange, value }: {
       <DialogActions>
         <IconButton
           onClick={() => onChange(curValue)}
-          disabled={isObjEmpty(curValue)}
+          disabled={isObjEmpty(curValue) ||
+            checkObjOnNegativeNumbers(curValue) ||
+            Number(curValue.amount_from) >  Number(curValue.amount_to)
+          ||  Number(curValue.price_from) >  Number(curValue.price_to)}
           color="inherit" title="Find stocks"
           style={{ width: "2em", margin: "10px" }}>
           <SearchOutlinedIcon />
