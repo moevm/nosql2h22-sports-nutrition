@@ -4,7 +4,7 @@ from pydantic import BaseModel
 from server.data.database.common import SerializableObjectId
 from server.data.dto.common.page_dto import PageDto
 from server.data.service_to_dto_mapper import dto_indexed_from_branch_indexed, dto_indexed_from_employee_indexed, \
-    dto_indexed_from_stock_indexed, dto_indexed_from_supplier
+    dto_indexed_from_stock_indexed, dto_indexed_from_supplier, dto_indexed_from_sale_indexed
 
 
 class ListResponseDto(BaseModel):
@@ -55,6 +55,10 @@ def response_find_list(data: list, mapper) -> ListResponseDto:
 
 def response_find_branch(branches: list) -> ListResponseDto:
     return response_find_list(branches, dto_indexed_from_branch_indexed)
+
+
+def response_find_sale(sales: list) -> ListResponseDto:
+    return response_find_list(sales, dto_indexed_from_sale_indexed)
 
 
 def response_find_supplier(suppliers: list) -> ListResponseDto:

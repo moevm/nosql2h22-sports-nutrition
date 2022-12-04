@@ -24,5 +24,5 @@ class MongoConnection:
     def get_suppliers(self):
         return self.client[self.config.get_database()]['suppliers']
 
-    def get_sales(self):
-        return self.client[self.config.get_database()]['sales']
+    def get_sale(self):
+        return self.client[self.config.get_database()]['sale']

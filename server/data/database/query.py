@@ -84,6 +84,12 @@ class BranchQuery(Query):
     city: FieldEqualsValueQueryRepresentation
     id: IdQueryRepresentation
 
+class SaleQuery(Query):
+    supplier_id: FieldEqualsValueQueryRepresentation
+    product_id: FieldEqualsValueQueryRepresentation
+    branch_id: FieldEqualsValueQueryRepresentation
+    id: IdQueryRepresentation
+
 
 def product_id_query(product_id: ObjectId) -> StockInBranchQuery:
     query = StockInBranchQuery()

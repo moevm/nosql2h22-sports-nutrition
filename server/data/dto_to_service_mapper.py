@@ -1,11 +1,16 @@
 from bson import ObjectId
 
+from logging import info
+
 from server.common.exceptions import EmptyQuery
 from server.data.database.query import BranchQuery, FieldEqualsValueQueryRepresentation, IdQueryRepresentation, \
     EmployeeInBranchQuery, IntervalQueryRepresentation, IntervalHolder, StockInBranchQuery
+from server.data.database.query import SaleQuery
 from server.data.datetime_formatter import get_datetime
 from server.data.dto.branch.branch_dto import AddProductDto, SalaryChangeDto, VacationDto, InsertEmployeeDto, \
     InsertBranchDto, BranchQueryDto, EmployeeInBranchQueryDto, StockInBranchQueryDto
+from server.data.dto.sale.sale_dto import SaleQueryDto, InsertSaleDto
+from server.data.services.sale.sale import InsertSale
 from server.data.dto.branch.branch_indexed_dto import IndexedBranchesDto, BranchDto, StockIndexedDto, \
     ProductIndexedDto, ProductDescriptorIndexedDto, EmployeeIndexedDto
 from server.data.dto.common.util import first
@@ -184,6 +189,32 @@ def from_employee_in_branch_query_dto(query: EmployeeInBranchQueryDto) -> Employ
         date_to = first(query.employment_date_to).map(get_datetime).or_else(None)
         internal.dismissal_date = IntervalQueryRepresentation(IntervalHolder(date_from, date_to),
                                                               "employees.employment_date")
+
+    if not len(vars(internal)):
+        raise EmptyQuery()
+
+    return internal
+
+
+def from_insert_sale_dto(sale: InsertSaleDto) -> InsertSale:
+    return InsertSale(sale.supplier_id, sale.product_id, sale.branch_id,
+                      sale.price, sale.amount)
+
+
+def from_sale_query_dto(query: SaleQueryDto) -> SaleQuery:
+    internal = SaleQuery()
+
+    if query.supplier_id:
+        internal.supplier_id = FieldEqualsValueQueryRepresentation(ObjectId(query.supplier_id[0]), 'supplier_id')
+
+    if query.product_id:
+        internal.product_id = FieldEqualsValueQueryRepresentation(ObjectId(query.product_id[0]), 'product_id')
+
+    if query.branch_id:
+        internal.branch_id = FieldEqualsValueQueryRepresentation(ObjectId(query.branch_id[0]), 'branch_id')
+
+    if query.id:
+        internal.id = IdQueryRepresentation(ObjectId(query.id[0]))
 
     if not len(vars(internal)):
         raise EmptyQuery()

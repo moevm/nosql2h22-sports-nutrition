@@ -3,11 +3,15 @@ from bson import ObjectId
 from server.data.database.branch_entity import EmployeeEntity, SalaryChangeEntity, VacationEntity, BranchEntity, \
     ProductEntity, ProductDescriptorEntity, StockEntity
 from server.data.database.supplier_entity import SupplierEntity
+from server.data.database.sale_entity import SaleEntity
 from server.data.services.branch.branch import Employee, Vacation, SalaryChange, InsertBranch
 from server.data.services.branch.branch_indexed import StockIndexed, ProductIndexed, \
     ProductDescriptorIndexed, EmployeeIndexed, Branch
 from server.data.services.product.product import InsertProductWithDescriptor, ProductDescriptor
 from server.data.services.supplier.supplier import InsertSupplier, Supplier
+from server.data.services.sale.sale import InsertSale
+
+from server.data.database.common import PydanticObjectId
 
 
 def get_descriptor_entity(descriptor, id: ObjectId) -> ProductDescriptorEntity:
@@ -143,4 +147,15 @@ def entity_stock_from_product(product: ProductEntity, price: float, amount: int)
     entity.id = ObjectId()
     entity.price = price
     entity.amount = amount
+    return entity
+
+
+def entity_from_insert_sale(insert_sale: InsertSale) -> SaleEntity:
+    entity = SaleEntity.construct()
+    entity.id = ObjectId()
+    entity.supplier_id = PydanticObjectId(insert_sale.supplier_id)
+    entity.product_id = PydanticObjectId(insert_sale.product_id)
+    entity.branch_id = PydanticObjectId(insert_sale.branch_id)
+    entity.price = insert_sale.price
+    entity.amount = insert_sale.amount
     return entity
