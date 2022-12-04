@@ -11,4 +11,4 @@ class SaleIndexedDto(BaseModel):
     branch_id: PydanticObjectId
     price: float
     amount: int
-    # timestamp: datetime
+    date: str

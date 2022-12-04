@@ -59,4 +59,4 @@ def from_branch_entity_to_info(branch: BranchInfoEntity) -> BranchInfo:
 
 def from_sale_entity(sale: SaleEntity) -> SaleIndexed:
     return SaleIndexed(sale.id, str(sale.supplier_id), str(sale.product_id),
-                       str(sale.branch_id), sale.price, sale.amount)
+                       str(sale.branch_id), sale.price, sale.amount, sale.date)

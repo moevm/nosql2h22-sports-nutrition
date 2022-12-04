@@ -23,5 +23,4 @@ class SaleService:
 
     @is_logged(['class', 'query'])
     async def find_sales(self, query: SaleQuery) -> list:
-        print(f"sale service find sales query: {query.get_json()}")
         return [from_sale_entity(entity) for entity in await self.sale_repository.find_by_query(query)]

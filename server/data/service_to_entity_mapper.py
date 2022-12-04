@@ -158,4 +158,5 @@ def entity_from_insert_sale(insert_sale: InsertSale) -> SaleEntity:
     entity.branch_id = PydanticObjectId(insert_sale.branch_id)
     entity.price = insert_sale.price
     entity.amount = insert_sale.amount
+    entity.date = insert_sale.date
     return entity

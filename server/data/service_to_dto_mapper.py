@@ -133,5 +133,6 @@ def dto_indexed_from_sale_indexed(sale: SaleIndexed) -> SaleIndexedDto:
     dto.branch_id = str(sale.branch_id)
     dto.price = sale.price
     dto.amount = sale.amount
+    dto.date = get_string(sale.date)
 
     return dto

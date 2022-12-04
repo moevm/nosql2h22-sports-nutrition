@@ -12,7 +12,7 @@ class InsertSale:
     branch_id: PydanticObjectId
     price: float
     amount: int
-    # timestamp: datetime
+    date: datetime
 
 @dataclass
 class SaleIndexed:
@@ -22,5 +22,5 @@ class SaleIndexed:
     branch_id: PydanticObjectId
     price: float
     amount: int
-    # timestamp: datetime
+    date: datetime
 

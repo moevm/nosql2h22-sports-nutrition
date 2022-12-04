@@ -17,4 +17,4 @@ class InsertSaleDto(BaseModel):
     branch_id: Any = Field(None)
     price: float = Field(..., ge=0)
     amount: int = Field(..., ge=0)
-    # timestamp: datetime = Field(None)
+    date: str = Field(None)

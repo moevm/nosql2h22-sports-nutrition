@@ -198,7 +198,7 @@ def from_employee_in_branch_query_dto(query: EmployeeInBranchQueryDto) -> Employ
 
 def from_insert_sale_dto(sale: InsertSaleDto) -> InsertSale:
     return InsertSale(sale.supplier_id, sale.product_id, sale.branch_id,
-                      sale.price, sale.amount)
+                      sale.price, sale.amount, get_datetime(sale.date))
 
 
 def from_sale_query_dto(query: SaleQueryDto) -> SaleQuery:
