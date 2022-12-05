@@ -13,7 +13,11 @@
     "target": "esnext",
     "jsx": "react",
     //  "jsx": "react-jsx",
-    "lib": ["es2017", "dom", "esnext"],
+    "lib": [
+      "es2017",
+      "dom",
+      "esnext"
+    ],
     "allowJs": false
   },
   "include": [

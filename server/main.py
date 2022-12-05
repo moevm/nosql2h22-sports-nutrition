@@ -1,7 +1,6 @@
 from sanic import Blueprint
 
 from server.common.factory import web_server
-from server.common.logger import configure_logging
 from server.web.endpoint.branch_endpoint import branch_blueprint
 from server.web.endpoint.employee_endpoint import employee_blueprint
 from server.web.endpoint.sale_endpoint import sale_blueprint
@@ -20,7 +19,6 @@ def web_server_run():
 
 
 def main():
-    configure_logging()
     web_server_run()
 
 

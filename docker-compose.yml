@@ -14,14 +14,24 @@ services:
       - log:/log
     ports:
       - "8008:8008"
+    env_file:
+      - .env
     build: ./server
     depends_on:
       - mongodb
   mongodb:
     container_name: mongo
+    env_file:
+      - .env
     image: mongo:6.0.2
     volumes:
       - mongo:/data/db
+  mongo-seed:
+    env_file:
+      - .env
+    build: ./database
+    depends_on:
+      - mongodb
 volumes:
   log:
   mongo:

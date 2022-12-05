@@ -2,11 +2,11 @@ import { useNavigate } from "react-router-dom";
 import * as React from "react";
 import { useState } from "react";
 import DialogContent from "@mui/material/DialogContent";
-import { TextField } from "@mui/material";
+import { Box, TextField } from "@mui/material";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import "../dialog.scss";
-import { BootstrapDialog, BootstrapDialogTitle } from "../suppliers/FindSupplierDialog";
+import { BootstrapDialogTitle } from "../suppliers/FindSupplierDialog";
 
 const makeQueryString = (query: string, arg: string) => {
   if (arg.length) {
@@ -42,11 +42,7 @@ export function FindBranchDialog({ isOpen, setOpen }: {
   };
 
   return (
-    <BootstrapDialog
-      onClose={handleClose}
-      aria-labelledby="customized-dialog-title"
-      open={isOpen}
-    >
+    <Box width="70%">
       <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
         Find branch form
       </BootstrapDialogTitle>
@@ -85,6 +81,6 @@ export function FindBranchDialog({ isOpen, setOpen }: {
           Find
         </Button>
       </DialogActions>
-    </BootstrapDialog>
+    </Box>
   );
 }

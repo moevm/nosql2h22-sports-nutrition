@@ -1,4 +1,5 @@
 import json
+import re
 from abc import ABC, abstractmethod
 
 from bson import ObjectId
@@ -16,6 +17,16 @@ class QueryRepresentation(ABC):
     @abstractmethod
     def represent(self) -> json:
         pass
+
+
+class CaseInsensitiveQueryRepresentation(QueryRepresentation):
+
+    def __init__(self, value, field_name: str):
+        self.value = value
+        self.field_name = field_name
+
+    def represent(self) -> json:
+        return {self.field_name: re.compile('^' + re.escape(self.value) + '$', re.IGNORECASE)}
 
 
 class FieldEqualsValueQueryRepresentation(QueryRepresentation):
@@ -39,17 +50,22 @@ class IntervalQueryRepresentation(QueryRepresentation):
     def __init__(self, interval: IntervalHolder, field_name: str):
         self.interval = interval
         self.field_name = field_name
+        self.query = {}
+
+    def lazy_get_field_query_json(self):
+        if not len(self.query):
+            self.query[self.field_name] = {}
+
+        return self.query[self.field_name]
 
     def represent(self) -> json:
-        json_query = {}
-
         if self.interval.value_from:
-            json_query[self.field_name] = {"$gt": self.interval.value_from}
+            self.lazy_get_field_query_json()["$gt"] = self.interval.value_from
 
         if self.interval.value_to:
-            json_query[self.field_name] = {"$lt": self.interval.value_to}
+            self.lazy_get_field_query_json()["$lt"] = self.interval.value_to
 
-        return json_query
+        return self.query
 
 
 class Query:
@@ -62,17 +78,17 @@ class StockInBranchQuery(Query):
     id: IdQueryRepresentation
     supplier_id: FieldEqualsValueQueryRepresentation
     product_id: FieldEqualsValueQueryRepresentation
-    name: FieldEqualsValueQueryRepresentation
+    name: CaseInsensitiveQueryRepresentation
     amount: IntervalQueryRepresentation
     price_from: IntervalQueryRepresentation
 
 
 class EmployeeInBranchQuery(Query):
     id: IdQueryRepresentation
-    name: FieldEqualsValueQueryRepresentation
-    surname: FieldEqualsValueQueryRepresentation
-    patronymic: FieldEqualsValueQueryRepresentation
-    role: FieldEqualsValueQueryRepresentation
+    name: CaseInsensitiveQueryRepresentation
+    surname: CaseInsensitiveQueryRepresentation
+    patronymic: CaseInsensitiveQueryRepresentation
+    role: CaseInsensitiveQueryRepresentation
     phone_number: FieldEqualsValueQueryRepresentation
     dismissal_date: IntervalQueryRepresentation
     employment_date: IntervalQueryRepresentation
@@ -80,8 +96,8 @@ class EmployeeInBranchQuery(Query):
 
 
 class BranchQuery(Query):
-    name: FieldEqualsValueQueryRepresentation
-    city: FieldEqualsValueQueryRepresentation
+    name: CaseInsensitiveQueryRepresentation
+    city: CaseInsensitiveQueryRepresentation
     id: IdQueryRepresentation
 
 class SaleQuery(Query):

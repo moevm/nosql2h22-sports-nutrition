@@ -36,7 +36,6 @@ export const AddBranch = () => {
       .then((json) => {
         const parsedJson = convertToObject(json);
         setData(parsedJson);
-       // navigate("/branches");
       });
   }, [postBranch, convertToObject]);
   return (
@@ -45,17 +44,15 @@ export const AddBranch = () => {
         <h2> Add new branch </h2>
         <TextField
           style={{ width: "80%" }}
-          id="outlined-basic"
           label="Name"
-          variant="outlined"
+          variant="standard"
           required
           onChange={(e) => setName(e.target.value)}
         />
         <TextField
           style={{ width: "80%" }}
-          id="filled-basic"
           label="City"
-          variant="outlined"
+          variant="standard"
           required
           onChange={(e) => setCity(e.target.value)}
         />

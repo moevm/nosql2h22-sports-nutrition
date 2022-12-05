@@ -10,7 +10,7 @@ from server.data.database.query import SaleQuery
 
 class SaleRepository:
     def __init__(self, connection: MongoConnection):
-        self.collection = connection.get_sale()
+        self.collection = connection.get_sales()
 
     @is_logged(['class', 'entity'])
     async def insert(self, request: SaleEntity) -> SaleEntity:

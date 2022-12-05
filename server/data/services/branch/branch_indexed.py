@@ -3,6 +3,8 @@ from datetime import datetime
 
 from bson import ObjectId
 
+from server.common.monad import Optional
+
 
 @dataclass
 class EmployeeIndexed:
@@ -21,6 +23,8 @@ class EmployeeIndexed:
     vacation_history: list
     salary_change_history: list
 
+    def get_dismissal_date(self) -> Optional:
+        return Optional(self.dismissal_date)
 
 @dataclass
 class ProductDescriptorIndexed:

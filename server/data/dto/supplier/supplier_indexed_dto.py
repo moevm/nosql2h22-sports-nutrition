@@ -21,7 +21,7 @@ class SupplierDto(BaseModel):
 
 
 class SuppliersDto(BaseModel):
-    suppliers: List[SupplierDto] = []
+    suppliers: List[SupplierDto]
 
 
 class SupplierInfoDto(BaseModel):

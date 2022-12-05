@@ -44,7 +44,7 @@ def dto_indexed_from_employee_indexed(employee: EmployeeIndexed) -> EmployeeInde
     dto.role = employee.role
     dto.city = employee.city
     dto.employment_date = get_string(employee.employment_date)
-    dto.dismissal_date = get_string(employee.dismissal_date)
+    dto.dismissal_date = employee.get_dismissal_date().map(get_string).or_else(None)
     dto.salary = employee.salary
     dto.shifts_history = list(map(get_string, employee.shifts_history))
     dto.vacation_history = list(map(dto_from_vacation, employee.vacation_history))

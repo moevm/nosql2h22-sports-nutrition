@@ -1,0 +1,667 @@
+[
+  {
+    "_id": {
+      "$oid": "638b3f2ec525be8a0f8455c3"
+    },
+    "stocks": [
+      {
+        "product": {
+          "_id": {
+            "$oid": "638b345c53f09ab199635d56"
+          },
+          "supplier_id": {
+            "$oid": "638b33787d7d74f493dd9261"
+          },
+          "price": 50,
+          "descriptor": {
+            "_id": {
+              "$oid": "638b345c53f09ab199635d57"
+            },
+            "name": "Кокосовый рай"
+          }
+        },
+        "_id": {
+          "$oid": "638b3f9d01cb4617f18455c3"
+        },
+        "price": 52,
+        "amount": 12
+      },
+      {
+        "product": {
+          "_id": {
+            "$oid": "638b346253f09ab199635d58"
+          },
+          "supplier_id": {
+            "$oid": "638b33787d7d74f493dd9261"
+          },
+          "price": 10,
+          "descriptor": {
+            "_id": {
+              "$oid": "638b346253f09ab199635d59"
+            },
+            "name": "Миндальное наслаждение"
+          }
+        },
+        "_id": {
+          "$oid": "638b3faf01cb4617f18455c4"
+        },
+        "price": 20,
+        "amount": 100
+      }
+    ],
+    "employees": [
+      {
+        "_id": {
+          "$oid": "638b40aef5be3cedd38455c8"
+        },
+        "name": "Magician",
+        "surname": "Protein",
+        "patronymic": "Proteinovich",
+        "passport": "yes",
+        "phone": "+12873721387",
+        "role": "Magician",
+        "city": "no",
+        "employment_date": {
+          "$date": {
+            "$numberLong": "1577840461000"
+          }
+        },
+        "dismissal_date": {
+          "$date": {
+            "$numberLong": "1577840461000"
+          }
+        },
+        "salary": 123,
+        "shifts_history": [
+          {
+            "$date": {
+              "$numberLong": "1577840461000"
+            }
+          },
+          {
+            "$date": {
+              "$numberLong": "1577840461000"
+            }
+          }
+        ],
+        "vacation_history": [
+          {
+            "payments": 100,
+            "start_date": {
+              "$date": {
+                "$numberLong": "1577840461000"
+              }
+            },
+            "end_date": {
+              "$date": {
+                "$numberLong": "1577840461000"
+              }
+            }
+          }
+        ],
+        "salary_change_history": [
+          {
+            "salary_before": 100,
+            "salary_after": 105,
+            "date": {
+              "$date": {
+                "$numberLong": "1577840461000"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "_id": {
+          "$oid": "638b40f8c525be8a0f8455c9"
+        },
+        "name": "Ответственный",
+        "surname": "Работник",
+        "patronymic": "Иванов",
+        "passport": "128381",
+        "phone": "+1282321387",
+        "role": "Работяга",
+        "city": "деревня",
+        "employment_date": {
+          "$date": {
+            "$numberLong": "1640998861000"
+          }
+        },
+        "dismissal_date": {
+          "$date": {
+            "$numberLong": "1640998861000"
+          }
+        },
+        "salary": 2,
+        "shifts_history": [
+          {
+            "$date": {
+              "$numberLong": "1640998861000"
+            }
+          },
+          {
+            "$date": {
+              "$numberLong": "1640998861000"
+            }
+          }
+        ],
+        "vacation_history": [],
+        "salary_change_history": []
+      }
+    ],
+    "name": "Magic Branch",
+    "city": "MagicTown"
+  },
+  {
+    "_id": {
+      "$oid": "638b3f47f5be3cedd38455c3"
+    },
+    "stocks": [
+      {
+        "product": {
+          "_id": {
+            "$oid": "638b35439a8dd37158635d56"
+          },
+          "supplier_id": {
+            "$oid": "638b33910e83a1542e333471"
+          },
+          "price": 11,
+          "descriptor": {
+            "_id": {
+              "$oid": "638b346253f09ab199635d59"
+            },
+            "name": "Миндальное наслаждение"
+          }
+        },
+        "_id": {
+          "$oid": "638b3fe0675a3e02e28455c4"
+        },
+        "price": 15,
+        "amount": 120
+      },
+      {
+        "product": {
+          "_id": {
+            "$oid": "638b354c1fec590aa8635d5c"
+          },
+          "supplier_id": {
+            "$oid": "638b33910e83a1542e333471"
+          },
+          "price": 100,
+          "descriptor": {
+            "_id": {
+              "$oid": "638b354c1fec590aa8635d5d"
+            },
+            "name": "Волшебное наслаждение"
+          }
+        },
+        "_id": {
+          "$oid": "638b3ff2675a3e02e28455c5"
+        },
+        "price": 20,
+        "amount": 120
+      },
+      {
+        "product": {
+          "_id": {
+            "$oid": "638b36a39a8dd37158635d58"
+          },
+          "supplier_id": {
+            "$oid": "638b364b1fec590aa8635d5e"
+          },
+          "price": 420,
+          "descriptor": {
+            "_id": {
+              "$oid": "638b36a39a8dd37158635d59"
+            },
+            "name": "Молочный напиток"
+          }
+        },
+        "_id": {
+          "$oid": "638b400bc525be8a0f8455c5"
+        },
+        "price": 421,
+        "amount": 120
+      }
+    ],
+    "employees": [
+      {
+        "_id": {
+          "$oid": "638b4286f5be3cedd38455c9"
+        },
+        "name": "Rosanne",
+        "surname": "Maxwell",
+        "patronymic": "Ivanov",
+        "passport": "128381",
+        "phone": "+1282321387",
+        "role": "Работяга",
+        "city": "деревня",
+        "employment_date": {
+          "$date": {
+            "$numberLong": "1640998861000"
+          }
+        },
+        "dismissal_date": {
+          "$date": {
+            "$numberLong": "1640998861000"
+          }
+        },
+        "salary": 2,
+        "shifts_history": [
+          {
+            "$date": {
+              "$numberLong": "1640998861000"
+            }
+          },
+          {
+            "$date": {
+              "$numberLong": "1640998861000"
+            }
+          }
+        ],
+        "vacation_history": [],
+        "salary_change_history": []
+      },
+      {
+        "_id": {
+          "$oid": "638b429601cb4617f18455c6"
+        },
+        "name": "Ivan",
+        "surname": "Maxwell",
+        "patronymic": "Ivanov",
+        "passport": "128381",
+        "phone": "+1282321387",
+        "role": "Работяга",
+        "city": "деревня",
+        "employment_date": {
+          "$date": {
+            "$numberLong": "1640998861000"
+          }
+        },
+        "dismissal_date": {
+          "$date": {
+            "$numberLong": "1640998861000"
+          }
+        },
+        "salary": 2,
+        "shifts_history": [
+          {
+            "$date": {
+              "$numberLong": "1640998861000"
+            }
+          },
+          {
+            "$date": {
+              "$numberLong": "1640998861000"
+            }
+          }
+        ],
+        "vacation_history": [],
+        "salary_change_history": []
+      },
+      {
+        "_id": {
+          "$oid": "638b429c01cb4617f18455c7"
+        },
+        "name": "Peter",
+        "surname": "Maxwell",
+        "patronymic": "Ivanov",
+        "passport": "128381",
+        "phone": "+1282321387",
+        "role": "Работяга",
+        "city": "деревня",
+        "employment_date": {
+          "$date": {
+            "$numberLong": "1640998861000"
+          }
+        },
+        "dismissal_date": {
+          "$date": {
+            "$numberLong": "1640998861000"
+          }
+        },
+        "salary": 2,
+        "shifts_history": [
+          {
+            "$date": {
+              "$numberLong": "1640998861000"
+            }
+          },
+          {
+            "$date": {
+              "$numberLong": "1640998861000"
+            }
+          }
+        ],
+        "vacation_history": [],
+        "salary_change_history": []
+      }
+    ],
+    "name": "Glorious One",
+    "city": "MagicTown"
+  },
+  {
+    "_id": {
+      "$oid": "638b3f5af5be3cedd38455c4"
+    },
+    "stocks": [
+      {
+        "product": {
+          "_id": {
+            "$oid": "638b36a39a8dd37158635d58"
+          },
+          "supplier_id": {
+            "$oid": "638b364b1fec590aa8635d5e"
+          },
+          "price": 420,
+          "descriptor": {
+            "_id": {
+              "$oid": "638b36a39a8dd37158635d59"
+            },
+            "name": "Молочный напиток"
+          }
+        },
+        "_id": {
+          "$oid": "638b4019f5be3cedd38455c5"
+        },
+        "price": 421,
+        "amount": 120
+      },
+      {
+        "product": {
+          "_id": {
+            "$oid": "638b354c1fec590aa8635d5c"
+          },
+          "supplier_id": {
+            "$oid": "638b33910e83a1542e333471"
+          },
+          "price": 100,
+          "descriptor": {
+            "_id": {
+              "$oid": "638b354c1fec590aa8635d5d"
+            },
+            "name": "Волшебное наслаждение"
+          }
+        },
+        "_id": {
+          "$oid": "638b402dc525be8a0f8455c6"
+        },
+        "price": 120,
+        "amount": 120
+      },
+      {
+        "product": {
+          "_id": {
+            "$oid": "638b34331fec590aa8635d58"
+          },
+          "supplier_id": {
+            "$oid": "638b3385c960c973189c17e7"
+          },
+          "price": 144,
+          "descriptor": {
+            "_id": {
+              "$oid": "638b34331fec590aa8635d59"
+            },
+            "name": "Вкусно и точка"
+          }
+        },
+        "_id": {
+          "$oid": "638b403a01cb4617f18455c5"
+        },
+        "price": 150,
+        "amount": 10
+      }
+    ],
+    "employees": [
+      {
+        "_id": {
+          "$oid": "638b42c4f5be3cedd38455ca"
+        },
+        "name": "Lacy",
+        "surname": "Lacy",
+        "patronymic": "Ivanov",
+        "passport": "128381",
+        "phone": "+1282321387",
+        "role": "Работяга",
+        "city": "деревня",
+        "employment_date": {
+          "$date": {
+            "$numberLong": "1640998861000"
+          }
+        },
+        "dismissal_date": {
+          "$date": {
+            "$numberLong": "1640998861000"
+          }
+        },
+        "salary": 2,
+        "shifts_history": [
+          {
+            "$date": {
+              "$numberLong": "1640998861000"
+            }
+          },
+          {
+            "$date": {
+              "$numberLong": "1640998861000"
+            }
+          }
+        ],
+        "vacation_history": [],
+        "salary_change_history": []
+      },
+      {
+        "_id": {
+          "$oid": "638b42d1c525be8a0f8455ca"
+        },
+        "name": "Adan",
+        "surname": "Gomez",
+        "patronymic": "Ivanov",
+        "passport": "128381",
+        "phone": "+1282321387",
+        "role": "Работяга",
+        "city": "деревня",
+        "employment_date": {
+          "$date": {
+            "$numberLong": "1640998861000"
+          }
+        },
+        "dismissal_date": {
+          "$date": {
+            "$numberLong": "1640998861000"
+          }
+        },
+        "salary": 2,
+        "shifts_history": [
+          {
+            "$date": {
+              "$numberLong": "1640998861000"
+            }
+          },
+          {
+            "$date": {
+              "$numberLong": "1640998861000"
+            }
+          }
+        ],
+        "vacation_history": [],
+        "salary_change_history": []
+      }
+    ],
+    "name": "General",
+    "city": "MagicTown"
+  },
+  {
+    "_id": {
+      "$oid": "638b3f6bc525be8a0f8455c4"
+    },
+    "stocks": [
+      {
+        "product": {
+          "_id": {
+            "$oid": "638b347a10e6c36501635d58"
+          },
+          "supplier_id": {
+            "$oid": "638b3385c960c973189c17e7"
+          },
+          "price": 120,
+          "descriptor": {
+            "_id": {
+              "$oid": "638b347a10e6c36501635d59"
+            },
+            "name": "Чтоб росло"
+          }
+        },
+        "_id": {
+          "$oid": "638b4086c525be8a0f8455c7"
+        },
+        "price": 1200,
+        "amount": 1000
+      },
+      {
+        "product": {
+          "_id": {
+            "$oid": "638b36a39a8dd37158635d58"
+          },
+          "supplier_id": {
+            "$oid": "638b364b1fec590aa8635d5e"
+          },
+          "price": 420,
+          "descriptor": {
+            "_id": {
+              "$oid": "638b36a39a8dd37158635d59"
+            },
+            "name": "Молочный напиток"
+          }
+        },
+        "_id": {
+          "$oid": "638b408fc525be8a0f8455c8"
+        },
+        "price": 500,
+        "amount": 1000
+      }
+    ],
+    "employees": [
+      {
+        "_id": {
+          "$oid": "638b433df5be3cedd38455cb"
+        },
+        "name": "Monroe",
+        "surname": "Cook",
+        "patronymic": "Cook",
+        "passport": "128381",
+        "phone": "+1282321387",
+        "role": "Работяга",
+        "city": "деревня",
+        "employment_date": {
+          "$date": {
+            "$numberLong": "1640998861000"
+          }
+        },
+        "dismissal_date": {
+          "$date": {
+            "$numberLong": "1640998861000"
+          }
+        },
+        "salary": 2,
+        "shifts_history": [
+          {
+            "$date": {
+              "$numberLong": "1640998861000"
+            }
+          },
+          {
+            "$date": {
+              "$numberLong": "1640998861000"
+            }
+          }
+        ],
+        "vacation_history": [],
+        "salary_change_history": []
+      }
+    ],
+    "name": "Another One",
+    "city": "SomeCity"
+  },
+  {
+    "_id": {
+      "$oid": "638b3f73675a3e02e28455c3"
+    },
+    "stocks": [
+      {
+        "product": {
+          "_id": {
+            "$oid": "638b343a1fec590aa8635d5a"
+          },
+          "supplier_id": {
+            "$oid": "638b3385c960c973189c17e7"
+          },
+          "price": 202,
+          "descriptor": {
+            "_id": {
+              "$oid": "638b343a1fec590aa8635d5b"
+            },
+            "name": "Аппетитно"
+          }
+        },
+        "_id": {
+          "$oid": "638b4051f5be3cedd38455c6"
+        },
+        "price": 220,
+        "amount": 100
+      },
+      {
+        "product": {
+          "_id": {
+            "$oid": "638b347410e6c36501635d56"
+          },
+          "supplier_id": {
+            "$oid": "638b3385c960c973189c17e7"
+          },
+          "price": 103,
+          "descriptor": {
+            "_id": {
+              "$oid": "638b347410e6c36501635d57"
+            },
+            "name": "Для бицухи"
+          }
+        },
+        "_id": {
+          "$oid": "638b406af5be3cedd38455c7"
+        },
+        "price": 105,
+        "amount": 1000
+      }
+    ],
+    "employees": [
+      {
+        "_id": {
+          "$oid": "638b4361f5be3cedd38455cc"
+        },
+        "name": "Marco",
+        "surname": "Gordon",
+        "patronymic": "Marco",
+        "passport": "128381",
+        "phone": "+1282321387",
+        "role": "Работяга",
+        "city": "деревня",
+        "employment_date": {
+          "$date": {
+            "$numberLong": "1640998861000"
+          }
+        },
+        "dismissal_date": {
+          "$date": {
+            "$numberLong": "1640998861000"
+          }
+        },
+        "salary": 2,
+        "shifts_history": [],
+        "vacation_history": [],
+        "salary_change_history": []
+      }
+    ],
+    "name": "Just Branch",
+    "city": "SomeCity"
+  }
+]

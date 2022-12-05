@@ -5,7 +5,6 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Main } from "./components/Main";
 import { NotFound } from "./components/NotFound";
 import { Sales } from "./components/Sales";
-import { AddBranch } from "./components/branches/AddBranch";
 import { AddSupplier } from "./components/suppliers/AddSupplier";
 import { Suppliers } from "./components/suppliers/Suppliers";
 import { SupplierPage } from "./components/suppliers/SupplierPage";

@@ -1,12 +1,12 @@
 import * as React from "react";
 import { useState } from "react";
-import { Box, Tab, Tabs } from "@mui/material";
+import { Box, Tab, Tabs, Typography } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 
 export const Main = () => {
   const [value, setValue] = useState(undefined);
   return <Box>
-    <h1> Welcome to Sport nutrition information system! </h1>
+    <Typography variant={"h3"}> Welcome to Sport nutrition information system! </Typography>
     <Tabs indicatorColor="secondary" textColor="inherit">
       <Tab
         component={RouterLink}

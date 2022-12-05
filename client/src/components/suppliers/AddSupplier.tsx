@@ -1,10 +1,9 @@
-import { Box, IconButton, Stack, TextField } from "@mui/material";
+import { Box, Button, IconButton, Stack, TextField } from "@mui/material";
 import * as React from "react";
 import { useCallback, useState } from "react";
-import CancelIcon from "@mui/icons-material/Cancel";
-import AddIcon from "@mui/icons-material/Add";
 import { useNavigate } from "react-router-dom";
 import { postSupplier } from "../../api/supplier";
+import { regexPhone, regexEmail } from "../../api/constants";
 
 export interface IAddBranchResponse {
   id: string;
@@ -46,42 +45,38 @@ export const AddSupplier = () => {
         <h2> Add new supplier </h2>
         <TextField
           style={{ width: "80%" }}
-          id="outlined-basic"
           label="Name"
-          variant="outlined"
+          variant="standard"
           required
           onChange={(e) => setName(e.target.value)}
         />
         <TextField
           style={{ width: "80%" }}
-          id="filled-basic"
           label="Phone"
-          variant="outlined"
+          placeholder="+79997775566"
+          variant="standard"
           required
           type="phone"
           onChange={(e) => setPhone(e.target.value)}
         />
         <TextField
           style={{ width: "80%" }}
-          id="filled-basic"
           label="Email"
-          variant="outlined"
+          placeholder="supplier@gmail.com"
+          variant="standard"
           required
           type="email"
           onChange={(e) => setEmail(e.target.value)}
         />
         <Box style={{ marginLeft: "35%" }} flexDirection="row">
-          <IconButton
-            title="Add new supplier"
-            component="span"
+          <Button
+            disabled={!name.length || !phone.length
+              || !regexPhone.test(phone) || !email.length || !regexEmail.test(email)}
             onClick={() => doRequest(name, phone, email)}
           >
-            <AddIcon />
-          </IconButton>
+          ADD
+          </Button>
 
-          <IconButton component="span" title="Cancel" onClick={() => navigate("/suppliers")}>
-            <CancelIcon />
-          </IconButton>
         </Box>
       </Stack>
     </Box>

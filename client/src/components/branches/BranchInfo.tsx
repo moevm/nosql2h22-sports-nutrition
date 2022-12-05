@@ -6,9 +6,8 @@ export const BranchInfo = ({ branch }: { branch: any }) => {
     <Stack spacing={2}>
       <TextField
         style={{ width: "80%" }}
-        id="outlined-basic"
         label="Id"
-        variant="outlined"
+        variant="standard"
         InputProps={{
           readOnly: true
         }}
@@ -16,9 +15,8 @@ export const BranchInfo = ({ branch }: { branch: any }) => {
       />
       <TextField
         style={{ width: "80%" }}
-        id="outlined-basic"
         label="Name"
-        variant="outlined"
+        variant="standard"
         InputProps={{
           readOnly: true
         }}
@@ -26,9 +24,8 @@ export const BranchInfo = ({ branch }: { branch: any }) => {
       />
       <TextField
         style={{ width: "80%" }}
-        id="filled-basic"
         label="City"
-        variant="outlined"
+        variant="standard"
         InputProps={{
           readOnly: true
         }}

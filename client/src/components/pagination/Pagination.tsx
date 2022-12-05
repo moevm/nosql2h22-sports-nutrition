@@ -1,6 +1,8 @@
 import React from "react";
 import classnames from "classnames";
-import "./pagination.scss";
+import { List, ListItem, ListItemButton, ListItemIcon } from "@mui/material";
+import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 
 export const Pagination = ({
                              onPageChange,
@@ -23,35 +25,35 @@ export const Pagination = ({
   };
 
   return (
-    <ul className={classnames("pagination-container", { [className]: className })}>
-      <li
+    <List style={{display: "flex", alignSelf: "center", justifyContent: "center"}}
+      className={classnames("pagination-container", { [className]: className })}>
+      <ListItem
+        style={{width: "10%"}}
         key={currentPage + className}
-        className={classnames("pagination-item", {
-          disabled: currentPage === 1
-        })}
-        onClick={onPrevious}
       >
-        <div className="arrow left" />
-      </li>
-      <li
+        <ListItemButton onClick={onPrevious}
+        disabled={currentPage <= 1}> <ListItemIcon>
+          <KeyboardArrowLeftIcon />
+        </ListItemIcon> </ListItemButton>
+      </ListItem>
+
+      <ListItem
+        style={{width: "5%"}}
         key={currentPage}
-        className={classnames("pagination-item")}
       >
         {currentPage}
-      </li>
+      </ListItem>
 
-      <li
+      <ListItem
+        style={{width: "10%"}}
         key={"pagination-item-disabled"}
-        className={classnames("pagination-item", {
-          disabled: lastPage
-        })}
-        onClick={() => {
-          console.log("LastPage :", lastPage);
-          onNext();
-        }}
       >
-        <div className="arrow right" />
-      </li>
-    </ul>
+        <ListItemButton disabled={lastPage} onClick={() => {
+          onNext();
+        }}> <ListItemIcon>
+          <KeyboardArrowRightIcon />
+        </ListItemIcon>  </ListItemButton>
+      </ListItem>
+    </List>
   );
 };

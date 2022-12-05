@@ -1,0 +1,217 @@
+[
+  {
+    "_id": {
+      "$oid": "638b3385c960c973189c17e7"
+    },
+    "name": "Roga i Kopita",
+    "phone": "+723878713",
+    "email": "supplier@gmail.com",
+    "products": [
+      {
+        "_id": {
+          "$oid": "638b340f1fec590aa8635d56"
+        },
+        "supplier_id": {
+          "$oid": "638b3385c960c973189c17e7"
+        },
+        "price": 109.1,
+        "descriptor": {
+          "_id": {
+            "$oid": "638b340f1fec590aa8635d57"
+          },
+          "name": "ЖриНеТолстей"
+        }
+      },
+      {
+        "_id": {
+          "$oid": "638b34331fec590aa8635d58"
+        },
+        "supplier_id": {
+          "$oid": "638b3385c960c973189c17e7"
+        },
+        "price": 144,
+        "descriptor": {
+          "_id": {
+            "$oid": "638b34331fec590aa8635d59"
+          },
+          "name": "Вкусно и точка"
+        }
+      },
+      {
+        "_id": {
+          "$oid": "638b343a1fec590aa8635d5a"
+        },
+        "supplier_id": {
+          "$oid": "638b3385c960c973189c17e7"
+        },
+        "price": 202,
+        "descriptor": {
+          "_id": {
+            "$oid": "638b343a1fec590aa8635d5b"
+          },
+          "name": "Аппетитно"
+        }
+      },
+      {
+        "_id": {
+          "$oid": "638b347410e6c36501635d56"
+        },
+        "supplier_id": {
+          "$oid": "638b3385c960c973189c17e7"
+        },
+        "price": 103,
+        "descriptor": {
+          "_id": {
+            "$oid": "638b347410e6c36501635d57"
+          },
+          "name": "Для бицухи"
+        }
+      },
+      {
+        "_id": {
+          "$oid": "638b347a10e6c36501635d58"
+        },
+        "supplier_id": {
+          "$oid": "638b3385c960c973189c17e7"
+        },
+        "price": 120,
+        "descriptor": {
+          "_id": {
+            "$oid": "638b347a10e6c36501635d59"
+          },
+          "name": "Чтоб росло"
+        }
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "638b33787d7d74f493dd9261"
+    },
+    "name": "The Goddest Guys",
+    "phone": "+7782173872",
+    "email": "goddestboiiz@gmail.com",
+    "products": [
+      {
+        "_id": {
+          "$oid": "638b345c53f09ab199635d56"
+        },
+        "supplier_id": {
+          "$oid": "638b33787d7d74f493dd9261"
+        },
+        "price": 50,
+        "descriptor": {
+          "_id": {
+            "$oid": "638b345c53f09ab199635d57"
+          },
+          "name": "Кокосовый рай"
+        }
+      },
+      {
+        "_id": {
+          "$oid": "638b346253f09ab199635d58"
+        },
+        "supplier_id": {
+          "$oid": "638b33787d7d74f493dd9261"
+        },
+        "price": 10,
+        "descriptor": {
+          "_id": {
+            "$oid": "638b346253f09ab199635d59"
+          },
+          "name": "Миндальное наслаждение"
+        }
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "638b33910e83a1542e333471"
+    },
+    "name": "Magic Supplier",
+    "phone": "+7328128123",
+    "email": "nagibator2000@gmail.com",
+    "products": [
+      {
+        "_id": {
+          "$oid": "638b35439a8dd37158635d56"
+        },
+        "supplier_id": {
+          "$oid": "638b33910e83a1542e333471"
+        },
+        "price": 11,
+        "descriptor": {
+          "_id": {
+            "$oid": "638b346253f09ab199635d59"
+          },
+          "name": "Миндальное наслаждение"
+        }
+      },
+      {
+        "_id": {
+          "$oid": "638b354c1fec590aa8635d5c"
+        },
+        "supplier_id": {
+          "$oid": "638b33910e83a1542e333471"
+        },
+        "price": 100,
+        "descriptor": {
+          "_id": {
+            "$oid": "638b354c1fec590aa8635d5d"
+          },
+          "name": "Волшебное наслаждение"
+        }
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "638b364b1fec590aa8635d5e"
+    },
+    "products": [
+      {
+        "_id": {
+          "$oid": "638b36a39a8dd37158635d58"
+        },
+        "supplier_id": {
+          "$oid": "638b364b1fec590aa8635d5e"
+        },
+        "price": 420,
+        "descriptor": {
+          "_id": {
+            "$oid": "638b36a39a8dd37158635d59"
+          },
+          "name": "Молочный напиток"
+        }
+      }
+    ],
+    "name": "Крутой дядя",
+    "email": "+73232138123",
+    "phone": "adviser@gmail.com"
+  },
+  {
+    "_id": {
+      "$oid": "638b36631fec590aa8635d5f"
+    },
+    "products": [
+      {
+        "_id": {
+          "$oid": "638b367810e6c36501635d5a"
+        },
+        "supplier_id": {
+          "$oid": "638b36631fec590aa8635d5f"
+        },
+        "price": 1300,
+        "descriptor": {
+          "_id": {
+            "$oid": "638b367810e6c36501635d5b"
+          },
+          "name": "Покеболл"
+        }
+      }
+    ],
+    "name": "Покемон-Поставщик",
+    "email": "+731532138123",
+    "phone": "person@gmail.com"
+  }
+]

@@ -1,4 +1,4 @@
-from typing import List, Any
+from typing import List, Any, Optional
 
 from pydantic import BaseModel, validator, Field
 
@@ -59,14 +59,16 @@ class VacationDto(BaseModel):
 class InsertEmployeeDto(BaseModel):
     name: str = Field(..., max_length=DtoConstant.MAX_STRING_SIZE, min_length=DtoConstant.MIN_STRING_SIZE)
     surname: str = Field(..., max_length=DtoConstant.MAX_STRING_SIZE, min_length=DtoConstant.MIN_STRING_SIZE)
-    patronymic: str = Field(..., max_length=DtoConstant.MAX_STRING_SIZE, min_length=DtoConstant.MIN_STRING_SIZE)
+    patronymic: Optional[str] = Field(None, max_length=DtoConstant.MAX_STRING_SIZE,
+                                      min_length=DtoConstant.MIN_STRING_SIZE)
     passport: str = Field(..., max_length=DtoConstant.MAX_STRING_SIZE, min_length=DtoConstant.MIN_STRING_SIZE)
     phone: str = Field(..., regex=DtoConstant.PHONE_REGEX, min_length=DtoConstant.MIN_STRING_SIZE,
                        max_length=DtoConstant.MAX_STRING_SIZE)
     role: str = Field(..., max_length=DtoConstant.MAX_STRING_SIZE, min_length=DtoConstant.MIN_STRING_SIZE)
     city: str = Field(..., max_length=DtoConstant.MAX_STRING_SIZE, min_length=DtoConstant.MIN_STRING_SIZE)
     employment_date: str = Field(..., max_length=DtoConstant.MAX_STRING_SIZE, min_length=DtoConstant.MIN_STRING_SIZE)
-    dismissal_date: str = Field(..., max_length=DtoConstant.MAX_STRING_SIZE, min_length=DtoConstant.MIN_STRING_SIZE)
+    dismissal_date: Optional[str] = Field(None, max_length=DtoConstant.MAX_STRING_SIZE,
+                                          min_length=DtoConstant.MIN_STRING_SIZE)
     salary: float = Field(..., ge=0)
     shifts_history: List[str] = []
     vacation_history: List[VacationDto] = []
