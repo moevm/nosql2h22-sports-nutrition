@@ -10,6 +10,8 @@ from server.data.services.branch.branch_indexed import EmployeeIndexed, ProductD
     StockIndexed, \
     BranchIndexed, BranchInfo
 from server.data.services.supplier.supplier import SupplierIndexed, SupplierInfo
+from server.data.services.sale.sale import SaleIndexed
+from server.data.dto.sale.sale_indexed_dto import SaleIndexedDto
 
 
 @is_logged(['document'])
@@ -119,4 +121,18 @@ def dto_info_from_supplier(supplier: SupplierInfo) -> SupplierInfoDto:
     dto.email = supplier.email
     dto.phone = supplier.phone
     dto.products = supplier.products
+    return dto
+
+
+@is_logged(['document'])
+def dto_indexed_from_sale_indexed(sale: SaleIndexed) -> SaleIndexedDto:
+    dto = SaleIndexedDto.construct()
+    dto.id = str(sale.id)
+    dto.supplier_id = str(sale.supplier_id)
+    dto.product_id = str(sale.product_id)
+    dto.branch_id = str(sale.branch_id)
+    dto.price = sale.price
+    dto.amount = sale.amount
+    dto.date = get_string(sale.date)
+
     return dto

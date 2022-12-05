@@ -4,6 +4,8 @@ from pydantic import BaseModel, Field
 
 from server.data.database.common import PydanticObjectId
 
+from logging import info
+from server.common.logger import is_logged
 
 class SaleEntity(BaseModel):
     id: PydanticObjectId = Field(alias='_id')
@@ -12,8 +14,7 @@ class SaleEntity(BaseModel):
     branch_id: PydanticObjectId
     price: float
     amount: int
-    timestamp: datetime
-
+    date: datetime
 
 def from_sale_document(document) -> SaleEntity:
     entity = SaleEntity.construct()
@@ -23,5 +24,5 @@ def from_sale_document(document) -> SaleEntity:
     entity.branch_id = document['branch_id']
     entity.price = document['price']
     entity.amount = document['amount']
-    entity.timestamp = document['timestamp']
+    entity.date = document['date']
     return entity

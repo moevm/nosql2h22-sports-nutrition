@@ -26,4 +26,4 @@ class MongoConnection:
         return self.client.get_default_database()['suppliers']
 
     def get_sales(self):
-        return self.client.get_default_database()['sales']
+        return self.client[self.config.get_database()]['sales']
