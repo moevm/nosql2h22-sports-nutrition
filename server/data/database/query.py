@@ -19,14 +19,14 @@ class QueryRepresentation(ABC):
         pass
 
 
-class CaseInsensitiveQueryRepresentation(QueryRepresentation):
+class CaseInsensitiveSubstringQueryRepresentation(QueryRepresentation):
 
     def __init__(self, value, field_name: str):
         self.value = value
         self.field_name = field_name
 
     def represent(self) -> json:
-        return {self.field_name: re.compile('^' + re.escape(self.value) + '$', re.IGNORECASE)}
+        return {self.field_name: re.compile(re.escape(self.value), re.IGNORECASE)}
 
 
 class FieldEqualsValueQueryRepresentation(QueryRepresentation):
@@ -78,17 +78,17 @@ class StockInBranchQuery(Query):
     id: IdQueryRepresentation
     supplier_id: FieldEqualsValueQueryRepresentation
     product_id: FieldEqualsValueQueryRepresentation
-    name: CaseInsensitiveQueryRepresentation
+    name: CaseInsensitiveSubstringQueryRepresentation
     amount: IntervalQueryRepresentation
     price_from: IntervalQueryRepresentation
 
 
 class EmployeeInBranchQuery(Query):
     id: IdQueryRepresentation
-    name: CaseInsensitiveQueryRepresentation
-    surname: CaseInsensitiveQueryRepresentation
-    patronymic: CaseInsensitiveQueryRepresentation
-    role: CaseInsensitiveQueryRepresentation
+    name: CaseInsensitiveSubstringQueryRepresentation
+    surname: CaseInsensitiveSubstringQueryRepresentation
+    patronymic: CaseInsensitiveSubstringQueryRepresentation
+    role: CaseInsensitiveSubstringQueryRepresentation
     phone_number: FieldEqualsValueQueryRepresentation
     dismissal_date: IntervalQueryRepresentation
     employment_date: IntervalQueryRepresentation
@@ -96,8 +96,8 @@ class EmployeeInBranchQuery(Query):
 
 
 class BranchQuery(Query):
-    name: CaseInsensitiveQueryRepresentation
-    city: CaseInsensitiveQueryRepresentation
+    name: CaseInsensitiveSubstringQueryRepresentation
+    city: CaseInsensitiveSubstringQueryRepresentation
     id: IdQueryRepresentation
 
 

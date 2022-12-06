@@ -59,7 +59,8 @@ class VacationDto(BaseModel):
 class InsertEmployeeDto(BaseModel):
     name: str = Field(..., max_length=DtoConstant.MAX_STRING_SIZE, min_length=DtoConstant.MIN_STRING_SIZE)
     surname: str = Field(..., max_length=DtoConstant.MAX_STRING_SIZE, min_length=DtoConstant.MIN_STRING_SIZE)
-    patronymic: str = Field(..., max_length=DtoConstant.MAX_STRING_SIZE, min_length=DtoConstant.MIN_STRING_SIZE)
+    patronymic: Optional[str] = Field(None, max_length=DtoConstant.MAX_STRING_SIZE,
+                                      min_length=DtoConstant.MIN_STRING_SIZE)
     passport: str = Field(..., max_length=DtoConstant.MAX_STRING_SIZE, min_length=DtoConstant.MIN_STRING_SIZE)
     phone: str = Field(..., regex=DtoConstant.PHONE_REGEX, min_length=DtoConstant.MIN_STRING_SIZE,
                        max_length=DtoConstant.MAX_STRING_SIZE)

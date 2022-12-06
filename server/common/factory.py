@@ -1,6 +1,7 @@
 import configparser
 
 from server.common.config import ProjectConfig, check_and_get_config_path
+from server.common.logger import configure_logging
 from server.common.mongo_config import ProjectConfigMongo
 from server.common.web_config import ProjectConfigWeb
 from server.database.mongo_connection import MongoConnection
@@ -14,6 +15,7 @@ from server.service.maintenance_service import MaintenanceService
 from server.service.supplier_service import SupplierService
 from server.web.web_server import WebServer, InnerServerFactory
 
+configure_logging()
 raw_config = configparser.ConfigParser()
 raw_config.read(check_and_get_config_path())
 

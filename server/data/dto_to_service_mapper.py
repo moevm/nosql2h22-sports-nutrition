@@ -4,7 +4,7 @@ from server.common.exceptions import EmptyQuery
 from server.common.monad import Optional
 from server.data.database.query import BranchQuery, FieldEqualsValueQueryRepresentation, IdQueryRepresentation, \
     EmployeeInBranchQuery, IntervalQueryRepresentation, IntervalHolder, StockInBranchQuery, \
-    CaseInsensitiveQueryRepresentation
+    CaseInsensitiveSubstringQueryRepresentation
 from server.data.datetime_formatter import get_datetime
 from server.data.dto.branch.branch_dto import AddProductDto, SalaryChangeDto, VacationDto, InsertEmployeeDto, \
     InsertBranchDto, BranchQueryDto, EmployeeInBranchQueryDto, StockInBranchQueryDto
@@ -87,10 +87,10 @@ def from_query_dto(query: BranchQueryDto) -> BranchQuery:
     internal = BranchQuery()
 
     if query.name:
-        internal.name = CaseInsensitiveQueryRepresentation(query.name[0], 'name')
+        internal.name = CaseInsensitiveSubstringQueryRepresentation(query.name[0], 'name')
 
     if query.city:
-        internal.city = CaseInsensitiveQueryRepresentation(query.city[0], 'city')
+        internal.city = CaseInsensitiveSubstringQueryRepresentation(query.city[0], 'city')
 
     if query.id:
         internal.id = IdQueryRepresentation(ObjectId(query.id[0]))
@@ -117,7 +117,7 @@ def from_stock_in_branch_query_dto(query: StockInBranchQueryDto) -> StockInBranc
     internal = StockInBranchQuery()
 
     if query.name:
-        internal.name = CaseInsensitiveQueryRepresentation(query.name[0], "stocks.product.descriptor.name")
+        internal.name = CaseInsensitiveSubstringQueryRepresentation(query.name[0], "stocks.product.descriptor.name")
 
     if query.id:
         internal.id = IdQueryRepresentation(ObjectId(query.id[0]), "stocks._id")
@@ -152,16 +152,16 @@ def from_employee_in_branch_query_dto(query: EmployeeInBranchQueryDto) -> Employ
     internal = EmployeeInBranchQuery()
 
     if query.name:
-        internal.name = CaseInsensitiveQueryRepresentation(query.name[0], "employees.name")
+        internal.name = CaseInsensitiveSubstringQueryRepresentation(query.name[0], "employees.name")
 
     if query.patronymic:
-        internal.patronymic = CaseInsensitiveQueryRepresentation(query.patronymic[0], "employees.patronymic")
+        internal.patronymic = CaseInsensitiveSubstringQueryRepresentation(query.patronymic[0], "employees.patronymic")
 
     if query.surname:
-        internal.surname = CaseInsensitiveQueryRepresentation(query.surname[0], "employees.surname")
+        internal.surname = CaseInsensitiveSubstringQueryRepresentation(query.surname[0], "employees.surname")
 
     if query.role:
-        internal.role = CaseInsensitiveQueryRepresentation(query.role[0], "employees.role")
+        internal.role = CaseInsensitiveSubstringQueryRepresentation(query.role[0], "employees.role")
 
     if query.phone_number:
         internal.phone_number = FieldEqualsValueQueryRepresentation(query.phone_number[0], "employees.phone_number")
