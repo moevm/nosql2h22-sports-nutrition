@@ -41,11 +41,16 @@ export const toServerDateFormat = (date: string) => {
   const daySeparatorIndex = date.lastIndexOf("-");
   const hoursSeparator = date.indexOf("T");
   const minutesSeparator = date.indexOf(":");
-  const year = date.slice(0, monthSeparatorIndex);
+  let year = date.slice(0, monthSeparatorIndex);
   const month = date.slice(monthSeparatorIndex + 1, daySeparatorIndex);
   const day = date.slice(daySeparatorIndex + 1, hoursSeparator);
   const hours = date.slice(hoursSeparator + 1, minutesSeparator);
   const minutes = date.slice(minutesSeparator + 1);
+  const currentYear = new Date().getFullYear();
+  if (Number(year) > currentYear) {
+    year = String(currentYear);
+  }
+
   return day + "/" + month + "/" + year + " " + hours + ":" + minutes + ":0";
 };
 

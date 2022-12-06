@@ -7,7 +7,7 @@ import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import { EmployeeData, postEmployee } from "../../api/employee";
 import { checkObjOnDefault, toServerDateFormat } from "../../api/functions";
-import { regexPhone } from "api/constants";
+import { regexLetters, regexPhone } from "api/constants";
 
 export const AddEmployee = ({ isOpen, setOpen, branchId, employees, setEmployees }: {
                               isOpen: boolean,
@@ -75,8 +75,12 @@ export const AddEmployee = ({ isOpen, setOpen, branchId, employees, setEmployees
           id="surname"
           label="Surname"
           fullWidth
-          onChange={(val) =>
-            updateField("surname", val.target.value)}
+          onChange={(val) => {
+            if (regexLetters.test(val.target.value))
+              updateField("surname", val.target.value);
+            else alert("Surname must contain only letters");
+            }
+          }
           variant="standard"
         />
         <TextField
@@ -85,8 +89,11 @@ export const AddEmployee = ({ isOpen, setOpen, branchId, employees, setEmployees
           id="name"
           label="Name"
           fullWidth
-          onChange={(val) =>
-            updateField("name", val.target.value)}
+          onChange={(val) => {
+            if (regexLetters.test(val.target.value))
+            updateField("name", val.target.value)
+            else alert("Name must contain only letters");
+            }}
           variant="standard"
         />
         <TextField
@@ -95,8 +102,12 @@ export const AddEmployee = ({ isOpen, setOpen, branchId, employees, setEmployees
           id="patronymic"
           label="Patronymic"
           fullWidth
-          onChange={(val) =>
-            updateField("patronymic", val.target.value)}
+          onChange={(val) => {
+            if (regexLetters.test(val.target.value))
+              updateField("patronymic", val.target.value)
+            else alert("Patronymic must contain only letters");
+          }
+          }
           variant="standard"
         />
         <TextField
@@ -105,8 +116,12 @@ export const AddEmployee = ({ isOpen, setOpen, branchId, employees, setEmployees
           id="city"
           label="City"
           fullWidth
-          onChange={(val) =>
-            updateField("city", val.target.value)}
+          onChange={(val) => {
+              if (regexLetters.test(val.target.value))
+                updateField("city", val.target.value);
+              else alert("City must contain only letters");
+          }
+          }
           variant="standard"
         />
         <TextField
@@ -137,26 +152,29 @@ export const AddEmployee = ({ isOpen, setOpen, branchId, employees, setEmployees
           placeholder="+79997775566"
           fullWidth
           onChange={(val) => {
-            updateField("phone", val.target.value)
+            updateField("phone", val.target.value);
           }
           }
           variant="standard"
         />
-        <TextField
+        <label style={{marginTop: "5px"}} htmlFor={"employment-date"} >
+          Employment date
+        </label>
+        <input
           required
+          style={{width: "100%"}}
           type="datetime-local"
-          margin="dense"
           id="employment_date"
-          label="Employment Date"
-          fullWidth
           placeholder="dd/mm/yyyy"
+          min="2010-01-01T00:00"
+          max="2023-12-31T00:00"
           onChange={(val) => {
             console.log("Date: ", val.target.value);
             console.log("Server date: ", toServerDateFormat(val.target.value));
             updateField("employment_date", toServerDateFormat(val.target.value));
           }
           }
-        />
+          />
         <TextField
           required
           type="number"
@@ -170,8 +188,10 @@ export const AddEmployee = ({ isOpen, setOpen, branchId, employees, setEmployees
         />
       </DialogContent>
       <DialogActions>
-        <Button disabled={checkObjOnDefault(postData)
-        || !regexPhone.test(postData?.phone!)} autoFocus onClick={addEmployee}>
+        <Button
+            disabled={checkObjOnDefault(postData)
+          || !regexPhone.test(postData?.phone!)}
+          autoFocus onClick={addEmployee}>
           Add
         </Button>
       </DialogActions>
