@@ -1,10 +1,21 @@
 import json
 import re
 from abc import ABC, abstractmethod
+from dataclasses import dataclass
+from logging import info
 
 from bson import ObjectId
 
+from server.common.exceptions import EmptyQuery
+from server.common.monad import Optional
 
+
+@dataclass
+class Constant:
+    AND: str = "$and"
+
+
+@dataclass
 class IntervalHolder:
 
     def __init__(self, value_from, value_to):
@@ -19,9 +30,9 @@ class QueryRepresentation(ABC):
         pass
 
 
-class CaseInsensitiveSubstringQueryRepresentation(QueryRepresentation):
+class RegexQueryRepresentation(QueryRepresentation):
 
-    def __init__(self, value, field_name: str):
+    def __init__(self, field_name: str, value: str):
         self.value = value
         self.field_name = field_name
 
@@ -31,7 +42,7 @@ class CaseInsensitiveSubstringQueryRepresentation(QueryRepresentation):
 
 class FieldEqualsValueQueryRepresentation(QueryRepresentation):
 
-    def __init__(self, value, field_name: str):
+    def __init__(self, field_name: str, value):
         self.value = value
         self.field_name = field_name
 
@@ -42,12 +53,21 @@ class FieldEqualsValueQueryRepresentation(QueryRepresentation):
 class IdQueryRepresentation(FieldEqualsValueQueryRepresentation):
 
     def __init__(self, value, field_name='_id'):
-        super().__init__(value, field_name)
+        if isinstance(value, str):
+            super().__init__(field_name, ObjectId(value))
+        elif isinstance(value, ObjectId):
+            super().__init__(field_name, value)
+        else:
+            raise ValueError("Id in IdQueryRepresentation must be instance of str or ObjectId")
+
+    @staticmethod
+    def from_first_element(self, elements: list):
+        return self.__init__(elements[0])
 
 
 class IntervalQueryRepresentation(QueryRepresentation):
 
-    def __init__(self, interval: IntervalHolder, field_name: str):
+    def __init__(self, field_name: str, interval: IntervalHolder):
         self.interval = interval
         self.field_name = field_name
         self.query = {}
@@ -68,40 +88,101 @@ class IntervalQueryRepresentation(QueryRepresentation):
         return self.query
 
 
+class AllArrayQueryRepresentation(QueryRepresentation):
+
+    def __init__(self, field_name: str, value: list):
+        self.value = value
+        self.field_name = field_name
+
+    def represent(self) -> json:
+        return {
+            self.field_name: {
+                "$all": self.value
+            }
+        }
+
+
+@dataclass
 class Query:
+    def __init__(self, query_json: json):
+        self.__query_json = query_json
 
     def get_json(self):
-        return [value.represent() for key, value in vars(self).items()]
+        return self.__query_json
 
 
-class StockInBranchQuery(Query):
-    id: IdQueryRepresentation
-    supplier_id: FieldEqualsValueQueryRepresentation
-    product_id: FieldEqualsValueQueryRepresentation
-    name: CaseInsensitiveSubstringQueryRepresentation
-    amount: IntervalQueryRepresentation
-    price_from: IntervalQueryRepresentation
+class ConditionBuilder:
+
+    def __init__(self, target: list, parent, field_name: str):
+        self.__target = target
+        self.__parent = parent
+        self.__field_name = field_name
+
+    def __build(self, value, supplier):
+        if value is None:
+            return self.__parent
+
+        self.__target.append(supplier())
+        return self.__parent
+
+    def contains_all(self, array: list):
+        return self.__build(array, lambda: AllArrayQueryRepresentation(self.__field_name, array))
+
+    def equals(self, value):
+        return self.__build(value, lambda: FieldEqualsValueQueryRepresentation(self.__field_name, value))
+
+    def in_interval(self, value_from, value_to, mapper):
+        value = None
+
+        if value_from or value_to:
+            value_from = Optional(value_from).map(mapper).or_else(None)
+            value_to = Optional(value_to).map(mapper).or_else(None)
+            value = IntervalHolder(value_from, value_to)
+
+        return self.__build(value, lambda: IntervalQueryRepresentation(self.__field_name, value))
+
+    def has_id(self, value):
+        return self.__build(value, lambda: IdQueryRepresentation(value, self.__field_name))
+
+    def equals_regex(self, value: str):
+        return self.__build(value, lambda: RegexQueryRepresentation(self.__field_name, value))
 
 
-class EmployeeInBranchQuery(Query):
-    id: IdQueryRepresentation
-    name: CaseInsensitiveSubstringQueryRepresentation
-    surname: CaseInsensitiveSubstringQueryRepresentation
-    patronymic: CaseInsensitiveSubstringQueryRepresentation
-    role: CaseInsensitiveSubstringQueryRepresentation
-    phone_number: FieldEqualsValueQueryRepresentation
-    dismissal_date: IntervalQueryRepresentation
-    employment_date: IntervalQueryRepresentation
-    salary: IntervalQueryRepresentation
+class FieldNameSetter:
+
+    def __init__(self, condition_builder_function):
+        self.function = condition_builder_function
+
+    def field(self, field_name: str) -> ConditionBuilder:
+        return self.function(field_name)
 
 
-class BranchQuery(Query):
-    name: CaseInsensitiveSubstringQueryRepresentation
-    city: CaseInsensitiveSubstringQueryRepresentation
-    id: IdQueryRepresentation
+class QueryBuilder:
+
+    def __init__(self):
+        self.__and_conditions = []
+
+    def __is_conditions_not_present(self):
+        return not len(self.__and_conditions)
+
+    def __check_consistent(self):
+        if self.__is_conditions_not_present():
+            raise EmptyQuery()
+
+    def compile(self) -> Query:
+        self.__check_consistent()
+
+        compiled = {
+            Constant.AND: [condition.represent() for condition in self.__and_conditions]
+        }
+
+        info(f"Compiled query: {compiled}")
+
+        return Query(compiled)
+
+    def and_condition(self):
+        return FieldNameSetter(lambda field_name: ConditionBuilder(self.__and_conditions, self, field_name))
 
 
-def product_id_query(product_id: ObjectId) -> StockInBranchQuery:
-    query = StockInBranchQuery()
-    query.product_id = IdQueryRepresentation(product_id, "stocks.product._id")
-    return query
+def product_id_query(product_id: ObjectId) -> Query:
+    return QueryBuilder().and_condition().field("stocks.product._id").equals(product_id).compile()

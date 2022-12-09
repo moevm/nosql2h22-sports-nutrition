@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from logging import info
 
 from bson import ObjectId
 
@@ -8,7 +7,7 @@ from server.common.logger import is_logged
 from server.common.monad import Optional
 from server.data.database.branch_entity import BranchEntity, from_branch_document, StockEntity, from_stock_document, \
     from_branch_info_document
-from server.data.database.query import BranchQuery, StockInBranchQuery, IdQueryRepresentation
+from server.data.database.query import QueryBuilder, Query
 from server.data.dto.common.util import first
 from server.data.services.common.page import Page
 from server.database.mongo_connection import MongoConnection
@@ -87,22 +86,16 @@ class BranchRepository:
         return request
 
     @is_logged(['class'])
-    async def find_by_query(self, request: BranchQuery) -> list:
-        query = request.get_json()
-        info(f"query: {query}")
+    async def find_by_query(self, request: Query) -> list:
         return [from_branch_document(document) for document in
-                await self.collection.find({"$and": query}).to_list(length=None)]
+                await self.collection.find(request.get_json()).to_list(length=None)]
 
     @is_logged(['class', 'id'])
     async def find_by_id(self, branch_id: ObjectId) -> Optional:
-        query = BranchQuery()
-        query.id = IdQueryRepresentation(branch_id)
-        return first(await self.find_by_query(query))
+        return first(await self.find_by_query(QueryBuilder().and_condition().field("_id").equals(branch_id).compile()))
 
     @is_logged(['class', 'branch_id'])
-    async def find_stock(self, branch_id: ObjectId, request: StockInBranchQuery) -> list:
-        query = request.get_json()
-        info(f"query: {query}")
+    async def find_stock(self, branch_id: ObjectId, request: Query) -> list:
         return [from_stock_document(document['stock']) for document in await self.collection.aggregate(
             [
                 {
@@ -114,9 +107,7 @@ class BranchRepository:
                     "$unwind": Token.STOCKS
                 },
                 {
-                    "$match": {
-                        "$and": query
-                    }
+                    "$match": request.get_json()
                 },
                 {
                     "$project": {

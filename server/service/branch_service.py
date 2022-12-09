@@ -1,8 +1,8 @@
 from bson import ObjectId
 
-from server.common.exceptions import EmployeeNotFound, ProductNotFound, ProductAlreadyExists, BranchNotFound
+from server.common.exceptions import ProductNotFound, ProductAlreadyExists, BranchNotFound
 from server.common.logger import is_logged
-from server.data.database.query import EmployeeInBranchQuery, BranchQuery, StockInBranchQuery, product_id_query
+from server.data.database.query import product_id_query, Query
 from server.data.dto_to_service_mapper import first
 from server.data.entity_to_service_mapper import from_employee_entity, from_stock_entity, from_branch_entity, \
     from_branch_entity_to_info
@@ -29,8 +29,9 @@ class EmployeesAccessor:
         return from_employee_entity(await self.repository.insert(self.branch_id, entity_from_employee(request)))
 
     @is_logged(['class', 'request'])
-    async def find(self, request: EmployeeInBranchQuery) -> list:
-        return [from_employee_entity(entity) for entity in await self.repository.find_by_query(self.branch_id, request)]
+    async def find(self, request: Query) -> list:
+        return [from_employee_entity(entity) for entity in
+                await self.repository.find_in_branch(self.branch_id, request)]
 
 
 class StocksAccessor:
@@ -54,7 +55,7 @@ class StocksAccessor:
         return from_stock_entity(await self.branch_repository.add_stock(self.branch_id, stock))
 
     @is_logged(['class', 'request'])
-    async def find(self, request: StockInBranchQuery) -> list:
+    async def find(self, request: Query) -> list:
         return [from_stock_entity(entity) for entity in
                 await self.branch_repository.find_stock(self.branch_id, request)]
 
@@ -95,14 +96,12 @@ class BranchService:
         return from_branch_entity(await self.branch_repository.insert(entity_from_insert_branch(request)))
 
     @is_logged(['class', 'query'])
-    async def find_branches(self, query: BranchQuery) -> list:
+    async def find_branches(self, query: Query) -> list:
         return [from_branch_entity(entity) for entity in await self.branch_repository.find_by_query(query)]
 
-    @is_logged(['class', 'employee_id'])
-    async def find_employee(self, employee_id: ObjectId) -> EmployeeIndexed:
-        return (await self.employees_repository.find_by_id(employee_id)) \
-            .map(from_employee_entity) \
-            .or_raise(lambda: EmployeeNotFound(employee_id))
+    @is_logged(['class', 'request'])
+    async def find_employee(self, request: Query) -> list:
+        return [from_employee_entity(entity) for entity in await self.employees_repository.find(request)]
 
     async def access(self, branch_id: ObjectId, accessor_function):
         (await self.branch_repository.find_by_id(branch_id)).or_raise(lambda: BranchNotFound(branch_id))

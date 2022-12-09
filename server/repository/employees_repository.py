@@ -1,12 +1,9 @@
-from logging import info
-
 from bson import ObjectId
 
 from server.common.exceptions import BranchNotFound
 from server.common.logger import is_logged
-from server.common.monad import Optional
 from server.data.database.branch_entity import EmployeeEntity, from_employee_document
-from server.data.database.query import EmployeeInBranchQuery
+from server.data.database.query import Query
 from server.database.mongo_connection import MongoConnection
 
 
@@ -33,9 +30,7 @@ class EmployeeRepository:
         return request
 
     @is_logged(['class', 'branch_id'])
-    async def find_by_query(self, branch_id: ObjectId, request: EmployeeInBranchQuery) -> list:
-        query = request.get_json()
-        info(f"query: {query}")
+    async def find_in_branch(self, branch_id: ObjectId, request: Query) -> list:
         return [from_employee_document(document['employee']) for document in await self.collection.aggregate(
             [
                 {
@@ -47,9 +42,7 @@ class EmployeeRepository:
                     "$unwind": "$employees"
                 },
                 {
-                    "$match": {
-                        "$and": query
-                    }
+                    "$match": request.get_json()
                 },
                 {
                     "$project": {
@@ -58,12 +51,19 @@ class EmployeeRepository:
                 }
             ]).to_list(length=None)]
 
-    @is_logged(['class', 'employee_id'])
-    async def find_by_id(self, employee_id: ObjectId) -> Optional:
-        return Optional(await self.collection.find_one(
-            {
-                "employees._id": employee_id
-            },
-            {
-                "employees.$": 1
-            })).map(lambda branch: branch['employees'][0]).map(from_employee_document)
+    @is_logged(['class', 'request'])
+    async def find(self, request: Query) -> list:
+        return [from_employee_document(document['employee']) for document in await self.collection.aggregate(
+            [
+                {
+                    "$unwind": "$employees"
+                },
+                {
+                    "$match": request.get_json()
+                },
+                {
+                    "$project": {
+                        "employee": "$employees"
+                    }
+                }
+            ]).to_list(length=None)]

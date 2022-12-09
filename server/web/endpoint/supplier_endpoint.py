@@ -6,10 +6,11 @@ from sanic_ext import validate
 
 from server.common.factory import supplier_service
 from server.data.dto.common.page_dto import PageDto
-from server.data.dto.common.response_dto import response_find_page
+from server.data.dto.common.response_dto import response_find_page, response_find_supplier
 from server.data.dto.product.product_dto import InsertProductWithDescriptorDto
-from server.data.dto.supplier.supplier_dto import InsertSupplierDto
-from server.data.dto_to_service_mapper import from_insert_supplier_dto, from_insert_product_with_descriptor_dto
+from server.data.dto.supplier.supplier_dto import InsertSupplierDto, SupplierQueryDto
+from server.data.dto_to_service_mapper import from_insert_supplier_dto, from_insert_product_with_descriptor_dto, \
+    from_supplier_query_dto
 from server.data.service_to_dto_mapper import dto_indexed_from_supplier, dto_indexed_from_product_indexed, \
     dto_info_from_supplier
 from server.data.services.common.page import from_page_dto
@@ -33,9 +34,10 @@ async def get_page(request: Request, query: PageDto) -> HTTPResponse:
     return res.json(response_find_page(query, suppliers).dict(by_alias=True))
 
 
-@supplier_blueprint.route("/supplier/<supplier_id:str>", methods=['GET'])
-async def find_supplier_by_id(request: Request, supplier_id: str) -> HTTPResponse:
-    return res.json(dto_indexed_from_supplier(await supplier_service.find_by_id(ObjectId(supplier_id)))
+@supplier_blueprint.route("/supplier", methods=['GET'])
+@validate(query=SupplierQueryDto)
+async def find_supplier(request: Request, query: SupplierQueryDto) -> HTTPResponse:
+    return res.json(response_find_supplier(await supplier_service.find(from_supplier_query_dto(query)))
                     .dict(by_alias=True))
 
 

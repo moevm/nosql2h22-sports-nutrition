@@ -2,6 +2,7 @@ from bson import ObjectId
 
 from server.common.exceptions import SupplierNotFound
 from server.common.logger import is_logged
+from server.data.database.query import Query
 from server.data.entity_to_service_mapper import from_product_entity, from_supplier_entity_to_info, \
     from_supplier_entity_to_indexed
 from server.data.service_to_entity_mapper import entity_from_supplier, entity_from_insert_product_with_descriptor
@@ -47,11 +48,9 @@ class SupplierService:
     async def insert(self, request: InsertSupplier) -> SupplierIndexed:
         return from_supplier_entity_to_indexed(await self.supplier_repository.insert(entity_from_supplier(request)))
 
-    @is_logged(['class', 'object_id'])
-    async def find_by_id(self, supplier_id: ObjectId) -> SupplierIndexed:
-        return (await self.supplier_repository.find_by_id(supplier_id)) \
-            .map(from_supplier_entity_to_indexed) \
-            .or_raise(lambda: SupplierNotFound(supplier_id))
+    @is_logged(['class', 'request'])
+    async def find(self, request: Query) -> list:
+        return [from_supplier_entity_to_indexed(entity) for entity in await self.supplier_repository.find(request)]
 
     async def access(self, supplier_id: ObjectId, accessor_function):
         (await self.supplier_repository.find_by_id(supplier_id)).or_raise(lambda: SupplierNotFound(supplier_id))

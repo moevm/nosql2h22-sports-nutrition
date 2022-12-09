@@ -26,6 +26,7 @@ class EmployeeIndexed:
     def get_dismissal_date(self) -> Optional:
         return Optional(self.dismissal_date)
 
+
 @dataclass
 class ProductDescriptorIndexed:
     id: ObjectId

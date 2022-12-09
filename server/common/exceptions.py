@@ -1,14 +1,8 @@
-from bson import ObjectId
 from sanic.exceptions import InvalidUsage, NotFound
 
 
 class FileNotFound(NotFound):
     pass
-
-
-class EmployeeNotFound(NotFound):
-    def __init__(self, employee_id: ObjectId):
-        super().__init__(f"Employee with id {employee_id} not found")
 
 
 class BranchNotFound(NotFound):
@@ -29,6 +23,16 @@ class SupplierNotFound(NotFound):
 class ProductAlreadyExists(InvalidUsage):
     def __init__(self, product_id, branch_id):
         super().__init__(f"Product with id '{product_id}' alredy present in branch '{branch_id}'")
+
+
+class InvalidQueryList(InvalidUsage):
+    def __init__(self, query: str):
+        super().__init__(f"Strings in query list must be separated by ', ': {query}")
+
+
+class InvalidPhoneQuery(InvalidUsage):
+    def __init__(self, query: str):
+        super().__init__(f"Phone number query must contain only numeric symbols: {query}")
 
 
 class EmptyQuery(InvalidUsage):

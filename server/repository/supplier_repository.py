@@ -4,7 +4,9 @@ from bson import ObjectId
 
 from server.common.logger import is_logged
 from server.common.monad import Optional
+from server.data.database.query import QueryBuilder, Query
 from server.data.database.supplier_entity import SupplierEntity, from_supplier_document, from_supplier_info_document
+from server.data.dto.common.util import first
 from server.data.services.common.page import Page
 from server.database.mongo_connection import MongoConnection
 
@@ -54,4 +56,9 @@ class SupplierRepository:
 
     @is_logged(['class', 'supplier_id'])
     async def find_by_id(self, supplier_id: ObjectId) -> Optional:
-        return Optional(await self.collection.find_one({"_id": supplier_id})).map(from_supplier_document)
+        return first(await self.find(QueryBuilder().and_condition().field("_id").equals(supplier_id).compile()))
+
+    @is_logged(['class', 'request'])
+    async def find(self, request: Query) -> list:
+        return [from_supplier_document(document) for document in
+                await self.collection.find(request.get_json()).to_list(length=None)]

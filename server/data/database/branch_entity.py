@@ -3,7 +3,6 @@ from typing import List
 
 from pydantic import BaseModel, Field
 
-from server.common.logger import is_logged
 from server.data.database.common import PydanticObjectId
 
 
@@ -71,7 +70,6 @@ class BranchInfoEntity(BaseModel):
     stocks: int
 
 
-@is_logged(['document'])
 def from_salary_change_document(document) -> SalaryChangeEntity:
     entity = SalaryChangeEntity.construct()
     entity.salary_before = document['salary_before']
@@ -80,7 +78,6 @@ def from_salary_change_document(document) -> SalaryChangeEntity:
     return entity
 
 
-@is_logged(['document'])
 def from_vacation_document(document) -> VacationEntity:
     entity = VacationEntity.construct()
     entity.payments = document['payments']
@@ -89,7 +86,6 @@ def from_vacation_document(document) -> VacationEntity:
     return entity
 
 
-@is_logged(['document'])
 def from_employee_document(document) -> EmployeeEntity:
     entity = EmployeeEntity.construct()
     entity.id = document['_id']
@@ -109,7 +105,6 @@ def from_employee_document(document) -> EmployeeEntity:
     return entity
 
 
-@is_logged(['document'])
 def from_product_descriptor_document(document) -> ProductDescriptorEntity:
     entity = ProductDescriptorEntity.construct()
     entity.id = document['_id']
@@ -117,7 +112,6 @@ def from_product_descriptor_document(document) -> ProductDescriptorEntity:
     return entity
 
 
-@is_logged(['document'])
 def from_product_document(document) -> ProductEntity:
     entity = ProductEntity.construct()
     entity.id = document['_id']
@@ -127,7 +121,6 @@ def from_product_document(document) -> ProductEntity:
     return entity
 
 
-@is_logged(['document'])
 def from_stock_document(document) -> StockEntity:
     entity = StockEntity.construct()
     entity.id = document['_id']
@@ -137,7 +130,6 @@ def from_stock_document(document) -> StockEntity:
     return entity
 
 
-@is_logged(['document'])
 def from_branch_document(document) -> BranchEntity:
     entity = BranchEntity.construct()
     entity.id = document['_id']
@@ -148,7 +140,6 @@ def from_branch_document(document) -> BranchEntity:
     return entity
 
 
-@is_logged(['document'])
 def from_branch_info_document(document) -> BranchInfoEntity:
     entity = BranchInfoEntity.construct()
     entity.id = document['_id']

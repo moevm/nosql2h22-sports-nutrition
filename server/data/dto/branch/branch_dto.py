@@ -17,7 +17,7 @@ class StockInBranchQueryDto(BaseModel):
     price_to: Any = Field(None)
 
 
-class EmployeeInBranchQueryDto(BaseModel):
+class EmployeeQueryDto(BaseModel):
     id: Any = Field(None, alias="_id")
     name: Any = Field(None)
     surname: Any = Field(None)
@@ -32,7 +32,7 @@ class EmployeeInBranchQueryDto(BaseModel):
     salary_to: Any = Field(None)
 
 
-class AddProductDto(BaseModel):
+class AddStockDto(BaseModel):
     product_id: str = Field(..., max_length=DtoConstant.MAX_STRING_SIZE, min_length=DtoConstant.MIN_STRING_SIZE)
     price: float = Field(..., ge=0)
     amount: int = Field(..., ge=0)

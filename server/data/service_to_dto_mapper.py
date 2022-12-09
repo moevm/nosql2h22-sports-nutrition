@@ -1,4 +1,3 @@
-from server.common.logger import is_logged
 from server.data.datetime_formatter import get_string
 from server.data.dto.branch.branch_dto import SalaryChangeDto, VacationDto
 from server.data.dto.branch.branch_indexed_dto import EmployeeIndexedDto, ProductDescriptorIndexedDto, \
@@ -12,7 +11,6 @@ from server.data.services.branch.branch_indexed import EmployeeIndexed, ProductD
 from server.data.services.supplier.supplier import SupplierIndexed, SupplierInfo
 
 
-@is_logged(['document'])
 def dto_from_salary_change(change: SalaryChange) -> SalaryChangeDto:
     dto = SalaryChangeDto.construct()
     dto.salary_before = change.salary_before
@@ -21,7 +19,6 @@ def dto_from_salary_change(change: SalaryChange) -> SalaryChangeDto:
     return dto
 
 
-@is_logged(['document'])
 def dto_from_vacation(vacation: Vacation) -> VacationDto:
     dto = VacationDto.construct()
     dto.payments = vacation.payments
@@ -30,7 +27,6 @@ def dto_from_vacation(vacation: Vacation) -> VacationDto:
     return dto
 
 
-@is_logged(['document'])
 def dto_indexed_from_employee_indexed(employee: EmployeeIndexed) -> EmployeeIndexedDto:
     dto = EmployeeIndexedDto.construct()
     dto.id = str(employee.id)
@@ -50,7 +46,6 @@ def dto_indexed_from_employee_indexed(employee: EmployeeIndexed) -> EmployeeInde
     return dto
 
 
-@is_logged(['document'])
 def dto_indexed_from_product_descriptor_indexed(descriptor: ProductDescriptorIndexed) -> ProductDescriptorIndexedDto:
     dto = ProductDescriptorIndexedDto.construct()
     dto.id = str(descriptor.id)
@@ -58,7 +53,6 @@ def dto_indexed_from_product_descriptor_indexed(descriptor: ProductDescriptorInd
     return dto
 
 
-@is_logged(['document'])
 def dto_indexed_from_product_indexed(product: ProductIndexed) -> ProductIndexedDto:
     dto = ProductIndexedDto.construct()
     dto.id = str(product.id)
@@ -68,7 +62,6 @@ def dto_indexed_from_product_indexed(product: ProductIndexed) -> ProductIndexedD
     return dto
 
 
-@is_logged(['document'])
 def dto_indexed_from_stock_indexed(stock: StockIndexed) -> StockIndexedDto:
     dto = StockIndexedDto.construct()
     dto.id = str(stock.id)
@@ -78,7 +71,6 @@ def dto_indexed_from_stock_indexed(stock: StockIndexed) -> StockIndexedDto:
     return dto
 
 
-@is_logged(['document'])
 def dto_indexed_from_branch_indexed(branch: BranchIndexed) -> BranchIndexedDto:
     dto = BranchIndexedDto.construct()
     dto.id = str(branch.id)
@@ -89,7 +81,6 @@ def dto_indexed_from_branch_indexed(branch: BranchIndexed) -> BranchIndexedDto:
     return dto
 
 
-@is_logged(['document'])
 def dto_info_from_branch_info(branch: BranchInfo) -> BranchInfoDto:
     dto = BranchInfoDto.construct()
     dto.id = str(branch.id)
@@ -100,7 +91,6 @@ def dto_info_from_branch_info(branch: BranchInfo) -> BranchInfoDto:
     return dto
 
 
-@is_logged(['document'])
 def dto_indexed_from_supplier(supplier: SupplierIndexed) -> SupplierIndexedDto:
     dto = SupplierIndexedDto.construct()
     dto.id = str(supplier.id)
@@ -111,7 +101,6 @@ def dto_indexed_from_supplier(supplier: SupplierIndexed) -> SupplierIndexedDto:
     return dto
 
 
-@is_logged(['document'])
 def dto_info_from_supplier(supplier: SupplierInfo) -> SupplierInfoDto:
     dto = SupplierInfoDto.construct()
     dto.id = str(supplier.id)

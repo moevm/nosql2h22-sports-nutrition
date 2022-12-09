@@ -1,22 +1,16 @@
-from logging import info
-
-from bson import ObjectId
 from sanic import response as res, Request, HTTPResponse, Blueprint
+from sanic_ext import validate
 
 from server.common.factory import branch_service
-from server.data.service_to_dto_mapper import dto_indexed_from_employee_indexed
+from server.data.dto.branch.branch_dto import EmployeeQueryDto
+from server.data.dto.common.response_dto import response_find_employees
+from server.data.dto_to_service_mapper import from_employee_query_dto
 
 employee_blueprint = Blueprint("employee")
 
 
-@employee_blueprint.route("/employee/<employee_id:str>", methods=['GET'])
-async def get_employee_by_id(request: Request, employee_id: str) -> HTTPResponse:
-    employee_id = ObjectId(employee_id)
-
-    info(f"get_employee_by_id: {employee_id}")
-
-    employee = dto_indexed_from_employee_indexed(await branch_service.find_employee(ObjectId(employee_id)))
-
-    info(f"found employee {employee}")
-
-    return res.json(employee.dict(by_alias=True))
+@employee_blueprint.route("/employee", methods=['GET'])
+@validate(query=EmployeeQueryDto)
+async def find_employee(request: Request, query: EmployeeQueryDto) -> HTTPResponse:
+    return res.json(response_find_employees(await branch_service.find_employee(from_employee_query_dto(query)))
+                    .dict(by_alias=True))

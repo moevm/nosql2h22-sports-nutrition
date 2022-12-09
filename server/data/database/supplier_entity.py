@@ -2,7 +2,6 @@ from typing import List
 
 from pydantic import BaseModel, Field
 
-from server.common.logger import is_logged
 from server.data.database.branch_entity import ProductEntity, from_product_document
 from server.data.database.common import PydanticObjectId
 
@@ -23,7 +22,6 @@ class SupplierInfoEntity(BaseModel):
     products: int
 
 
-@is_logged(['document'])
 def from_supplier_document(document) -> SupplierEntity:
     entity = SupplierEntity.construct()
     entity.id = document['_id']
@@ -34,7 +32,6 @@ def from_supplier_document(document) -> SupplierEntity:
     return entity
 
 
-@is_logged(['document'])
 def from_supplier_info_document(document) -> SupplierInfoEntity:
     entity = SupplierInfoEntity.construct()
     entity.id = document['_id']
