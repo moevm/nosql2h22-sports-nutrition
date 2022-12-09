@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useState } from "react";
-import { BootstrapDialog, BootstrapDialogTitle } from "../suppliers/FindSupplierDialog";
+import { BootstrapDialog, BootstrapDialogTitle } from "../suppliers/FindSupplier";
 import DialogContent from "@mui/material/DialogContent";
 import { TextField } from "@mui/material";
 import DialogActions from "@mui/material/DialogActions";
@@ -9,15 +9,15 @@ import { postStock } from "../../api/branch";
 
 const errorMessageId = "Error in entered product's id. Product doesn't exist";
 
-export function AddStockToBranch({ isOpen, setOpen, branchId, stocks, setStocks }: {
-                                   isOpen: boolean,
-                                   setOpen: (action: boolean) => void,
-                                   branchId: string,
-                                   stocks: any[],
-                                   setStocks: (list: any[]) => void
-                                 }
-) {
-
+interface StockToBranchProps {
+  isOpen: boolean,
+  setOpen: (action: boolean) => void,
+  branchId: string,
+  stocks: any[],
+  setStocks: (list: any[]) => void
+}
+export function AddStockToBranch(props: StockToBranchProps) {
+  const { isOpen, setOpen, branchId, stocks, setStocks } = props;
   const [price, setPrice] = useState(-1);
   const [amount, setAmount] = useState(-1);
   const [productId, setProductId] = useState("");

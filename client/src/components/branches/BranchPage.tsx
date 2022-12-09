@@ -13,8 +13,8 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { EmployeesList } from "../employees/EmployeesList";
 import { FindStockDialog } from "../stocks/FindStockDialog";
 import { FilterStocksCriteria } from "api/branch";
-import { FindEmployeesDialog } from "../employees/FindEmployeesDialog";
-import { getFilteredEmployees } from "../../api/employee";
+import { EmployeesDialog } from "../employees/EmployeesDialog";
+import { findEmployeesInBranch } from "../../api/employee";
 import { AddEmployee } from "../employees/AddEmployee";
 import { logDOM } from "@testing-library/react";
 
@@ -65,7 +65,7 @@ export const BranchPage = () => {
     if (!branch || isObjEmpty(employeeFilterCriteria)) {
       return;
     }
-    getFilteredEmployees(employeeFilterCriteria, branch._id)
+    findEmployeesInBranch(employeeFilterCriteria, branch._id)
       .then((response) => response.json())
       .then((json) => {
         setEmployees(json.result);
@@ -110,8 +110,8 @@ export const BranchPage = () => {
         <AddEmployee isOpen={isOpenEmployeeForm} setOpen={setOpenEmployeeForm} branchId={branch._id}
                      employees={employees}
                      setEmployees={setEmployees} />
-        <FindEmployeesDialog onChange={setEmployeeFilterCriteria}
-                             value={employeeFilterCriteria} />
+        <EmployeesDialog onChange={setEmployeeFilterCriteria}
+                         value={employeeFilterCriteria} />
         <EmployeesList employees={employees} />
       </TabPanel>
 

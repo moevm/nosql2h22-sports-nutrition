@@ -25,7 +25,6 @@ const convertToObject = (json: any): IAddBranchResponse => {
 
 export const AddSupplier = () => {
   const navigate = useNavigate();
-  const [data, setData] = useState<IAddBranchResponse>();
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
@@ -35,7 +34,6 @@ export const AddSupplier = () => {
       .then((response) => response.json())
       .then((json) => {
         const parsedJson = convertToObject(json);
-        setData(parsedJson);
         navigate("/suppliers");
       });
   }, [convertToObject, postSupplier]);

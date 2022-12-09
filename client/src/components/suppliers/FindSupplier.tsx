@@ -51,7 +51,7 @@ export function BootstrapDialogTitle(props: DialogTitleProps) {
   );
 }
 
-export function FindSupplierDialog({ isOpen, setOpen }: {
+export function FindSupplier({ isOpen, setOpen }: {
                                      isOpen: boolean,
                                      setOpen: (action: boolean) => void
                                    }

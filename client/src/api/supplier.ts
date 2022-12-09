@@ -1,11 +1,34 @@
 import { HOST, SERVER_PORT } from "../constants";
 import { modeAndHeaders } from "./constants";
+import { FilterEmployeesCriteria } from "./branch";
+import { toQueryString } from "./functions";
 
-export const getSupplier = (id: string): Promise<Response> => {
-  return fetch(`${HOST}${SERVER_PORT}/supplier/${id}`, {
+
+export interface FilterSupplierCriteria {
+  _id?: string;
+  phone?: string;
+  name?: string;
+  email?: string;
+  employment_date_to?: string;
+  product_names?: string;
+  product_ids?: string;
+  descriptor_ids?: string;
+}
+
+export const getSupplierById = (id: string): Promise<Response> => {
+  return fetch(`${HOST}${SERVER_PORT}/supplier?_id=${id}`, {
     method: "GET",
     ...modeAndHeaders
   });
+};
+
+export const getSupplier = (filter: FilterSupplierCriteria) => {
+  const query = toQueryString(filter);
+  return fetch(`${HOST}${SERVER_PORT}/supplier?${query}`,
+    {
+      method: "GET",
+      ...modeAndHeaders
+    });
 };
 
 export const postSupplier = (nameReq: string, phoneReq: string, emailReq: string) => {
@@ -16,8 +39,8 @@ export const postSupplier = (nameReq: string, phoneReq: string, emailReq: string
   });
 };
 
-export const getSupplierPage = (pageSize: number, currentPage: number) => {
-  return fetch(`${HOST}${SERVER_PORT}/supplier/page?size=${pageSize}&page=${currentPage}`, {
+export const getSupplierPage = (pageSize: number, currentPage: number, productsSize: number = 5) => {
+  return fetch(`${HOST}${SERVER_PORT}/supplier/page?size=${pageSize}&page=${currentPage}&products_size=${productsSize}`, {
     method: "GET",
     ...modeAndHeaders
   });

@@ -4,9 +4,8 @@ import { Box, Tab, Tabs, Typography } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 
 export const Main = () => {
-  const [value, setValue] = useState(undefined);
   return <Box>
-    <Typography variant={"h3"}> Welcome to Sport nutrition information system! </Typography>
+    <Typography component="div" variant={"h3"}> Welcome to Sport nutrition information system! </Typography>
     <Tabs indicatorColor="secondary" textColor="inherit">
       <Tab
         component={RouterLink}

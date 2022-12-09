@@ -2,7 +2,7 @@ import * as React from "react";
 import { useState } from "react";
 import { Box, Tab, Tabs, Typography } from "@mui/material";
 import { SuppliersList } from "./SuppliersList";
-import { FindSupplierDialog } from "./FindSupplierDialog";
+import { FindSupplier } from "./FindSupplier";
 import { AddSupplier } from "./AddSupplier";
 import { TabPanel } from "components/tabs/tabs";
 
@@ -16,7 +16,7 @@ export const Suppliers = () => {
 
   return (
     <Box>
-      <Typography variant="h3"> Suppliers page </Typography>
+      <Typography component="div" variant="h3"> Suppliers page </Typography>
       <Box flexDirection={"row"}>
         <Tabs value={tabValue} onChange={handleChange}>
           <Tab
@@ -38,7 +38,7 @@ export const Suppliers = () => {
         <AddSupplier />
       </TabPanel>
       <TabPanel value={tabValue} index={2}>
-        <FindSupplierDialog isOpen={isOpenForm} setOpen={setOpenForm} />
+        <FindSupplier isOpen={isOpenForm} setOpen={setOpenForm} />
       </TabPanel>
     </Box>
   );

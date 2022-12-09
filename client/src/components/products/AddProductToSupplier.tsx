@@ -4,18 +4,19 @@ import DialogContent from "@mui/material/DialogContent";
 import { TextField } from "@mui/material";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
-import { BootstrapDialog, BootstrapDialogTitle } from "../suppliers/FindSupplierDialog";
+import { BootstrapDialog, BootstrapDialogTitle } from "../suppliers/FindSupplier";
 import { postProduct } from "../../api/supplier";
 
-export function AddProductToSupplier({ isOpen, setOpen, supplierId, products, setProducts }: {
-                                       isOpen: boolean,
-                                       setOpen: (action: boolean) => void,
-                                       supplierId: string,
-                                       products: any[],
-                                       setProducts: (list: any[]) => void
-                                     }
-) {
+interface SupplierProductProps {
+  isOpen: boolean,
+  setOpen: (action: boolean) => void,
+  supplierId: string,
+  products: any[],
+  setProducts: (list: any[]) => void
+}
+export function AddProductToSupplier(props: SupplierProductProps) {
 
+  const { isOpen, setOpen, supplierId, products, setProducts } = props;
   const [price, setPrice] = useState(-1);
   const [name, setName] = useState("");
 

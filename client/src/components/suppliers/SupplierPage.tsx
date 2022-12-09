@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { IconButton, Stack, TextField, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { NotFound } from "../NotFound";
-import { getSupplier } from "../../api/supplier";
+import { getSupplierById } from "../../api/supplier";
 import { ProductsList } from "../products/ProductsList";
 import { AddProductToSupplier } from "../products/AddProductToSupplier";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
@@ -15,20 +15,20 @@ export const SupplierPage = () => {
   const [isOpenForm, setOpenForm] = useState(false);
 
   useEffect(() => {
-    getSupplier(params.id!)
+    getSupplierById(params.id!)
       .then((response) => response.json())
       .then((json) => {
-        setSupplier(json);
-        setProducts(json.products);
+        setSupplier(json.result[0]);
+        setProducts(json.result[0].products);
       });
-  }, [params, getSupplier]);
+  }, [params, getSupplierById]);
 
   if (!supplier) {
     return <NotFound />;
   }
   return (
     <Stack spacing={2}>
-      <Typography variant={"h4"}> Supplier {supplier.name} </Typography>
+      <Typography component="span" variant={"h4"}> Supplier {supplier.name} </Typography>
       <TextField
         style={{ width: "80%" }}
         label="Id"
@@ -65,7 +65,7 @@ export const SupplierPage = () => {
         }}
         value={supplier.email}
       />
-      <Typography variant={"h5"}> Products of supplier </Typography>
+      <Typography component="span" variant={"h5"}> Products of supplier </Typography>
       <IconButton color="inherit" title="Add new product"
                   style={{ width: "2em" }}
                   onClick={() => setOpenForm(!isOpenForm)}>

@@ -4,17 +4,20 @@ import { List, ListItem, ListItemButton, ListItemIcon } from "@mui/material";
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 
-export const Pagination = ({
-                             onPageChange,
-                             currentPage,
-                             className,
-                             lastPage
-                           }: {
+interface PaginationProps {
   onPageChange: (page: number) => void;
   currentPage: number;
   lastPage: boolean;
   className: string;
-}) => {
+}
+export const Pagination = (props: PaginationProps) => {
+
+  const {
+    onPageChange,
+    currentPage,
+    className,
+    lastPage
+  } = props;
 
   const onNext = () => {
     onPageChange(currentPage + 1);

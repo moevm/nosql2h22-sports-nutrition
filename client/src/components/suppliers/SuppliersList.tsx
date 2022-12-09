@@ -3,13 +3,14 @@ import { useEffect, useState } from "react";
 import { Pagination } from "../pagination/Pagination";
 import { HOST } from "../../constants";
 import { getSupplierPage, importSuppliers } from "../../api/supplier";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Stack } from "@mui/material";
 import { ExportPage } from "../export/ExportPage";
 import { exportSuppliersPage } from "../../api/export";
 import { ImportPage } from "../import/ImportPage";
 import "./Suppliers.scss";
 
 const pageSize = 15;
+const productsSize = 5;
 
 export const SuppliersList = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -19,7 +20,7 @@ export const SuppliersList = () => {
   const [importDialogOpen, setImportDialogOpen] = useState(false);
 
   useEffect(() => {
-    getSupplierPage(pageSize, currentPage)
+    getSupplierPage(pageSize, currentPage, productsSize)
       .then((response) => response.json())
       .then((json) => {
         if (json.items.length) {
@@ -49,6 +50,7 @@ export const SuppliersList = () => {
         <tr>
           <th>Supplier Id</th>
           <th>Name</th>
+          <th>Products</th>
         </tr>
         </thead>
         <tbody>
@@ -56,10 +58,15 @@ export const SuppliersList = () => {
           return (
             <tr key={item._id} className="suppliers-table">
               <td className="cell-id">
-                <a href={`${HOST}8080/supplier/${item._id}`}>
+                <a href={`/supplier/${item._id}`}>
                   {item._id}
                 </a></td>
               <td>{item.name}</td>
+              <td>
+                <Stack>
+                  {item.products.join(", ") + "..."}
+                </Stack>
+              </td>
             </tr>
           );
         })}
