@@ -1,15 +1,15 @@
 from bson import ObjectId
 
-from server.common.exceptions import InvalidQueryList, InvalidPhoneQuery
+from server.common.exceptions import InvalidPhoneQuery
 from server.common.monad import Optional
-from server.data.database.query import Query
+from server.data.database.query import Query, IntervalHolder
 from server.data.database.query import QueryBuilder
 from server.data.datetime_formatter import get_datetime
 from server.data.dto.branch.branch_dto import AddStockDto, SalaryChangeDto, VacationDto, InsertEmployeeDto, \
-    InsertBranchDto, BranchQueryDto, EmployeeQueryDto, StockInBranchQueryDto
+    InsertBranchDto, BranchQueryDto, EmployeeQueryDto, StockQueryDto
 from server.data.dto.branch.branch_indexed_dto import IndexedBranchesDto, BranchDto, StockIndexedDto, \
     ProductIndexedDto, ProductDescriptorIndexedDto, EmployeeIndexedDto
-from server.data.dto.common.util import first
+from server.data.dto.common.util import unpack_first, split_query_string, object_id
 from server.data.dto.product.product_dto import ProductDescriptorDto, InsertProductWithDescriptorDto
 from server.data.dto.supplier.supplier_dto import InsertSupplierDto, SupplierQueryDto
 from server.data.dto.supplier.supplier_indexed_dto import SupplierDto
@@ -82,25 +82,32 @@ def from_insert_branch_dto(branch: InsertBranchDto) -> InsertBranch:
     return InsertBranch(branch.name, branch.city)
 
 
+def get_interval_holder(value_from: list, value_to: list, mapper):
+    value = None
+    value_from = unpack_first(value_from)
+    value_to = unpack_first(value_to)
+
+    if value_from or value_to:
+        value_from = Optional(value_from).map(mapper).or_else(None)
+        value_to = Optional(value_to).map(mapper).or_else(None)
+        value = IntervalHolder(value_from, value_to)
+
+    return value
+
+
 def from_branch_query_dto(query: BranchQueryDto) -> Query:
     return QueryBuilder() \
         .and_condition().field("name").equals_regex(unpack_first(query.name)) \
         .and_condition().field("city").equals_regex(unpack_first(query.city)) \
         .and_condition().field("_id").equals(object_id(query.id)) \
+        .and_condition().field("stocks.product.descriptor.name").contains_all(split_query_string(query.product_names)) \
+        .and_condition().field("stocks").size_in_interval(get_interval_holder(query.stocks_from,
+                                                                              query.stocks_to,
+                                                                              int)) \
+        .and_condition().field("employees").size_in_interval(get_interval_holder(query.employees_from,
+                                                                                 query.employees_to,
+                                                                                 int)) \
         .compile()
-
-
-def split_query_string(query: list) -> list:
-    if query is None:
-        return None
-
-    string = unpack_first(query)
-    array = string.split(', ')
-
-    if not len(array):
-        raise InvalidQueryList(string)
-
-    return array
 
 
 def query_phone(phone_query: list) -> str:
@@ -113,14 +120,6 @@ def query_phone(phone_query: list) -> str:
         raise InvalidPhoneQuery(phone)
 
     return phone
-
-
-def unpack_first(array: list):
-    return first(array).or_else(None)
-
-
-def object_id(array: list):
-    return first(array).map(ObjectId).or_else(None)
 
 
 def query_ids(query: list) -> list:
@@ -154,18 +153,18 @@ def from_insert_product_with_descriptor_dto(dto: InsertProductWithDescriptorDto)
     return InsertProductWithDescriptor(dto.price, from_product_descriptor_dto(dto.descriptor))
 
 
-def from_stock_in_branch_query_dto(query: StockInBranchQueryDto) -> Query:
+def from_stock_in_branch_query_dto(query: StockQueryDto) -> Query:
     return QueryBuilder() \
         .and_condition().field("stocks.product.descriptor.name").equals_regex(unpack_first(query.name)) \
         .and_condition().field("stocks._id").has_id(unpack_first(query.id)) \
         .and_condition().field("stocks.product.supplier_id").equals(object_id(query.supplier_id)) \
         .and_condition().field("stocks.product._id").equals(object_id(query.product_id)) \
-        .and_condition().field("stocks.amount").in_interval(unpack_first(query.amount_from),
-                                                            unpack_first(query.amount_to),
-                                                            int) \
-        .and_condition().field("stocks.price").in_interval(unpack_first(query.price_from),
-                                                           unpack_first(query.price_to),
-                                                           int) \
+        .and_condition().field("stocks.amount").in_interval(get_interval_holder(query.amount_from,
+                                                                                query.amount_to,
+                                                                                int)) \
+        .and_condition().field("stocks.price").in_interval(get_interval_holder(query.price_from,
+                                                                               query.price_to,
+                                                                               int)) \
         .compile()
 
 
@@ -177,13 +176,13 @@ def from_employee_query_dto(query: EmployeeQueryDto) -> Query:
         .and_condition().field("employees.role").equals_regex(unpack_first(query.role)) \
         .and_condition().field("employees.phone").equals_regex(query_phone(query.phone_number)) \
         .and_condition().field("employees._id").has_id(unpack_first(query.id)) \
-        .and_condition().field("employees.salary").in_interval(unpack_first(query.salary_from),
-                                                               unpack_first(query.salary_to),
-                                                               float) \
-        .and_condition().field("employees.dismissal_date").in_interval(unpack_first(query.dismissal_date_from),
-                                                                       unpack_first(query.dismissal_date_to),
-                                                                       get_datetime) \
-        .and_condition().field("employees.employment_date").in_interval(unpack_first(query.employment_date_from),
-                                                                        unpack_first(query.employment_date_to),
-                                                                        get_datetime) \
+        .and_condition().field("employees.salary").in_interval(get_interval_holder(query.salary_from,
+                                                                                   query.salary_to,
+                                                                                   float)) \
+        .and_condition().field("employees.dismissal_date").in_interval(get_interval_holder(query.dismissal_date_from,
+                                                                                           query.dismissal_date_to,
+                                                                                           get_datetime)) \
+        .and_condition().field("employees.employment_date").in_interval(get_interval_holder(query.employment_date_from,
+                                                                                            query.employment_date_to,
+                                                                                            get_datetime)) \
         .compile()

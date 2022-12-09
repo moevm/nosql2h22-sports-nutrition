@@ -27,3 +27,11 @@ class PageDto(BaseModel):
     @validator('size')
     def positive_size(cls, size):
         return validate_number(size, 'size')
+
+
+class SupplierPageDto(PageDto):
+    products_size: list
+
+    @validator('products_size')
+    def positive_size(cls, products_size):
+        return validate_number(products_size, 'products_size')

@@ -10,6 +10,17 @@ from server.common.exceptions import EmptyQuery
 from server.common.monad import Optional
 
 
+def get_interval_holder(value_from, value_to, mapper):
+    value = None
+
+    if value_from or value_to:
+        value_from = Optional(value_from).map(mapper).or_else(None)
+        value_to = Optional(value_to).map(mapper).or_else(None)
+        value = IntervalHolder(value_from, value_to)
+
+    return value
+
+
 @dataclass
 class Constant:
     AND: str = "$and"
@@ -88,6 +99,25 @@ class IntervalQueryRepresentation(QueryRepresentation):
         return self.query
 
 
+class ArraySizeIntervalQueryRepresentation(IntervalQueryRepresentation):
+
+    def __init__(self, field_name: str, interval: IntervalHolder):
+        super().__init__(field_name, interval)
+
+    def represent(self) -> json:
+        if self.interval.value_from:
+            self.lazy_get_field_query_json()["$gt"] = {
+                "$size": self.interval.value_from
+            }
+
+        if self.interval.value_to:
+            self.lazy_get_field_query_json()["$lt"] = {
+                "$size": self.interval.value_to
+            }
+
+        return self.query
+
+
 class AllArrayQueryRepresentation(QueryRepresentation):
 
     def __init__(self, field_name: str, value: list):
@@ -131,14 +161,10 @@ class ConditionBuilder:
     def equals(self, value):
         return self.__build(value, lambda: FieldEqualsValueQueryRepresentation(self.__field_name, value))
 
-    def in_interval(self, value_from, value_to, mapper):
-        value = None
+    def size_in_interval(self, value: IntervalHolder):
+        return self.__build(value, lambda: ArraySizeIntervalQueryRepresentation(self.__field_name, value))
 
-        if value_from or value_to:
-            value_from = Optional(value_from).map(mapper).or_else(None)
-            value_to = Optional(value_to).map(mapper).or_else(None)
-            value = IntervalHolder(value_from, value_to)
-
+    def in_interval(self, value: IntervalHolder):
         return self.__build(value, lambda: IntervalQueryRepresentation(self.__field_name, value))
 
     def has_id(self, value):

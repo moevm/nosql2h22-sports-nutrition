@@ -6,7 +6,7 @@ from server.data.dto.common.constant import DtoConstant
 from server.data.dto.common.util import check
 
 
-class StockInBranchQueryDto(BaseModel):
+class StockQueryDto(BaseModel):
     id: Any = Field(None, alias="_id")
     supplier_id: Any = Field(None)
     product_id: Any = Field(None)
@@ -42,6 +42,11 @@ class BranchQueryDto(BaseModel):
     name: Any = Field(None)
     city: Any = Field(None)
     id: Any = Field(None, alias="_id")
+    product_names: Any = Field(None)
+    stocks_from: Any = Field(None)
+    stocks_to: Any = Field(None)
+    employees_from: Any = Field(None)
+    employees_to: Any = Field(None)
 
 
 class SalaryChangeDto(BaseModel):

@@ -3,7 +3,7 @@ from bson import ObjectId
 from server.common.exceptions import ProductNotFound, ProductAlreadyExists, BranchNotFound
 from server.common.logger import is_logged
 from server.data.database.query import product_id_query, Query
-from server.data.dto_to_service_mapper import first
+from server.data.dto.common.util import first
 from server.data.entity_to_service_mapper import from_employee_entity, from_stock_entity, from_branch_entity, \
     from_branch_entity_to_info
 from server.data.service_to_entity_mapper import entity_from_employee, entity_from_insert_branch, \

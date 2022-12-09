@@ -29,4 +29,4 @@ class SupplierInfoDto(BaseModel):
     name: str
     email: str
     phone: str
-    products: int
+    products: list

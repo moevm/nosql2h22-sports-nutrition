@@ -33,4 +33,4 @@ class SupplierInfo:
     name: str
     email: str
     phone: str
-    products: int
+    products: list

@@ -7,7 +7,7 @@ from server.common.monad import Optional
 from server.data.database.query import QueryBuilder, Query
 from server.data.database.supplier_entity import SupplierEntity, from_supplier_document, from_supplier_info_document
 from server.data.dto.common.util import first
-from server.data.services.common.page import Page
+from server.data.services.common.page import SupplierPage
 from server.database.mongo_connection import MongoConnection
 
 
@@ -27,7 +27,7 @@ class SupplierRepository:
         return request
 
     @is_logged(['class', 'page'])
-    async def page(self, page: Page) -> list:
+    async def page(self, page: SupplierPage) -> list:
         return [from_supplier_info_document(document) for document in await self.collection.aggregate([
             {
                 "$project": {
@@ -35,14 +35,12 @@ class SupplierRepository:
                     "email": 1,
                     "phone": 1,
                     "products": {
-                        "$cond": {
-                            "if": {
-                                "$isArray": Token.PRODUCTS
+                        "$map": {
+                            "input": {
+                                "$slice": ["$products", page.products_size]
                             },
-                            "then": {
-                                "$size": Token.PRODUCTS
-                            },
-                            "else": "-1"
+                            "as": "product",
+                            "in": "$$product.descriptor.name"
                         }
                     }
                 },

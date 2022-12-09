@@ -4,7 +4,7 @@ from sanic_ext import validate
 
 from server.common.factory import branch_service
 from server.data.dto.branch.branch_dto import InsertBranchDto, BranchQueryDto, AddStockDto, InsertEmployeeDto, \
-    EmployeeQueryDto, StockInBranchQueryDto
+    EmployeeQueryDto, StockQueryDto
 from server.data.dto.common.page_dto import PageDto
 from server.data.dto.common.response_dto import response_find_branch, response_find_page, response_find_employees, \
     response_find_stocks
@@ -50,8 +50,8 @@ async def find_employee(request: Request, branch_id: str, query: EmployeeQueryDt
 
 
 @branch_blueprint.route("/branch/<branch_id:str>/stock", methods=['GET'])
-@validate(query=StockInBranchQueryDto)
-async def find_stock(request: Request, branch_id: str, query: StockInBranchQueryDto) -> HTTPResponse:
+@validate(query=StockQueryDto)
+async def find_stock(request: Request, branch_id: str, query: StockQueryDto) -> HTTPResponse:
     inserted = await (await branch_service.stocks(ObjectId(branch_id))).find(from_stock_in_branch_query_dto(query))
 
     return res.json(response_find_stocks(inserted).dict(by_alias=True))

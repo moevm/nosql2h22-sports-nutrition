@@ -19,7 +19,7 @@ class SupplierInfoEntity(BaseModel):
     name: str
     email: str
     phone: str
-    products: int
+    products: list
 
 
 def from_supplier_document(document) -> SupplierEntity:
