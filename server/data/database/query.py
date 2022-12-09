@@ -7,18 +7,6 @@ from logging import info
 from bson import ObjectId
 
 from server.common.exceptions import EmptyQuery
-from server.common.monad import Optional
-
-
-def get_interval_holder(value_from, value_to, mapper):
-    value = None
-
-    if value_from or value_to:
-        value_from = Optional(value_from).map(mapper).or_else(None)
-        value_to = Optional(value_to).map(mapper).or_else(None)
-        value = IntervalHolder(value_from, value_to)
-
-    return value
 
 
 @dataclass

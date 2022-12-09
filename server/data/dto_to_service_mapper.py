@@ -101,6 +101,10 @@ def from_branch_query_dto(query: BranchQueryDto) -> Query:
         .and_condition().field("city").equals_regex(unpack_first(query.city)) \
         .and_condition().field("_id").equals(object_id(query.id)) \
         .and_condition().field("stocks.product.descriptor.name").contains_all(split_query_string(query.product_names)) \
+        .and_condition().field("stocks.product._id").contains_all(query_ids(query.product_ids)) \
+        .and_condition().field("employees._id").contains_all(query_ids(query.employee_ids)) \
+        .and_condition().field("employees.name").contains_all(split_query_string(query.employee_names)) \
+        .and_condition().field("employees.surname").contains_all(split_query_string(query.employee_surnames)) \
         .and_condition().field("stocks").size_in_interval(get_interval_holder(query.stocks_from,
                                                                               query.stocks_to,
                                                                               int)) \
