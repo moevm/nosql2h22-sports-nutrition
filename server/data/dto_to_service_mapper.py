@@ -140,7 +140,7 @@ def from_supplier_query_dto(query: SupplierQueryDto) -> Query:
         .and_condition().field("name").equals_regex(unpack_first(query.name)) \
         .and_condition().field("email").equals_regex(unpack_first(query.email)) \
         .and_condition().field("phone").equals_regex(query_phone(query.phone)) \
-        .and_condition().field("products.descriptor.name").contains_all(split_query_string(query.product_names)) \
+        .and_condition().field("products.descriptor.name").contains_all(map_query_list(query.product_names, regex)) \
         .and_condition().field("products.descriptor._id").contains_all(query_ids(query.descriptor_ids)) \
         .and_condition().field("products._id").contains_all(query_ids(query.product_ids)) \
         .and_condition().field("_id").in_list(query_ids(query.ids)) \
@@ -150,9 +150,9 @@ def from_supplier_query_dto(query: SupplierQueryDto) -> Query:
 def from_product_query_dto(query: ProductQueryDto) -> Query:
     return QueryBuilder() \
         .and_condition().field("products._id").in_list(query_ids(query.ids)) \
-        .and_condition().field("products.supplier_id").in_list(query_ids(query.supplier_ids)) \
-        .and_condition().field("products.descriptor._id").in_list(query_ids(query.descriptor_ids)) \
-        .and_condition().field("products.descriptor.name").in_list(map_query_list(query.names, regex)) \
+        .and_condition().field("products.supplier_id").contains_all(query_ids(query.supplier_ids)) \
+        .and_condition().field("products.descriptor._id").contains_all(query_ids(query.descriptor_ids)) \
+        .and_condition().field("products.descriptor.name").contains_all(map_query_list(query.names, regex)) \
         .and_condition().field("products.price").in_interval(get_interval_holder(query.price_from,
                                                                                  query.price_to,
                                                                                  float)) \
