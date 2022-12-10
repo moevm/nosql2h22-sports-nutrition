@@ -63,3 +63,25 @@ class ProductRepository:
                     }
                 }
             ]).to_list(length=None)]
+
+    @is_logged(['class', 'supplier_id', 'query'])
+    async def find_by_query_in_supplier(self, supplier_id: ObjectId, request: Query) -> list:
+        return [from_product_document(document['product']) for document in await self.collection.aggregate(
+            [
+                {
+                    "$match": {
+                        "_id": supplier_id
+                    }
+                },
+                {
+                    "$unwind": Constant.PRODUCTS
+                },
+                {
+                    "$match": request.get_json()
+                },
+                {
+                    "$project": {
+                        "product": Constant.PRODUCTS
+                    }
+                }
+            ]).to_list(length=None)]

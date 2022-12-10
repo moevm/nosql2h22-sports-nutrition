@@ -12,7 +12,8 @@ from server.data.dto.branch.branch_indexed_dto import IndexedBranchesDto, Branch
     ProductIndexedDto, ProductDescriptorIndexedDto, EmployeeIndexedDto
 from server.data.dto.common.util import unpack_first, split_query_string, object_id, first
 from server.data.dto.product.product_dto import ProductDescriptorDto, InsertProductWithDescriptorDto
-from server.data.dto.supplier.supplier_dto import InsertSupplierDto, SupplierQueryDto, ProductQueryDto
+from server.data.dto.supplier.supplier_dto import InsertSupplierDto, SupplierQueryDto, ProductQueryDto, \
+    ProductInSupplierQueryDto
 from server.data.dto.supplier.supplier_indexed_dto import SupplierDto
 from server.data.services.branch.branch import AddProduct, SalaryChange, Vacation, Employee, InsertBranch
 from server.data.services.branch.branch_indexed import StockIndexed, ProductIndexed, \
@@ -151,6 +152,17 @@ def from_product_query_dto(query: ProductQueryDto) -> Query:
     return QueryBuilder() \
         .and_condition().field("products._id").in_list(query_ids(query.ids)) \
         .and_condition().field("products.supplier_id").contains_all(query_ids(query.supplier_ids)) \
+        .and_condition().field("products.descriptor._id").contains_all(query_ids(query.descriptor_ids)) \
+        .and_condition().field("products.descriptor.name").contains_all(map_query_list(query.names, regex)) \
+        .and_condition().field("products.price").in_interval(get_interval_holder(query.price_from,
+                                                                                 query.price_to,
+                                                                                 float)) \
+        .compile()
+
+
+def from_product_in_supplier_query_dto(query: ProductInSupplierQueryDto) -> Query:
+    return QueryBuilder() \
+        .and_condition().field("products._id").in_list(query_ids(query.ids)) \
         .and_condition().field("products.descriptor._id").contains_all(query_ids(query.descriptor_ids)) \
         .and_condition().field("products.descriptor.name").contains_all(map_query_list(query.names, regex)) \
         .and_condition().field("products.price").in_interval(get_interval_holder(query.price_from,

@@ -27,6 +27,11 @@ class ProductsAccessor:
         repository_request = entity_from_insert_product_with_descriptor(self.supplier_id, request)
         return from_product_entity(await self.repository.insert_with_description(repository_request))
 
+    @is_logged(['class', 'request'])
+    async def find(self, request: Query) -> list:
+        return [from_product_entity(entity) for entity in
+                await self.repository.find_by_query_in_supplier(self.supplier_id, request)]
+
 
 class SupplierService:
     supplier_repository: SupplierRepository
