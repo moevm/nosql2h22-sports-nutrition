@@ -9,6 +9,10 @@ from bson import ObjectId
 from server.common.exceptions import EmptyQuery
 
 
+def regex(request: str):
+    return re.compile(re.escape(request), re.IGNORECASE)
+
+
 @dataclass
 class Constant:
     AND: str = "$and"
@@ -36,7 +40,7 @@ class RegexQueryRepresentation(QueryRepresentation):
         self.field_name = field_name
 
     def represent(self) -> json:
-        return {self.field_name: re.compile(re.escape(self.value), re.IGNORECASE)}
+        return {self.field_name: regex(self.value)}
 
 
 class FieldEqualsValueQueryRepresentation(QueryRepresentation):

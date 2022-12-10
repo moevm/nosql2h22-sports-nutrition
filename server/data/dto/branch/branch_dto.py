@@ -18,7 +18,7 @@ class StockQueryDto(BaseModel):
 
 
 class EmployeeQueryDto(BaseModel):
-    ids: Any = Field(None, alias="_id")
+    id: Any = Field(None, alias="_id")
     name: Any = Field(None)
     surname: Any = Field(None)
     patronymic: Any = Field(None)
@@ -41,7 +41,7 @@ class AddStockDto(BaseModel):
 class BranchQueryDto(BaseModel):
     name: Any = Field(None)
     city: Any = Field(None)
-    ids: Any = Field(None, alias="_id")
+    id: Any = Field(None, alias="_id")
     product_names: Any = Field(None)
     employee_names: Any = Field(None)
     employee_surnames: Any = Field(None)
