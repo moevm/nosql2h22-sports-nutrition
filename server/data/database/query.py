@@ -49,21 +49,6 @@ class FieldEqualsValueQueryRepresentation(QueryRepresentation):
         return {self.field_name: self.value}
 
 
-class IdQueryRepresentation(FieldEqualsValueQueryRepresentation):
-
-    def __init__(self, value, field_name='_id'):
-        if isinstance(value, str):
-            super().__init__(field_name, ObjectId(value))
-        elif isinstance(value, ObjectId):
-            super().__init__(field_name, value)
-        else:
-            raise ValueError("Id in IdQueryRepresentation must be instance of str or ObjectId")
-
-    @staticmethod
-    def from_first_element(self, elements: list):
-        return self.__init__(elements[0])
-
-
 class IntervalQueryRepresentation(QueryRepresentation):
 
     def __init__(self, field_name: str, interval: IntervalHolder):
@@ -78,13 +63,19 @@ class IntervalQueryRepresentation(QueryRepresentation):
         return self.query[self.field_name]
 
     def represent(self) -> json:
-        if self.interval.value_from:
-            self.lazy_get_field_query_json()["$gt"] = self.interval.value_from
+        if self.interval.value_from is not None:
+            self.lazy_get_field_query_json()["$gt"] = self.handle_value_from()
 
-        if self.interval.value_to:
-            self.lazy_get_field_query_json()["$lt"] = self.interval.value_to
+        if self.interval.value_to is not None:
+            self.lazy_get_field_query_json()["$lt"] = self.handle_value_to()
 
         return self.query
+
+    def handle_value_to(self):
+        return self.interval.value_to
+
+    def handle_value_from(self):
+        return self.interval.value_from
 
 
 class ArraySizeIntervalQueryRepresentation(IntervalQueryRepresentation):
@@ -92,18 +83,15 @@ class ArraySizeIntervalQueryRepresentation(IntervalQueryRepresentation):
     def __init__(self, field_name: str, interval: IntervalHolder):
         super().__init__(field_name, interval)
 
-    def represent(self) -> json:
-        if self.interval.value_from:
-            self.lazy_get_field_query_json()["$gt"] = {
-                "$size": self.interval.value_from
-            }
+    def handle_value_to(self):
+        return {
+            "$size": self.interval.value_to
+        }
 
-        if self.interval.value_to:
-            self.lazy_get_field_query_json()["$lt"] = {
-                "$size": self.interval.value_to
-            }
-
-        return self.query
+    def handle_value_from(self):
+        return {
+            "$size": self.interval.value_from
+        }
 
 
 class AllArrayQueryRepresentation(QueryRepresentation):
@@ -120,7 +108,20 @@ class AllArrayQueryRepresentation(QueryRepresentation):
         }
 
 
-@dataclass
+class InQueryRepresentation(QueryRepresentation):
+
+    def __init__(self, field_name: str, value: list):
+        self.value = value
+        self.field_name = field_name
+
+    def represent(self) -> json:
+        return {
+            self.field_name: {
+                "$in": self.value
+            }
+        }
+
+
 class Query:
     def __init__(self, query_json: json):
         self.__query_json = query_json
@@ -149,14 +150,14 @@ class ConditionBuilder:
     def equals(self, value):
         return self.__build(value, lambda: FieldEqualsValueQueryRepresentation(self.__field_name, value))
 
+    def in_list(self, value: list):
+        return self.__build(value, lambda: InQueryRepresentation(self.__field_name, value))
+
     def size_in_interval(self, value: IntervalHolder):
         return self.__build(value, lambda: ArraySizeIntervalQueryRepresentation(self.__field_name, value))
 
     def in_interval(self, value: IntervalHolder):
         return self.__build(value, lambda: IntervalQueryRepresentation(self.__field_name, value))
-
-    def has_id(self, value):
-        return self.__build(value, lambda: IdQueryRepresentation(value, self.__field_name))
 
     def equals_regex(self, value: str):
         return self.__build(value, lambda: RegexQueryRepresentation(self.__field_name, value))

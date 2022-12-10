@@ -29,7 +29,7 @@ class EmployeeRepository:
 
         return request
 
-    @is_logged(['class', 'branch_id'])
+    @is_logged(['class', 'branch_id', 'request'])
     async def find_in_branch(self, branch_id: ObjectId, request: Query) -> list:
         return [from_employee_document(document['employee']) for document in await self.collection.aggregate(
             [

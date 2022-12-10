@@ -5,8 +5,17 @@ from pydantic import BaseModel, Field
 from server.data.dto.branch.branch_dto import DtoConstant
 
 
+class ProductQueryDto(BaseModel):
+    ids: Any = Field(None, alias="_id")
+    names: Any = Field(None)
+    descriptor_ids: Any = Field(None)
+    price_from: Any = Field(None)
+    price_to: Any = Field(None)
+    supplier_ids: Any = Field(None)
+
+
 class SupplierQueryDto(BaseModel):
-    id: Any = Field(None, alias="_id")
+    ids: Any = Field(None, alias="_id")
     name: Any = Field(None)
     phone: Any = Field(None)
     email: Any = Field(None)

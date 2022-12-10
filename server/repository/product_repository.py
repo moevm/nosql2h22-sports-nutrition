@@ -1,10 +1,18 @@
+from dataclasses import dataclass
+
 from bson import ObjectId
 
 from server.common.exceptions import SupplierNotFound
 from server.common.logger import is_logged
 from server.common.monad import Optional
 from server.data.database.branch_entity import ProductEntity, from_product_document
+from server.data.database.query import Query
 from server.database.mongo_connection import MongoConnection
+
+
+@dataclass
+class Constant:
+    PRODUCTS: str = "$products"
 
 
 class ProductRepository:
@@ -38,3 +46,20 @@ class ProductRepository:
             {
                 "products.$": 1
             })).map(lambda supplier: supplier['products'][0]).map(from_product_document)
+
+    @is_logged(['class', 'query'])
+    async def find_by_query(self, request: Query) -> list:
+        return [from_product_document(document['product']) for document in await self.collection.aggregate(
+            [
+                {
+                    "$unwind": Constant.PRODUCTS
+                },
+                {
+                    "$match": request.get_json()
+                },
+                {
+                    "$project": {
+                        "product": Constant.PRODUCTS
+                    }
+                }
+            ]).to_list(length=None)]
