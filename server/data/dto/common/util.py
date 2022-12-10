@@ -1,3 +1,5 @@
+import re
+
 from bson import ObjectId
 
 from server.common.exceptions import InvalidQueryList
@@ -9,7 +11,7 @@ def split_query_string(query: list) -> list:
         return None
 
     string = unpack_first(query)
-    array = string.split(', ')
+    array = re.split(', *', string)
 
     if not len(array):
         raise InvalidQueryList(string)
