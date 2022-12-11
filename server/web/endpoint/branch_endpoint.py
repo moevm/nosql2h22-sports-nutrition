@@ -52,9 +52,9 @@ async def find_employee(request: Request, branch_id: str, query: EmployeeQueryDt
 @branch_blueprint.route("/branch/<branch_id:str>/stock", methods=['GET'])
 @validate(query=StockQueryDto)
 async def find_stock(request: Request, branch_id: str, query: StockQueryDto) -> HTTPResponse:
-    inserted = await (await branch_service.stocks(ObjectId(branch_id))).find(from_stock_in_branch_query_dto(query))
+    stocks = await (await branch_service.stocks(ObjectId(branch_id))).find(from_stock_in_branch_query_dto(query))
 
-    return res.json(response_find_stocks(inserted).dict(by_alias=True))
+    return res.json(response_find_stocks(stocks).dict(by_alias=True))
 
 
 @branch_blueprint.route("/branch/<branch_id:str>/stock", methods=['POST'])

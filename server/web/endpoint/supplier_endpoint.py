@@ -6,11 +6,11 @@ from sanic_ext import validate
 
 from server.common.factory import supplier_service
 from server.data.dto.common.page_dto import SupplierPageDto
-from server.data.dto.common.response_dto import response_find_page, response_find_supplier
+from server.data.dto.common.response_dto import response_find_page, response_find_supplier, response_find_product
 from server.data.dto.product.product_dto import InsertProductWithDescriptorDto
-from server.data.dto.supplier.supplier_dto import InsertSupplierDto, SupplierQueryDto
+from server.data.dto.supplier.supplier_dto import InsertSupplierDto, SupplierQueryDto, ProductInSupplierQueryDto
 from server.data.dto_to_service_mapper import from_insert_supplier_dto, from_insert_product_with_descriptor_dto, \
-    from_supplier_query_dto
+    from_supplier_query_dto, from_product_in_supplier_query_dto
 from server.data.service_to_dto_mapper import dto_indexed_from_supplier, dto_indexed_from_product_indexed, \
     dto_info_from_supplier
 from server.data.services.common.page import from_supplier_page_dto
@@ -54,3 +54,13 @@ async def insert_product_with_descriptor(request: Request,
         .insert_with_descriptor(from_insert_product_with_descriptor_dto(body))
 
     return res.json(dto_indexed_from_product_indexed(inserted).dict(by_alias=True))
+
+
+@supplier_blueprint.route("/supplier/<supplier_id:str>/product", methods=['GET'])
+@validate(query=ProductInSupplierQueryDto)
+async def find_product(request: Request, query: ProductInSupplierQueryDto, supplier_id: str) -> HTTPResponse:
+    supplier_id = ObjectId(supplier_id)
+
+    return res.json(response_find_product(await(await supplier_service.products(supplier_id))
+                                          .find(from_product_in_supplier_query_dto(query)))
+                    .dict(by_alias=True))

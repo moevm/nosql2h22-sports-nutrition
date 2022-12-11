@@ -12,6 +12,7 @@ from server.repository.product_repository import ProductRepository
 from server.repository.supplier_repository import SupplierRepository
 from server.service.branch_service import BranchService
 from server.service.maintenance_service import MaintenanceService
+from server.service.product_service import ProductService
 from server.service.supplier_service import SupplierService
 from server.web.web_server import WebServer, InnerServerFactory
 
@@ -44,3 +45,5 @@ supplier_repository = SupplierRepository(mongo_connection)
 maintenance_service = MaintenanceService(maintenance_repository)
 
 supplier_service = SupplierService(supplier_repository, product_repository)
+
+product_service = ProductService(product_repository)

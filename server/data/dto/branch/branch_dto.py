@@ -7,7 +7,7 @@ from server.data.dto.common.util import check
 
 
 class StockQueryDto(BaseModel):
-    id: Any = Field(None, alias="_id")
+    ids: Any = Field(None, alias="_id")
     supplier_id: Any = Field(None)
     product_id: Any = Field(None)
     name: Any = Field(None)

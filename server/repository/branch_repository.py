@@ -85,7 +85,7 @@ class BranchRepository:
         request.id = (await self.collection.insert_one(request.dict(by_alias=True))).inserted_id
         return request
 
-    @is_logged(['class'])
+    @is_logged(['class', 'request'])
     async def find_by_query(self, request: Query) -> list:
         return [from_branch_document(document) for document in
                 await self.collection.find(request.get_json()).to_list(length=None)]
@@ -94,7 +94,7 @@ class BranchRepository:
     async def find_by_id(self, branch_id: ObjectId) -> Optional:
         return first(await self.find_by_query(QueryBuilder().and_condition().field("_id").equals(branch_id).compile()))
 
-    @is_logged(['class', 'branch_id'])
+    @is_logged(['class', 'branch_id', 'request'])
     async def find_stock(self, branch_id: ObjectId, request: Query) -> list:
         return [from_stock_document(document['stock']) for document in await self.collection.aggregate(
             [

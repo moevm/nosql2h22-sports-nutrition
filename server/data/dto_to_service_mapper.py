@@ -4,14 +4,16 @@ from server.common.exceptions import InvalidPhoneQuery
 from server.common.monad import Optional
 from server.data.database.query import Query, IntervalHolder
 from server.data.database.query import QueryBuilder
+from server.data.database.query import regex
 from server.data.datetime_formatter import get_datetime
 from server.data.dto.branch.branch_dto import AddStockDto, SalaryChangeDto, VacationDto, InsertEmployeeDto, \
     InsertBranchDto, BranchQueryDto, EmployeeQueryDto, StockQueryDto
 from server.data.dto.branch.branch_indexed_dto import IndexedBranchesDto, BranchDto, StockIndexedDto, \
     ProductIndexedDto, ProductDescriptorIndexedDto, EmployeeIndexedDto
-from server.data.dto.common.util import unpack_first, split_query_string, object_id
+from server.data.dto.common.util import unpack_first, split_query_string, object_id, first
 from server.data.dto.product.product_dto import ProductDescriptorDto, InsertProductWithDescriptorDto
-from server.data.dto.supplier.supplier_dto import InsertSupplierDto, SupplierQueryDto
+from server.data.dto.supplier.supplier_dto import InsertSupplierDto, SupplierQueryDto, ProductQueryDto, \
+    ProductInSupplierQueryDto
 from server.data.dto.supplier.supplier_indexed_dto import SupplierDto
 from server.data.services.branch.branch import AddProduct, SalaryChange, Vacation, Employee, InsertBranch
 from server.data.services.branch.branch_indexed import StockIndexed, ProductIndexed, \
@@ -84,13 +86,10 @@ def from_insert_branch_dto(branch: InsertBranchDto) -> InsertBranch:
 
 def get_interval_holder(value_from: list, value_to: list, mapper):
     value = None
-    value_from = unpack_first(value_from)
-    value_to = unpack_first(value_to)
 
     if value_from or value_to:
-        value_from = Optional(value_from).map(mapper).or_else(None)
-        value_to = Optional(value_to).map(mapper).or_else(None)
-        value = IntervalHolder(value_from, value_to)
+        value = IntervalHolder(first(value_from).map(mapper).or_else(None),
+                               first(value_to).map(mapper).or_else(None))
 
     return value
 
@@ -127,10 +126,14 @@ def query_phone(phone_query: list) -> str:
 
 
 def query_ids(query: list) -> list:
+    return map_query_list(query, ObjectId)
+
+
+def map_query_list(query: list, mapper) -> list:
     if query is None:
         return None
 
-    return [ObjectId(query_element) for query_element in split_query_string(query)]
+    return [mapper(query_element) for query_element in split_query_string(query)]
 
 
 def from_supplier_query_dto(query: SupplierQueryDto) -> Query:
@@ -138,10 +141,33 @@ def from_supplier_query_dto(query: SupplierQueryDto) -> Query:
         .and_condition().field("name").equals_regex(unpack_first(query.name)) \
         .and_condition().field("email").equals_regex(unpack_first(query.email)) \
         .and_condition().field("phone").equals_regex(query_phone(query.phone)) \
-        .and_condition().field("products.descriptor.name").contains_all(split_query_string(query.product_names)) \
+        .and_condition().field("products.descriptor.name").contains_all(map_query_list(query.product_names, regex)) \
         .and_condition().field("products.descriptor._id").contains_all(query_ids(query.descriptor_ids)) \
         .and_condition().field("products._id").contains_all(query_ids(query.product_ids)) \
-        .and_condition().field("_id").equals(object_id(query.id)) \
+        .and_condition().field("_id").in_list(query_ids(query.ids)) \
+        .compile()
+
+
+def from_product_query_dto(query: ProductQueryDto) -> Query:
+    return QueryBuilder() \
+        .and_condition().field("products._id").in_list(query_ids(query.ids)) \
+        .and_condition().field("products.supplier_id").contains_all(query_ids(query.supplier_ids)) \
+        .and_condition().field("products.descriptor._id").contains_all(query_ids(query.descriptor_ids)) \
+        .and_condition().field("products.descriptor.name").contains_all(map_query_list(query.names, regex)) \
+        .and_condition().field("products.price").in_interval(get_interval_holder(query.price_from,
+                                                                                 query.price_to,
+                                                                                 float)) \
+        .compile()
+
+
+def from_product_in_supplier_query_dto(query: ProductInSupplierQueryDto) -> Query:
+    return QueryBuilder() \
+        .and_condition().field("products._id").in_list(query_ids(query.ids)) \
+        .and_condition().field("products.descriptor._id").contains_all(query_ids(query.descriptor_ids)) \
+        .and_condition().field("products.descriptor.name").contains_all(map_query_list(query.names, regex)) \
+        .and_condition().field("products.price").in_interval(get_interval_holder(query.price_from,
+                                                                                 query.price_to,
+                                                                                 float)) \
         .compile()
 
 
@@ -160,7 +186,7 @@ def from_insert_product_with_descriptor_dto(dto: InsertProductWithDescriptorDto)
 def from_stock_in_branch_query_dto(query: StockQueryDto) -> Query:
     return QueryBuilder() \
         .and_condition().field("stocks.product.descriptor.name").equals_regex(unpack_first(query.name)) \
-        .and_condition().field("stocks._id").has_id(unpack_first(query.id)) \
+        .and_condition().field("stocks._id").in_list(query_ids(query.ids)) \
         .and_condition().field("stocks.product.supplier_id").equals(object_id(query.supplier_id)) \
         .and_condition().field("stocks.product._id").equals(object_id(query.product_id)) \
         .and_condition().field("stocks.amount").in_interval(get_interval_holder(query.amount_from,
@@ -168,7 +194,7 @@ def from_stock_in_branch_query_dto(query: StockQueryDto) -> Query:
                                                                                 int)) \
         .and_condition().field("stocks.price").in_interval(get_interval_holder(query.price_from,
                                                                                query.price_to,
-                                                                               int)) \
+                                                                               float)) \
         .compile()
 
 
@@ -179,7 +205,7 @@ def from_employee_query_dto(query: EmployeeQueryDto) -> Query:
         .and_condition().field("employees.surname").equals_regex(unpack_first(query.surname)) \
         .and_condition().field("employees.role").equals_regex(unpack_first(query.role)) \
         .and_condition().field("employees.phone").equals_regex(query_phone(query.phone_number)) \
-        .and_condition().field("employees._id").has_id(unpack_first(query.id)) \
+        .and_condition().field("employees._id").equals(object_id(query.id)) \
         .and_condition().field("employees.salary").in_interval(get_interval_holder(query.salary_from,
                                                                                    query.salary_to,
                                                                                    float)) \
