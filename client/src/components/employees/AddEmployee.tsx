@@ -21,6 +21,7 @@ export const AddEmployee = ({ isOpen, setOpen, branchId, employees, setEmployees
                               AddEmployeeProps) => {
 
   const [postData, setPostData] = useState<EmployeeData | undefined>(undefined);
+  const [helperTextPhone, setHelperTextPhone] = useState("");
 
   const handleClose = () => {
     setOpen(false);
@@ -132,9 +133,17 @@ export const AddEmployee = ({ isOpen, setOpen, branchId, employees, setEmployees
           id="role"
           label="Role"
           fullWidth
-          onChange={(val) =>
-            updateField("role", val.target.value)}
+          onChange={(val) => {
+            if (!regexPhone.test(val.target.value)) {
+              setHelperTextPhone("Phone format should be: +79998887766")
+            } else {
+              setHelperTextPhone("");
+              updateField("role", val.target.value)
+            }
+          }
+          }
           variant="standard"
+          helperText={helperTextPhone}
         />
         <TextField
           required
@@ -171,8 +180,6 @@ export const AddEmployee = ({ isOpen, setOpen, branchId, employees, setEmployees
           min="2010-01-01T00:00"
           max="2023-12-31T00:00"
           onChange={(val) => {
-            console.log("Date: ", val.target.value);
-            console.log("Server date: ", toServerDateFormat(val.target.value));
             updateField("employment_date", toServerDateFormat(val.target.value));
           }
           }

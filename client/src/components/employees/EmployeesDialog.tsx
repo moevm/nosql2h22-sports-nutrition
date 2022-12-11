@@ -22,15 +22,14 @@ export function EmployeesDialog({ onChange, value }: FindEmployeeProps) {
 
   return (
     <Box sx={{ width: "60%" }}>
-      <Typography variant="h5">
+      <Typography component="div" variant="h5">
         Filter employees
       </Typography>
      <FindEmployeeContent updateField={updateField} curVal={curValue} setCurVal={setCurValue} />
       <DialogActions>
         <IconButton
           onClick={() => onChange(curValue)}
-          disabled={isObjEmpty(curValue) ||
-            Number(curValue.salary_from) > Number(curValue.salary_to)}
+          disabled={isObjEmpty(curValue)}
           color="inherit" title="Find stocks"
           style={{ width: "2em", margin: "10px" }}>
           <SearchOutlinedIcon />

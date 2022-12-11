@@ -6,6 +6,7 @@ import { TextField } from "@mui/material";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import { postStock } from "../../api/branch";
+import { checkObjOnNegativeNumbers } from "../../api/functions";
 
 const errorMessageId = "Error in entered product's id. Product doesn't exist";
 
@@ -70,8 +71,14 @@ export function AddStockToBranch(props: StockToBranchProps) {
           id="price"
           label="Price"
           fullWidth
-          onChange={(val) =>
-            setPrice(Number(val.target.value))}
+          onChange={(val) => {
+            if (Number(val.target.value) < 0) {
+              alert("Price must be not negative");
+              return;
+            }
+            setPrice(Number(val.target.value))
+          }
+          }
           variant="standard"
         />
         <TextField
@@ -80,13 +87,20 @@ export function AddStockToBranch(props: StockToBranchProps) {
           id="price"
           label="Amount"
           fullWidth
-          onChange={(val) =>
-            setAmount(Number(val.target.value))}
+          onChange={(val) => {
+            if (Number(val.target.value) < 0) {
+              alert("Amount must be not negative");
+              return;
+            }
+            setAmount(Number(val.target.value))
+          }
+          }
           variant="standard"
         />
       </DialogContent>
       <DialogActions>
-        <Button autoFocus onClick={addProduct}
+        <Button autoFocus onClick={
+          addProduct}
                 disabled={!productId.length || price < 0 || amount < 0}>
           Add
         </Button>

@@ -2,6 +2,7 @@ import DialogContent from "@mui/material/DialogContent";
 import { TextField } from "@mui/material";
 import * as React from "react";
 import { FilterEmployeesCriteria } from "../../api/branch";
+import { useState } from "react";
 
 interface FindEmployeeContentProps {
   updateField: (name: string, value: string, curValue: FilterEmployeesCriteria,
@@ -12,6 +13,7 @@ interface FindEmployeeContentProps {
 
 export const FindEmployeeContent = (props: FindEmployeeContentProps) => {
   const {updateField, curVal, setCurVal} = props;
+  const [helperText, setHelperText] = useState("");
   return (
   <DialogContent dividers>
     <TextField
@@ -64,8 +66,10 @@ export const FindEmployeeContent = (props: FindEmployeeContentProps) => {
       id="salary_from"
       label="Salary from"
       fullWidth
-      onChange={(val) =>
-        updateField("salary_from", val.target.value, curVal, setCurVal)}
+      onChange={(val) => {
+        updateField("salary_from", val.target.value, curVal, setCurVal)
+      }
+      }
       variant="standard"
     />
     <TextField
@@ -73,9 +77,18 @@ export const FindEmployeeContent = (props: FindEmployeeContentProps) => {
       id="salary_to"
       label="Salary to"
       fullWidth
-      onChange={(val) =>
-        updateField("salary_to", val.target.value, curVal, setCurVal)}
+      onChange={(val) => {
+        if (Number(curVal.salary_from) > Number(val.target.value)) {
+          setHelperText("Salary_from must be less then salary_to!")
+        }
+        else {
+          updateField("salary_to", val.target.value, curVal, setCurVal);
+          setHelperText("");
+        }
+      }
+      }
       variant="standard"
+      helperText={helperText}
     />
   </DialogContent>
 )

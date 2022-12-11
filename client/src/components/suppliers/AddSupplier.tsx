@@ -24,7 +24,6 @@ const convertToObject = (json: any): IAddBranchResponse => {
 };
 
 export const AddSupplier = () => {
-  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
@@ -33,10 +32,11 @@ export const AddSupplier = () => {
     postSupplier(nameReq, phoneReq, emailReq)
       .then((response) => response.json())
       .then((json) => {
-        const parsedJson = convertToObject(json);
-        navigate("/suppliers");
-      });
+          alert(`Supplier "${nameReq}" was successfully added!`);
+        })
+          .catch((e) => alert(`Error occured: ${e.message}`));
   }, [convertToObject, postSupplier]);
+
   return (
     <Box style={{ width: "60%" }}>
       <Stack spacing={2}>

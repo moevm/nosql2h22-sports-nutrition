@@ -7,7 +7,6 @@ import { AddSupplier } from "./AddSupplier";
 import { TabPanel } from "components/tabs/tabs";
 
 export const Suppliers = () => {
-  const [isOpenForm, setOpenForm] = useState(false);
   const [tabValue, setTabValue] = useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -26,8 +25,7 @@ export const Suppliers = () => {
             label="Add new supplier"
           />
           <Tab
-            label="Find supplier by id"
-            onClick={() => setOpenForm(!isOpenForm)}
+            label="Find supplier"
           />
         </Tabs>
       </Box>
@@ -38,7 +36,7 @@ export const Suppliers = () => {
         <AddSupplier />
       </TabPanel>
       <TabPanel value={tabValue} index={2}>
-        <FindSupplier isOpen={isOpenForm} setOpen={setOpenForm} />
+        <FindSupplier />
       </TabPanel>
     </Box>
   );

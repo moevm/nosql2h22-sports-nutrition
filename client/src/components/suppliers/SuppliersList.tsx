@@ -8,6 +8,7 @@ import { ExportPage } from "../export/ExportPage";
 import { exportSuppliersPage } from "../../api/export";
 import { ImportPage } from "../import/ImportPage";
 import "./Suppliers.scss";
+import { SuppliersTable } from "./SuppliersTable";
 
 const pageSize = 15;
 const productsSize = 5;
@@ -28,7 +29,7 @@ export const SuppliersList = () => {
           setLastPage(json.items.length < pageSize);
         }
       });
-  }, [currentPage]);
+  }, [currentPage, getSupplierPage]);
 
   return (
     <Box>
@@ -45,33 +46,7 @@ export const SuppliersList = () => {
                   dataList={data}
                   pageSize={pageSize}
                   getPageApi={getSupplierPage} />
-      <table >
-        <thead>
-        <tr>
-          <th>Supplier Id</th>
-          <th>Name</th>
-          <th>Products</th>
-        </tr>
-        </thead>
-        <tbody>
-        {data.map((item) => {
-          return (
-            <tr key={item._id} className="suppliers-table">
-              <td className="cell-id">
-                <a href={`/supplier/${item._id}`}>
-                  {item._id}
-                </a></td>
-              <td>{item.name}</td>
-              <td>
-                <Stack>
-                  {item.products.join(", ") + "..."}
-                </Stack>
-              </td>
-            </tr>
-          );
-        })}
-        </tbody>
-      </table>
+     <SuppliersTable suppliers={data} pagination={true}/>
       <Pagination
         lastPage={lastPage}
         className="pagination-bar"

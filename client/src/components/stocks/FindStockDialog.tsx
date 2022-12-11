@@ -105,11 +105,23 @@ export function FindStockDialog({ onChange, value }: {
       </DialogContent>
       <DialogActions>
         <IconButton
-          onClick={() => onChange(curValue)}
-          disabled={isObjEmpty(curValue) ||
-            checkObjOnNegativeNumbers(curValue) ||
-            Number(curValue.amount_from) >  Number(curValue.amount_to)
-          ||  Number(curValue.price_from) >  Number(curValue.price_to)}
+          onClick={() => {
+            if (!checkObjOnNegativeNumbers(curValue)) {
+              alert("Amount and price must be not negative");
+              return;
+            }
+            if (Number(curValue.amount_from) > Number(curValue.amount_to)) {
+              alert("Amount from must be less then amount to");
+              return;
+            }
+            if (Number(curValue.price_from) > Number(curValue.price_to)) {
+              alert("Price from must be less then price to");
+              return;
+            }
+            onChange(curValue)
+          }
+          }
+          disabled={isObjEmpty(curValue)}
           color="inherit" title="Find stocks"
           style={{ width: "2em", margin: "10px" }}>
           <SearchOutlinedIcon />
