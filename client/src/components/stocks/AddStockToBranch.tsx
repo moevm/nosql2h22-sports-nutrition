@@ -1,23 +1,22 @@
 import * as React from "react";
 import { useState } from "react";
-import { BootstrapDialog, BootstrapDialogTitle } from "../suppliers/FindSupplierDialog";
+import { BootstrapDialog, BootstrapDialogTitle } from "../suppliers/FindSupplier";
 import DialogContent from "@mui/material/DialogContent";
 import { TextField } from "@mui/material";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import { postStock } from "../../api/branch";
 
-const errorMessageId = "Error in entered product's id. Product doesn't exist";
+interface StockToBranchProps {
+  isOpen: boolean,
+  setOpen: (action: boolean) => void,
+  branchId: string,
+  stocks: any[],
+  setStocks: (list: any[]) => void
+}
 
-export function AddStockToBranch({ isOpen, setOpen, branchId, stocks, setStocks }: {
-                                   isOpen: boolean,
-                                   setOpen: (action: boolean) => void,
-                                   branchId: string,
-                                   stocks: any[],
-                                   setStocks: (list: any[]) => void
-                                 }
-) {
-
+export function AddStockToBranch(props: StockToBranchProps) {
+  const { isOpen, setOpen, branchId, stocks, setStocks } = props;
   const [price, setPrice] = useState(-1);
   const [amount, setAmount] = useState(-1);
   const [productId, setProductId] = useState("");
@@ -29,18 +28,23 @@ export function AddStockToBranch({ isOpen, setOpen, branchId, stocks, setStocks 
 
   const addProduct = () => {
     postStock(branchId, productId, price, amount)
-      .then((response) => response.ok ? response.json() : undefined)
+      .then(async (response) => {
+        if (response.ok) return response.json();
+        else {
+          const text = await response.text();
+          setErrorMessage(JSON.parse(text).message);
+          return undefined;
+        }
+      })
       .then((json) => {
         if (json) {
           setErrorMessage("");
           setStocks(stocks.concat([json]));
+          alert("Stock was successfully added!");
           handleClose();
         }
-        else {
-          setErrorMessage(errorMessageId);
-        }
       })
-      .catch((error) => setErrorMessage(errorMessageId));
+      .catch((error) => setErrorMessage(error.message));
   };
 
   return (
@@ -70,8 +74,14 @@ export function AddStockToBranch({ isOpen, setOpen, branchId, stocks, setStocks 
           id="price"
           label="Price"
           fullWidth
-          onChange={(val) =>
-            setPrice(Number(val.target.value))}
+          onChange={(val) => {
+            if (Number(val.target.value) < 0) {
+              alert("Price must be not negative");
+              return;
+            }
+            setPrice(Number(val.target.value));
+          }
+          }
           variant="standard"
         />
         <TextField
@@ -80,13 +90,20 @@ export function AddStockToBranch({ isOpen, setOpen, branchId, stocks, setStocks 
           id="price"
           label="Amount"
           fullWidth
-          onChange={(val) =>
-            setAmount(Number(val.target.value))}
+          onChange={(val) => {
+            if (Number(val.target.value) < 0) {
+              alert("Amount must be not negative");
+              return;
+            }
+            setAmount(Number(val.target.value));
+          }
+          }
           variant="standard"
         />
       </DialogContent>
       <DialogActions>
-        <Button autoFocus onClick={addProduct}
+        <Button autoFocus onClick={
+          addProduct}
                 disabled={!productId.length || price < 0 || amount < 0}>
           Add
         </Button>

@@ -15,7 +15,7 @@ export interface EmployeeData {
   role: string
 }
 
-export const getFilteredEmployees = (filter: FilterEmployeesCriteria, branchId?: string) => {
+export const findEmployeesInBranch = (filter: FilterEmployeesCriteria, branchId?: string) => {
   const query = toQueryString(filter);
   return fetch(`${HOST}${SERVER_PORT}/branch/${branchId}/employee?${query}`,
     {
@@ -24,8 +24,17 @@ export const getFilteredEmployees = (filter: FilterEmployeesCriteria, branchId?:
     });
 };
 
-export const findEmployee = (id: string) => {
-  return fetch(`${HOST}${SERVER_PORT}/employee/${id}`,
+export const findEmployee = (filter: FilterEmployeesCriteria) => {
+  const query = toQueryString(filter);
+  return fetch(`${HOST}${SERVER_PORT}/employee?${query}`,
+    {
+      method: "GET",
+      ...modeAndHeaders
+    });
+};
+
+export const getEmployeeById = (id: string) => {
+  return fetch(`${HOST}${SERVER_PORT}/employee?_id=${id}`,
     {
       method: "GET",
       ...modeAndHeaders

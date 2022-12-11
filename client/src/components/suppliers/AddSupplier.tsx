@@ -1,9 +1,8 @@
-import { Box, Button, IconButton, Stack, TextField } from "@mui/material";
+import { Box, Button, Stack, TextField } from "@mui/material";
 import * as React from "react";
 import { useCallback, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { postSupplier } from "../../api/supplier";
-import { regexPhone, regexEmail } from "../../api/constants";
+import { regexEmail, regexPhone } from "../../api/constants";
 
 export interface IAddBranchResponse {
   id: string;
@@ -24,8 +23,6 @@ const convertToObject = (json: any): IAddBranchResponse => {
 };
 
 export const AddSupplier = () => {
-  const navigate = useNavigate();
-  const [data, setData] = useState<IAddBranchResponse>();
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
@@ -34,11 +31,11 @@ export const AddSupplier = () => {
     postSupplier(nameReq, phoneReq, emailReq)
       .then((response) => response.json())
       .then((json) => {
-        const parsedJson = convertToObject(json);
-        setData(parsedJson);
-        navigate("/suppliers");
-      });
+        alert(`Supplier "${nameReq}" was successfully added!`);
+      })
+      .catch((e) => alert(`Error occured: ${e.message}`));
   }, [convertToObject, postSupplier]);
+
   return (
     <Box style={{ width: "60%" }}>
       <Stack spacing={2}>
@@ -74,7 +71,7 @@ export const AddSupplier = () => {
               || !regexPhone.test(phone) || !email.length || !regexEmail.test(email)}
             onClick={() => doRequest(name, phone, email)}
           >
-          ADD
+            ADD
           </Button>
 
         </Box>

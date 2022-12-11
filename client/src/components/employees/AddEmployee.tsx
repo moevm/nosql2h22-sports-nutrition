@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useCallback, useState } from "react";
-import { BootstrapDialog, BootstrapDialogTitle } from "../suppliers/FindSupplierDialog";
+import { BootstrapDialog, BootstrapDialogTitle } from "../suppliers/FindSupplier";
 import DialogContent from "@mui/material/DialogContent";
 import { TextField } from "@mui/material";
 import DialogActions from "@mui/material/DialogActions";
@@ -9,16 +9,19 @@ import { EmployeeData, postEmployee } from "../../api/employee";
 import { checkObjOnDefault, toServerDateFormat } from "../../api/functions";
 import { regexLetters, regexPhone } from "api/constants";
 
-export const AddEmployee = ({ isOpen, setOpen, branchId, employees, setEmployees }: {
-                              isOpen: boolean,
-                              setOpen: (action: boolean) => void,
-                              branchId: string,
-                              employees: any[],
-                              setEmployees: (list: any[]) => void
-                            }
-) => {
+interface AddEmployeeProps {
+  isOpen: boolean;
+  setOpen: (action: boolean) => void;
+  branchId: string;
+  employees: any[];
+  setEmployees: (list: any[]) => void;
+}
+
+export const AddEmployee = ({ isOpen, setOpen, branchId, employees, setEmployees }:
+                              AddEmployeeProps) => {
 
   const [postData, setPostData] = useState<EmployeeData | undefined>(undefined);
+  const [helperTextPhone, setHelperTextPhone] = useState("");
 
   const handleClose = () => {
     setOpen(false);
@@ -32,6 +35,7 @@ export const AddEmployee = ({ isOpen, setOpen, branchId, employees, setEmployees
           if (json) {
             setEmployees(employees.concat([json]));
             handleClose();
+            alert("Employee was successfully added!");
           }
         });
     }
@@ -79,7 +83,7 @@ export const AddEmployee = ({ isOpen, setOpen, branchId, employees, setEmployees
             if (regexLetters.test(val.target.value))
               updateField("surname", val.target.value);
             else alert("Surname must contain only letters");
-            }
+          }
           }
           variant="standard"
         />
@@ -91,9 +95,9 @@ export const AddEmployee = ({ isOpen, setOpen, branchId, employees, setEmployees
           fullWidth
           onChange={(val) => {
             if (regexLetters.test(val.target.value))
-            updateField("name", val.target.value)
+              updateField("name", val.target.value);
             else alert("Name must contain only letters");
-            }}
+          }}
           variant="standard"
         />
         <TextField
@@ -104,7 +108,7 @@ export const AddEmployee = ({ isOpen, setOpen, branchId, employees, setEmployees
           fullWidth
           onChange={(val) => {
             if (regexLetters.test(val.target.value))
-              updateField("patronymic", val.target.value)
+              updateField("patronymic", val.target.value);
             else alert("Patronymic must contain only letters");
           }
           }
@@ -117,9 +121,9 @@ export const AddEmployee = ({ isOpen, setOpen, branchId, employees, setEmployees
           label="City"
           fullWidth
           onChange={(val) => {
-              if (regexLetters.test(val.target.value))
-                updateField("city", val.target.value);
-              else alert("City must contain only letters");
+            if (regexLetters.test(val.target.value))
+              updateField("city", val.target.value);
+            else alert("City must contain only letters");
           }
           }
           variant="standard"
@@ -130,9 +134,17 @@ export const AddEmployee = ({ isOpen, setOpen, branchId, employees, setEmployees
           id="role"
           label="Role"
           fullWidth
-          onChange={(val) =>
-            updateField("role", val.target.value)}
+          onChange={(val) => {
+            if (!regexPhone.test(val.target.value)) {
+              setHelperTextPhone("Phone format should be: +79998887766");
+            } else {
+              setHelperTextPhone("");
+              updateField("role", val.target.value);
+            }
+          }
+          }
           variant="standard"
+          helperText={helperTextPhone}
         />
         <TextField
           required
@@ -157,24 +169,22 @@ export const AddEmployee = ({ isOpen, setOpen, branchId, employees, setEmployees
           }
           variant="standard"
         />
-        <label style={{marginTop: "5px"}} htmlFor={"employment-date"} >
+        <label style={{ marginTop: "5px" }} htmlFor={"employment-date"}>
           Employment date
         </label>
         <input
           required
-          style={{width: "100%"}}
+          style={{ width: "100%" }}
           type="datetime-local"
           id="employment_date"
           placeholder="dd/mm/yyyy"
           min="2010-01-01T00:00"
           max="2023-12-31T00:00"
           onChange={(val) => {
-            console.log("Date: ", val.target.value);
-            console.log("Server date: ", toServerDateFormat(val.target.value));
             updateField("employment_date", toServerDateFormat(val.target.value));
           }
           }
-          />
+        />
         <TextField
           required
           type="number"
@@ -189,8 +199,8 @@ export const AddEmployee = ({ isOpen, setOpen, branchId, employees, setEmployees
       </DialogContent>
       <DialogActions>
         <Button
-            disabled={checkObjOnDefault(postData)
-          || !regexPhone.test(postData?.phone!)}
+          disabled={checkObjOnDefault(postData)
+            || !regexPhone.test(postData?.phone!)}
           autoFocus onClick={addEmployee}>
           Add
         </Button>

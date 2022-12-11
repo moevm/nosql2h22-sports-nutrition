@@ -1,8 +1,6 @@
-import { Box, IconButton, Stack, TextField } from "@mui/material";
+import { Box, Button, Stack, TextField } from "@mui/material";
 import * as React from "react";
 import { useCallback, useState } from "react";
-import CancelIcon from "@mui/icons-material/Cancel";
-import AddIcon from "@mui/icons-material/Add";
 import { useNavigate } from "react-router-dom";
 import { postBranch } from "../../api/branch";
 
@@ -26,7 +24,6 @@ const convertToObject = (json: any): IAddBranchResponse => {
 
 export const AddBranch = () => {
   const navigate = useNavigate();
-  const [data, setData] = useState<IAddBranchResponse>();
   const [name, setName] = useState("");
   const [city, setCity] = useState("");
 
@@ -35,8 +32,9 @@ export const AddBranch = () => {
       .then((response) => response.json())
       .then((json) => {
         const parsedJson = convertToObject(json);
-        setData(parsedJson);
-      });
+        alert(`Branch "${nameReq}" was successfully added!`);
+      })
+      .catch((e) => alert(`Error occured: ${e.message}`));
   }, [postBranch, convertToObject]);
   return (
     <Box style={{ width: "60%" }}>
@@ -57,13 +55,13 @@ export const AddBranch = () => {
           onChange={(e) => setCity(e.target.value)}
         />
         <Box style={{ marginLeft: "35%" }} flexDirection="row">
-          <IconButton title="Add new branch" component="span" onClick={() => doRequest(name, city)}>
-            <AddIcon />
-          </IconButton>
-          <IconButton
-            component="span" title="Cancel" onClick={() => navigate("/branches")}>
-            <CancelIcon />
-          </IconButton>
+          <Button onClick={() => doRequest(name, city)}
+                  disabled={!name.length || !city.length}>
+            Add
+          </Button>
+          <Button onClick={() => navigate("/branches")}>
+            Cancel
+          </Button>
         </Box>
       </Stack>
     </Box>

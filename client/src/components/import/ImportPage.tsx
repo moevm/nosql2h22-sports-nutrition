@@ -1,16 +1,12 @@
 import * as React from "react";
 import { useCallback, useState } from "react";
-import { BootstrapDialog, BootstrapDialogTitle } from "../suppliers/FindSupplierDialog";
+import { BootstrapDialog, BootstrapDialogTitle } from "../suppliers/FindSupplier";
 import DialogContent from "@mui/material/DialogContent";
 import { Stack, TextField } from "@mui/material";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 
-export const ImportPage = ({
-                             isOpen, setOpen, requestFunc, setData, setLastPage,
-                             lastPage, currentPage, getPageApi,
-                             dataList, pageSize
-                           }: {
+interface ImportPageProps {
   isOpen: boolean;
   setOpen: (action: boolean) => void;
   requestFunc: (obj: any) => Promise<Response>;
@@ -21,8 +17,14 @@ export const ImportPage = ({
   dataList: any[];
   pageSize: number;
   getPageApi: (pageSize: number, pageNumber: number) => Promise<Response>;
-}) => {
+}
 
+export const ImportPage = (props: ImportPageProps) => {
+  const {
+    isOpen, setOpen, requestFunc, setData, setLastPage,
+    lastPage, currentPage, getPageApi,
+    dataList, pageSize
+  } = props;
   const [fileData, setFileData] = useState<string | ArrayBuffer | null>(null);
 
   const clickToExport = useCallback(() => {

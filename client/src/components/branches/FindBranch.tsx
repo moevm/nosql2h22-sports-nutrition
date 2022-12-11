@@ -6,7 +6,7 @@ import { Box, TextField } from "@mui/material";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import "../dialog.scss";
-import { BootstrapDialogTitle } from "../suppliers/FindSupplierDialog";
+import { BootstrapDialogTitle } from "../suppliers/FindSupplier";
 
 const makeQueryString = (query: string, arg: string) => {
   if (arg.length) {
@@ -17,10 +17,9 @@ const makeQueryString = (query: string, arg: string) => {
   return query;
 };
 
-export function FindBranchDialog({ isOpen, setOpen }: {
-                                   isOpen: boolean,
-                                   setOpen: (action: boolean) => void
-                                 }
+export function FindBranch({ setOpen }: {
+                             setOpen: (action: boolean) => void
+                           }
 ) {
 
   const navigate = useNavigate();

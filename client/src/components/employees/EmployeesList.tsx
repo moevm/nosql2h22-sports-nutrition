@@ -24,7 +24,9 @@ export const EmployeesList = ({ employees }: { employees: any[] }) => {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                {row._id}
+                <a href={`/employee/${row._id}`}>
+                  {row._id}
+                </a>
               </TableCell>
               <TableCell align="right">{row.surname + " " + row.name + " " + row.patronymic}</TableCell>
               <TableCell align="right">{row.role}</TableCell>

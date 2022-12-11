@@ -4,13 +4,15 @@ import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import * as React from "react";
 import { useCallback, useState } from "react";
-import { BootstrapDialog, BootstrapDialogTitle } from "../suppliers/FindSupplierDialog";
+import { BootstrapDialog, BootstrapDialogTitle } from "../suppliers/FindSupplier";
 
-export const ExportPage = ({ isOpen, setOpen, requestFunc }: {
+interface ExportPageProps {
   isOpen: boolean,
   setOpen: (action: boolean) => void,
   requestFunc: (a: number, b: number) => Promise<Response>;
-}) => {
+}
+
+export const ExportPage = ({ isOpen, setOpen, requestFunc }: ExportPageProps) => {
 
   const handleClose = () => setOpen(false);
   const [pageNumber, setPageNumber] = useState(0);
@@ -55,7 +57,7 @@ export const ExportPage = ({ isOpen, setOpen, requestFunc }: {
             id="page"
             label="Page number"
             onChange={(val) => {
-              setPageNumber(Number(val.target.value))
+              setPageNumber(Number(val.target.value));
             }}
             variant="standard"
           />

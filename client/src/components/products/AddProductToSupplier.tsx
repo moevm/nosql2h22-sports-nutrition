@@ -4,18 +4,20 @@ import DialogContent from "@mui/material/DialogContent";
 import { TextField } from "@mui/material";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
-import { BootstrapDialog, BootstrapDialogTitle } from "../suppliers/FindSupplierDialog";
+import { BootstrapDialog, BootstrapDialogTitle } from "../suppliers/FindSupplier";
 import { postProduct } from "../../api/supplier";
 
-export function AddProductToSupplier({ isOpen, setOpen, supplierId, products, setProducts }: {
-                                       isOpen: boolean,
-                                       setOpen: (action: boolean) => void,
-                                       supplierId: string,
-                                       products: any[],
-                                       setProducts: (list: any[]) => void
-                                     }
-) {
+interface SupplierProductProps {
+  isOpen: boolean,
+  setOpen: (action: boolean) => void,
+  supplierId: string,
+  products: any[],
+  setProducts: (list: any[]) => void
+}
 
+export function AddProductToSupplier(props: SupplierProductProps) {
+
+  const { isOpen, setOpen, supplierId, products, setProducts } = props;
   const [price, setPrice] = useState(-1);
   const [name, setName] = useState("");
 
@@ -29,6 +31,7 @@ export function AddProductToSupplier({ isOpen, setOpen, supplierId, products, se
       .then((json) => {
         if (json) {
           setProducts(products.concat([json]));
+          alert("Product was successfully added!");
           handleClose();
         }
       });
@@ -48,7 +51,7 @@ export function AddProductToSupplier({ isOpen, setOpen, supplierId, products, se
           autoFocus
           margin="dense"
           id="name"
-          label="Enter product's name"
+          label="Product's name"
           fullWidth
           onChange={(val) =>
             setName(val.target.value)}
@@ -58,7 +61,7 @@ export function AddProductToSupplier({ isOpen, setOpen, supplierId, products, se
           type="number"
           margin="dense"
           id="price"
-          label="Enter product's price"
+          label="Product's price"
           fullWidth
           onChange={(val) =>
             setPrice(Number(val.target.value))}
