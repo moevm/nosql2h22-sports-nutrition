@@ -2,7 +2,7 @@ import * as React from "react";
 import "./index.css";
 import App from "./App";
 
-import { createRoot } from "react-dom/client";
+import {createRoot} from "react-dom/client";
 
 const container = document.getElementById("main");
 const root = createRoot(container); // createRoot(container!) if you use TypeScript

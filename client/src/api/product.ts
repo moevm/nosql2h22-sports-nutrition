@@ -1,6 +1,6 @@
-import { toQueryString } from "./functions";
-import { HOST, SERVER_PORT } from "../constants";
-import { modeAndHeaders } from "./constants";
+import {toQueryString} from "./functions";
+import {HOST, SERVER_PORT} from "../constants";
+import {modeAndHeaders} from "./constants";
 
 export interface FilterProductCriteria {
   _id?: string;

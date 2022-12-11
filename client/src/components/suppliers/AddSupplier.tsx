@@ -1,8 +1,9 @@
-import { Box, Button, Stack, TextField } from "@mui/material";
+import {Box, Button, Stack, TextField} from "@mui/material";
 import * as React from "react";
-import { useCallback, useState } from "react";
-import { postSupplier } from "../../api/supplier";
-import { regexEmail, regexLetters, regexPhone } from "../../api/constants";
+import {useCallback, useState} from "react";
+import {postSupplier} from "../../api/supplier";
+import {regexEmail, regexPhone} from "../../api/constants";
+import {checkOnError} from "../../api/functions";
 
 export interface IAddBranchResponse {
   id: string;
@@ -29,13 +30,7 @@ export const AddSupplier = () => {
 
   const doRequest = useCallback((nameReq: string, phoneReq: string, emailReq: string) => {
     postSupplier(nameReq, phoneReq, emailReq)
-      .then( async (response) => {
-        if (response.ok) alert(`Supplier "${nameReq}" was successfully added!`);
-        else {
-          const result = await response.text();
-          alert(JSON.parse(result).message);
-        }
-      })
+      .then(  (response) => checkOnError(response, `Supplier "${nameReq}" was successfully added!`))
       .catch((e) => alert(`Error occurred: ${e.message}`));
   }, [convertToObject, postSupplier]);
 

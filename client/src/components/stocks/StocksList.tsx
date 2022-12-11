@@ -1,6 +1,6 @@
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
 import React from "react";
-import { HOST } from "../../constants";
+import {HOST} from "../../constants";
 
 export const StocksList = ({ stocks }: { stocks: any[] }) => {
   if (!stocks.length) {

@@ -6,7 +6,7 @@ import {TextField} from "@mui/material";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import {EmployeeData, postEmployee} from "../../api/employee";
-import {checkObjOnDefault, toServerDateFormat} from "../../api/functions";
+import {checkObjOnDefault, checkOnError, toServerDateFormat} from "../../api/functions";
 import {regexLetters, regexPhone} from "api/constants";
 
 interface AddEmployeeProps {
@@ -30,16 +30,7 @@ export const AddEmployee = ({isOpen, setOpen, branchId, employees, setEmployees}
     const addEmployee = useCallback(() => {
         if (postData) {
             postEmployee(branchId, postData)
-                .then(async (response) => {
-                    if (response.ok) {
-                        alert("Employee was successfully added!");
-                        return response.json();
-                    } else {
-                        const res = await response.text();
-                        alert(JSON.parse(res).message);
-                        return undefined;
-                    }
-                })
+                .then((response) => checkOnError(response, "Employee was successfully added!"))
                 .then((json) => {
                     if (json) {
                         setEmployees(employees.concat([json]));

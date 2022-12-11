@@ -1,4 +1,4 @@
-import { FilterSupplierCriteria } from "../../api/supplier";
+import {FilterSupplierCriteria} from "../../api/supplier";
 
 
 export const updateField = (field: string, data: string, curValue: FilterSupplierCriteria,

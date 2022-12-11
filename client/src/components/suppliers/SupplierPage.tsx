@@ -1,15 +1,15 @@
 import * as React from "react";
-import { useEffect, useState } from "react";
-import { Box, Button, Stack, Tab, Tabs, TextField, Typography } from "@mui/material";
-import { useParams } from "react-router-dom";
-import { NotFound } from "../NotFound";
-import { getSupplierById } from "../../api/supplier";
-import { ProductsList } from "../products/ProductsList";
-import { AddProductToSupplier } from "../products/AddProductToSupplier";
-import { TabPanel } from "../tabs/tabs";
-import { isObjEmpty } from "../../api/branch";
-import { FilterProductCriteria, getProductsOfSupplier } from "../../api/product";
-import { ProductsDialog } from "../products/ProductsDialog";
+import {useEffect, useState} from "react";
+import {Box, Button, Stack, Tab, Tabs, TextField, Typography} from "@mui/material";
+import {useParams} from "react-router-dom";
+import {NotFound} from "../NotFound";
+import {getSupplierById} from "../../api/supplier";
+import {ProductsList} from "../products/ProductsList";
+import {AddProductToSupplier} from "../products/AddProductToSupplier";
+import {TabPanel} from "../tabs/tabs";
+import {isObjEmpty} from "../../api/branch";
+import {FilterProductCriteria, getProductsOfSupplier} from "../../api/product";
+import {ProductsDialog} from "../products/ProductsDialog";
 
 export const SupplierPage = () => {
   const params = useParams();

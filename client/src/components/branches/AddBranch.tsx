@@ -1,9 +1,9 @@
-import { Box, Button, Stack, TextField } from "@mui/material";
+import {Box, Button, Stack, TextField} from "@mui/material";
 import * as React from "react";
-import { useCallback, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { postBranch } from "../../api/branch";
-import { getSupplier } from "../../api/supplier";
+import {useCallback, useState} from "react";
+import {useNavigate} from "react-router-dom";
+import {postBranch} from "../../api/branch";
+import {checkOnError} from "../../api/functions";
 
 export interface IAddBranchResponse {
   id: string;
@@ -30,13 +30,8 @@ export const AddBranch = () => {
 
   const doRequest = useCallback((nameReq: string, cityReq: string) => {
     postBranch(nameReq, cityReq)
-      .then( async (response) => {
-        if (response.ok) alert("Branch was successfully added!");
-        else {
-          const result = await response.text();
-          alert(JSON.parse(result).message);
-        }
-      })
+      .then((response) =>
+          checkOnError(response, "Branch was successfully added!"))
       .catch((e) => alert(`Error occurred: ${e.message}`));
   }, [postBranch, convertToObject]);
 

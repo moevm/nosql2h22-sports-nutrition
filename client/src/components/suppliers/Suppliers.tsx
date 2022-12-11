@@ -1,11 +1,11 @@
 import * as React from "react";
-import { useState } from "react";
-import { Box, Tab, Tabs, Typography } from "@mui/material";
-import { SuppliersList } from "./SuppliersList";
-import { FindSupplier } from "./FindSupplier";
-import { AddSupplier } from "./AddSupplier";
-import { TabPanel } from "components/tabs/tabs";
-import { FindProductsEverywhere } from "../products/FindProductsEverywhere";
+import {useState} from "react";
+import {Box, Tab, Tabs, Typography} from "@mui/material";
+import {SuppliersList} from "./SuppliersList";
+import {FindSupplier} from "./FindSupplier";
+import {AddSupplier} from "./AddSupplier";
+import {TabPanel} from "components/tabs/tabs";
+import {FindProductsEverywhere} from "../products/FindProductsEverywhere";
 
 export const Suppliers = () => {
   const [tabValue, setTabValue] = useState(0);

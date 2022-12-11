@@ -1,11 +1,12 @@
 import * as React from "react";
-import { useState } from "react";
-import { BootstrapDialog, BootstrapDialogTitle } from "../suppliers/FindSupplier";
+import {useState} from "react";
+import {BootstrapDialog, BootstrapDialogTitle} from "../suppliers/FindSupplier";
 import DialogContent from "@mui/material/DialogContent";
-import { TextField } from "@mui/material";
+import {TextField} from "@mui/material";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
-import { postStock } from "../../api/branch";
+import {postStock} from "../../api/branch";
+import {checkOnError} from "../../api/functions";
 
 interface StockToBranchProps {
   isOpen: boolean,
@@ -27,18 +28,10 @@ export function AddStockToBranch(props: StockToBranchProps) {
 
   const addProduct = () => {
     postStock(branchId, productId, price, amount)
-      .then(async (response) => {
-        if (response.ok) return response.json();
-        else {
-          const text = await response.text();
-          alert(JSON.parse(text).message);
-          return undefined;
-        }
-      })
+      .then((response) => checkOnError(response, "Stock was successfully added!"))
       .then((json) => {
         if (json) {
           setStocks(stocks.concat([json]));
-          alert("Stock was successfully added!");
           handleClose();
         }
       })

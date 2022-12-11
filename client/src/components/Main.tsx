@@ -1,6 +1,6 @@
 import * as React from "react";
-import { Box, Tab } from "@mui/material";
-import { Link as RouterLink } from "react-router-dom";
+import {Box, Tab} from "@mui/material";
+import {Link as RouterLink} from "react-router-dom";
 
 export const Main = () => {
   return <Box>

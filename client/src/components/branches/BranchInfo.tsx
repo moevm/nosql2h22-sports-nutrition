@@ -1,4 +1,4 @@
-import { Stack, TextField } from "@mui/material";
+import {Stack, TextField} from "@mui/material";
 import * as React from "react";
 
 export const BranchInfo = ({ branch }: { branch: any }) => {

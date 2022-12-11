@@ -1,4 +1,4 @@
-import { FilterProductCriteria } from "../../api/product";
+import {FilterProductCriteria} from "../../api/product";
 
 export const updateField = (field: string, data: string, curValue: FilterProductCriteria,
                             setCurValue: (val: FilterProductCriteria) => void) => {

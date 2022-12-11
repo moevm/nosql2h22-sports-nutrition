@@ -1,4 +1,4 @@
-import { FilterEmployeesCriteria } from "../../api/branch";
+import {FilterEmployeesCriteria} from "../../api/employee";
 
 export const updateField = (field: string, data: string, curValue: FilterEmployeesCriteria,
                             setCurValue: (val: FilterEmployeesCriteria) => void) => {

@@ -1,22 +1,20 @@
-import { NotFound } from "../NotFound";
-import { Box, Button, Tab, Tabs, Typography } from "@mui/material";
+import {NotFound} from "../NotFound";
+import {Box, Button, Tab, Tabs, Typography} from "@mui/material";
 import * as React from "react";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { FilterEmployeesCriteria, getBranch, getFilteredStocks, isObjEmpty } from "../../api/branch";
-import { branchDtoFromParams } from "../../api/functions";
-import { TabPanel } from "components/tabs/tabs";
-import { BranchInfo } from "./BranchInfo";
-import { StocksList } from "../stocks/StocksList";
-import { AddStockToBranch } from "../stocks/AddStockToBranch";
-import { EmployeesList } from "../employees/EmployeesList";
-import { FindStockDialog } from "../stocks/FindStockDialog";
-import { FilterStocksCriteria } from "api/branch";
-import { EmployeesDialog } from "../employees/EmployeesDialog";
-import { findEmployeesInBranch } from "../../api/employee";
-import { AddEmployee } from "../employees/AddEmployee";
-
-const ERROR_MESSAGE = "Error in entered params";
+import {useEffect, useState} from "react";
+import {useParams} from "react-router-dom";
+import {getFilteredBranches, getFilteredStocks, isObjEmpty} from "../../api/branch";
+import {branchDtoFromParams, checkOnError} from "../../api/functions";
+import {TabPanel} from "components/tabs/tabs";
+import {BranchInfo} from "./BranchInfo";
+import {StocksList} from "../stocks/StocksList";
+import {AddStockToBranch} from "../stocks/AddStockToBranch";
+import {EmployeesList} from "../employees/EmployeesList";
+import {FindStockDialog} from "../stocks/FindStockDialog";
+import {FilterStocksCriteria} from "api/branch";
+import {EmployeesDialog} from "../employees/EmployeesDialog";
+import {FilterEmployeesCriteria, findEmployeesInBranch} from "../../api/employee";
+import {AddEmployee} from "../employees/AddEmployee";
 
 export const BranchPage = () => {
   const params = useParams();
@@ -29,46 +27,45 @@ export const BranchPage = () => {
   const [employees, setEmployees] = useState<any[]>([]);
   const [stockFilterCriteria, setStockFilterCriteria] = useState<FilterStocksCriteria>({});
   const [employeeFilterCriteria, setEmployeeFilterCriteria] = useState<FilterEmployeesCriteria>({});
-  const [errorStock, setErrorStock] = useState("");
 
   useEffect(() => {
-    getBranch(branchDtoFromParams(params))
+    getFilteredBranches(branchDtoFromParams(params))
       .then((response) => response.json())
       .then((json) => {
         setBranch(json.result[0]);
         setStocks(json.result[0].stocks);
         setEmployees(json.result[0].employees);
       });
-  }, [params, getBranch, branchDtoFromParams]);
+  }, [params, getFilteredBranches, branchDtoFromParams]);
 
   useEffect(() => {
     if (!branch || isObjEmpty(stockFilterCriteria)) {
       return;
     }
+
     getFilteredStocks(branch._id, stockFilterCriteria)
-      .then((response) => response.ok ? response.json() : undefined)
+      .then((response) => checkOnError(response))
       .then((json) => {
         if (json) {
-          setErrorStock("");
           setStocks(json.result);
-        } else {
-          setErrorStock(ERROR_MESSAGE);
         }
       })
-      .catch((err) => setErrorStock(ERROR_MESSAGE));
-  }, [stockFilterCriteria]);
+      .catch((err) => alert(err.message));
+  }, [stockFilterCriteria, getFilteredStocks]);
 
   useEffect(() => {
     if (!branch || isObjEmpty(employeeFilterCriteria)) {
       return;
     }
     findEmployeesInBranch(employeeFilterCriteria, branch._id)
-      .then((response) => response.json())
+      .then((response) => checkOnError(response))
       .then((json) => {
-        setEmployees(json.result);
+          if (json) {
+              setEmployees(json.result);
+          }
       })
-      .catch((err) => setEmployees([]));
-  }, [employeeFilterCriteria]);
+      .catch((err) => alert(err.message));
+  }, [employeeFilterCriteria, findEmployeesInBranch]);
 
   if (!branch) {
     return <NotFound />;
@@ -118,7 +115,6 @@ export const BranchPage = () => {
         </Box>
         <AddStockToBranch isOpen={isOpenForm} setOpen={setOpenForm} branchId={branch._id}
                           stocks={stocks} setStocks={setStocks} />
-        {errorStock}
         <FindStockDialog onChange={setStockFilterCriteria}
                          value={stockFilterCriteria} />
         <StocksList stocks={stocks} />

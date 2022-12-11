@@ -1,9 +1,10 @@
 import DialogContent from "@mui/material/DialogContent";
-import { TextField } from "@mui/material";
+import {TextField} from "@mui/material";
 import * as React from "react";
-import { useState } from "react";
-import { FilterEmployeesCriteria } from "../../api/branch";
-import { toServerDateFormat } from "../../api/functions";
+import {useState} from "react";
+import {toServerDateFormat} from "../../api/functions";
+import {FilterEmployeesCriteria} from "../../api/employee";
+import {salaryRange} from "../../api/constants";
 
 interface FindEmployeeContentProps {
   updateField: (name: string, value: string, curValue: FilterEmployeesCriteria,
@@ -80,7 +81,7 @@ export const FindEmployeeContent = (props: FindEmployeeContentProps) => {
         fullWidth
         onChange={(val) => {
           if (Number(curVal.salary_from) > Number(val.target.value)) {
-            setHelperText("Salary_from must be less then salary_to!");
+            setHelperText(salaryRange);
           } else {
             updateField("salary_to", val.target.value, curVal, setCurVal);
             setHelperText("");

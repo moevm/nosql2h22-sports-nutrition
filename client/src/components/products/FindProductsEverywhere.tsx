@@ -1,13 +1,13 @@
 import * as React from "react";
-import { useCallback, useState } from "react";
-import { isObjEmpty } from "../../api/branch";
-import { Box, Typography } from "@mui/material";
+import {useCallback, useState} from "react";
+import {isObjEmpty} from "../../api/branch";
+import {Box, Typography} from "@mui/material";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
-import { FilterProductCriteria, getProducts } from "../../api/product";
-import { FindProductsContent } from "./FindProductsContent";
-import { updateField } from "./util";
-import { ProductsList } from "./ProductsList";
+import {FilterProductCriteria, getProducts} from "../../api/product";
+import {FindProductsContent} from "./FindProductsContent";
+import {updateField} from "./util";
+import {ProductsList} from "./ProductsList";
 
 export function FindProductsEverywhere() {
 

@@ -1,4 +1,7 @@
 tr.suppliers-table {
+  td:not([class^="cell-id"]) {
+    text-align: center;
+  }
   td {
     text-align: center;
     width: 10%;

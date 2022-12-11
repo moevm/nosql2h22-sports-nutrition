@@ -1,7 +1,7 @@
-import { TextField } from "@mui/material";
+import {TextField} from "@mui/material";
 import DialogContent from "@mui/material/DialogContent";
 import * as React from "react";
-import { FilterProductCriteria } from "../../api/product";
+import {FilterProductCriteria} from "../../api/product";
 
 
 interface FindProductsContentProps {

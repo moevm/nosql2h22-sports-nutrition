@@ -1,8 +1,8 @@
 import * as React from "react";
-import { useCallback, useState } from "react";
-import { BootstrapDialog, BootstrapDialogTitle } from "../suppliers/FindSupplier";
+import {useCallback, useState} from "react";
+import {BootstrapDialog, BootstrapDialogTitle} from "../suppliers/FindSupplier";
 import DialogContent from "@mui/material/DialogContent";
-import { Stack, TextField } from "@mui/material";
+import {Stack, TextField} from "@mui/material";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 

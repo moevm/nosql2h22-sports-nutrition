@@ -1,9 +1,9 @@
-import { Stack, TextField, Typography } from "@mui/material";
+import {Stack, TextField, Typography} from "@mui/material";
 import * as React from "react";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { getEmployeeById } from "../../api/employee";
-import { NotFound } from "../NotFound";
+import {useEffect, useState} from "react";
+import {useParams} from "react-router-dom";
+import {getEmployeeById} from "../../api/employee";
+import {NotFound} from "../NotFound";
 
 export const EmployeePage = () => {
   const params = useParams();

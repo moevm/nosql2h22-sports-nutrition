@@ -1,13 +1,13 @@
 import * as React from "react";
-import { useEffect, useState } from "react";
-import { Pagination } from "../pagination/Pagination";
-import { getSupplierPage, importSuppliers } from "../../api/supplier";
-import { Box, Button } from "@mui/material";
-import { ExportPage } from "../export/ExportPage";
-import { exportSuppliersPage } from "../../api/export";
-import { ImportPage } from "../import/ImportPage";
+import {useEffect, useState} from "react";
+import {Pagination} from "../pagination/Pagination";
+import {getSupplierPage, importSuppliers} from "../../api/supplier";
+import {Box, Button} from "@mui/material";
+import {ExportPage} from "../export/ExportPage";
+import {exportSuppliersPage} from "../../api/export";
+import {ImportPage} from "../import/ImportPage";
 import "./Suppliers.scss";
-import { SuppliersTable } from "./SuppliersTable";
+import {SuppliersTable} from "./SuppliersTable";
 
 const pageSize = 15;
 const productsSize = 5;

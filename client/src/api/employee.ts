@@ -1,8 +1,21 @@
-import { toQueryString } from "./functions";
-import { HOST, SERVER_PORT } from "../constants";
-import { FilterEmployeesCriteria } from "./branch";
-import { modeAndHeaders } from "./constants";
+import {toQueryString} from "./functions";
+import {HOST, SERVER_PORT} from "../constants";
+import {modeAndHeaders} from "./constants";
 
+export interface FilterEmployeesCriteria {
+  _id?: string;
+  role?: string;
+  phone_number?: string;
+  name?: string;
+  employment_date_from?: string;
+  employment_date_to?: string;
+  salary_from?: string;
+  salary_to?: string;
+  surname?: string;
+  patronymic?: string;
+  dismissal_date_from?: string;
+  dismissal_date_to?: string;
+}
 export interface EmployeeData {
   name: string,
   surname: string,

@@ -1,6 +1,6 @@
-import { HOST, SERVER_PORT } from "../constants";
-import { GetBranchDto, toQueryString } from "./functions";
-import { modeAndHeaders } from "./constants";
+import {HOST, SERVER_PORT} from "../constants";
+import {toQueryString} from "./functions";
+import {modeAndHeaders} from "./constants";
 
 export interface FilterStocksCriteria {
   _id?: string;
@@ -13,19 +13,19 @@ export interface FilterStocksCriteria {
   price_to?: string;
 }
 
-export interface FilterEmployeesCriteria {
+export interface FilterBranchCriteria {
   _id?: string;
-  role?: string;
-  phone_number?: string;
+  city?: string;
   name?: string;
-  employment_date_from?: string;
-  employment_date_to?: string;
-  salary_from?: string;
-  salary_to?: string;
-  surname?: string;
-  patronymic?: string;
-  dismissal_date_from?: string;
-  dismissal_date_to?: string;
+  product_names?: string;
+  stocks_to?: string;
+  stocks_from?: string;
+  employees_to?: string;
+  employees_from?: string;
+  employee_names?: string;
+  employee_surnames?: string;
+  employee_ids?: string;
+  product_ids?: string;
 }
 
 export const isObjEmpty = (filter: any) => {
@@ -56,8 +56,9 @@ export const getBranchesPage = (pageSize: number, currentPage: number) => {
   });
 };
 
-export const getBranch = (res: GetBranchDto): Promise<Response> => {
-  return fetch(`${HOST}${SERVER_PORT}/branch?${toQueryString(res)}`,
+export const getFilteredBranches = (filter: FilterBranchCriteria): Promise<Response> => {
+  const query = toQueryString(filter);
+  return fetch(`${HOST}${SERVER_PORT}/branch?${query}`,
     {
       method: "GET",
       ...modeAndHeaders

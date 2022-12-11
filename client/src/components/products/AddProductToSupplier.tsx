@@ -1,11 +1,12 @@
 import * as React from "react";
-import { useState } from "react";
+import {useState} from "react";
 import DialogContent from "@mui/material/DialogContent";
-import { TextField } from "@mui/material";
+import {TextField} from "@mui/material";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
-import { BootstrapDialog, BootstrapDialogTitle } from "../suppliers/FindSupplier";
-import { postProduct } from "../../api/supplier";
+import {BootstrapDialog, BootstrapDialogTitle} from "../suppliers/FindSupplier";
+import {postProduct} from "../../api/supplier";
+import {checkOnError} from "../../api/functions";
 
 interface SupplierProductProps {
   isOpen: boolean,
@@ -27,17 +28,7 @@ export function AddProductToSupplier(props: SupplierProductProps) {
 
   const addProduct = () => {
     postProduct(supplierId, name, price)
-      .then(async (response) => {
-        if (response.ok) {
-          alert("Product was successfully added!");
-          return response.json();
-        }
-        else {
-          const res = await response.text();
-          alert(JSON.parse(res).message);
-          return undefined;
-        }
-      })
+      .then((response) => checkOnError(response, "Product was successfully added!"))
       .then((json) => {
         if (json) {
           setProducts(products.concat([json]));

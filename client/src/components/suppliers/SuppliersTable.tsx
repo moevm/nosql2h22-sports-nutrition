@@ -1,4 +1,4 @@
-import { Stack } from "@mui/material";
+import {Stack} from "@mui/material";
 import * as React from "react";
 
 interface IProps {

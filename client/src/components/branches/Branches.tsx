@@ -1,16 +1,15 @@
 import * as React from "react";
-import { useState } from "react";
-import { Box, Tab, Tabs, Typography } from "@mui/material";
-import { BranchesList } from "./BranchesList";
-import { FindBranch } from "./FindBranch";
-import { AddBranch } from "./AddBranch";
-import { TabPanel } from "components/tabs/tabs";
-import { EmployeeInAllBranches } from "../employees/EmployeesInAllBranches";
+import {useState} from "react";
+import {Box, Tab, Tabs, Typography} from "@mui/material";
+import {BranchesList} from "./BranchesList";
+import {AddBranch} from "./AddBranch";
+import {TabPanel} from "components/tabs/tabs";
+import {EmployeeInAllBranches} from "../employees/EmployeesInAllBranches";
+import {FindBranches} from "./FindBranches";
 
 export const Branches = () => {
   const [isOpenForm, setOpenForm] = useState(false);
   const [tabValue, setTabValue] = useState(0);
-
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
   };
@@ -42,7 +41,7 @@ export const Branches = () => {
         <AddBranch />
       </TabPanel>
       <TabPanel value={tabValue} index={2}>
-        <FindBranch setOpen={setOpenForm} />
+        <FindBranches />
       </TabPanel>
       <TabPanel value={tabValue} index={3}>
         <EmployeeInAllBranches />

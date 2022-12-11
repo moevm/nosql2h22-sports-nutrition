@@ -1,20 +1,19 @@
 import * as React from "react";
-import { useCallback, useState } from "react";
+import {useCallback, useState} from "react";
 import Button from "@mui/material/Button";
-import { styled } from "@mui/material/styles";
+import {styled} from "@mui/material/styles";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import { Box, TextField, Typography } from "@mui/material";
+import {Box, TextField, Typography} from "@mui/material";
 import "../dialog.scss";
-import { isObjEmpty } from "../../api/branch";
-import { FilterSupplierCriteria, getSupplier } from "../../api/supplier";
-import { updateField } from "./util";
-import { SuppliersTable } from "./SuppliersTable";
-import { findEmployee } from "../../api/employee";
+import {isObjEmpty} from "../../api/branch";
+import {FilterSupplierCriteria, getSupplier} from "../../api/supplier";
+import {updateField} from "./util";
+import {SuppliersTable} from "./SuppliersTable";
 
 export const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -54,13 +53,6 @@ export function BootstrapDialogTitle(props: DialogTitleProps) {
     </DialogTitle>
   );
 }
-
-interface FindSupplierProps {
-  onChange: (val: FilterSupplierCriteria) => void,
-  value: FilterSupplierCriteria
-}
-
-const SUPPLIERS_NOT_FOUND = "Suppliers not found";
 
 export function FindSupplier() {
 

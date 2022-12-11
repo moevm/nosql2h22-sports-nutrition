@@ -1,13 +1,13 @@
 import * as React from "react";
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import "./Branches.scss";
-import { Pagination } from "../pagination/Pagination";
-import { HOST } from "../../constants";
-import { getBranchesPage, importBranches } from "../../api/branch";
-import { Box, Button } from "@mui/material";
-import { ExportPage } from "../export/ExportPage";
-import { exportBranchesPage } from "../../api/export";
-import { ImportPage } from "components/import/ImportPage";
+import {Pagination} from "../pagination/Pagination";
+import {getBranchesPage, importBranches} from "../../api/branch";
+import {Box, Button} from "@mui/material";
+import {ExportPage} from "../export/ExportPage";
+import {exportBranchesPage} from "../../api/export";
+import {ImportPage} from "components/import/ImportPage";
+import {BranchesTable} from "./BranchesTable";
 
 const pageSize = 15;
 
@@ -43,33 +43,8 @@ export const BranchesList = () => {
                   dataList={data}
                   pageSize={pageSize}
                   getPageApi={getBranchesPage} />
-      <table>
-        <thead>
-        <tr>
-          <th>Branch Id</th>
-          <th>Name</th>
-          <th>Employees</th>
-          <th>Stocks</th>
-          <th>Location</th>
-        </tr>
-        </thead>
-        <tbody>
-        {data.map((item) => {
-          return (
-            <tr key={item._id} className="branches-table">
-              <td className="cell-id"
-              ><a href={`${HOST}8080/branch/id/${item._id}`}>
-                {item._id}
-              </a></td>
-              <td>{item.name}</td>
-              <td>{item.employees}</td>
-              <td>{item.stocks}</td>
-              <td>{item.city}</td>
-            </tr>
-          );
-        })}
-        </tbody>
-      </table>
+
+       <BranchesTable branches={data} forPagination={true} />
       <Pagination
         lastPage={lastPage}
         className="pagination-bar"
