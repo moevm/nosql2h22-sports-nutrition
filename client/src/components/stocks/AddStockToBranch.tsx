@@ -20,7 +20,6 @@ export function AddStockToBranch(props: StockToBranchProps) {
   const [price, setPrice] = useState(-1);
   const [amount, setAmount] = useState(-1);
   const [productId, setProductId] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
 
   const handleClose = () => {
     setOpen(false);
@@ -32,14 +31,12 @@ export function AddStockToBranch(props: StockToBranchProps) {
         if (response.ok) return response.json();
         else {
           const text = await response.text();
-          setErrorMessage(text);
+          alert(JSON.parse(text).message);
           return undefined;
         }
       })
       .then((json) => {
         if (json) {
-          console.log(json);
-          setErrorMessage("");
           setStocks(stocks.concat([json]));
           alert("Stock was successfully added!");
           handleClose();
@@ -47,8 +44,7 @@ export function AddStockToBranch(props: StockToBranchProps) {
       })
       .catch((error) =>
       {
-        console.log("Set error", error);
-        setErrorMessage(String(error))
+        alert(error.message)
       });
   };
 
@@ -62,7 +58,6 @@ export function AddStockToBranch(props: StockToBranchProps) {
         Add new stock to branch
       </BootstrapDialogTitle>
       <DialogContent dividers>
-        {errorMessage}
         <TextField
           autoFocus
           margin="dense"

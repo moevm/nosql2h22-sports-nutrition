@@ -34,7 +34,7 @@ export function AddProductToSupplier(props: SupplierProductProps) {
         }
         else {
           const res = await response.text();
-          alert(JSON.parse(res.message));
+          alert(JSON.parse(res).message);
           return undefined;
         }
       })

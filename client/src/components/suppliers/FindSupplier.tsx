@@ -133,7 +133,7 @@ export function FindSupplier() {
           id="phone"
           label="Phone"
           fullWidth
-          placeholder="+79998887788"
+          placeholder="79998887788"
           onChange={(val) =>
             updateField("phone", val.target.value, value, setValue)}
           variant="standard"
