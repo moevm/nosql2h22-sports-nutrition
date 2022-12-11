@@ -17,7 +17,7 @@ export const Branches = () => {
 
   return (
     <Box>
-      <Typography component="span" variant="h3"> Branches page </Typography>
+      <Typography component="div" variant="h3"> Branches page </Typography>
       <Box flexDirection={"row"}>
         <Tabs value={tabValue} onChange={handleChange}>
           <Tab

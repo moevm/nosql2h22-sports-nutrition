@@ -32,7 +32,7 @@ export function FindStockDialog({ onChange, value }: {
   return (
     <Box sx={{ width: "60%" }}>
       <Typography variant="h5">
-        Filter stocks
+        Stocks
       </Typography>
       <DialogContent dividers>
         <TextField
@@ -118,7 +118,7 @@ export function FindStockDialog({ onChange, value }: {
               alert("Price from must be less then price to");
               return;
             }
-            onChange(curValue)
+            onChange(curValue);
           }
           }
           disabled={isObjEmpty(curValue)}

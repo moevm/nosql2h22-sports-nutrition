@@ -33,6 +33,14 @@ export const findEmployee = (filter: FilterEmployeesCriteria) => {
     });
 };
 
+export const getEmployeeById = (id: string) => {
+  return fetch(`${HOST}${SERVER_PORT}/employee?_id=${id}`,
+    {
+      method: "GET",
+      ...modeAndHeaders
+    });
+};
+
 export const postEmployee = (id: string, employeeData: EmployeeData) => {
   console.log("Body: ", JSON.stringify(employeeData));
   return fetch(`${HOST}${SERVER_PORT}/branch/${id}/employee`,

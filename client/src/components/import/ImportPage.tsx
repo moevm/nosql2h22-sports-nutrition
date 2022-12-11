@@ -18,6 +18,7 @@ interface ImportPageProps {
   pageSize: number;
   getPageApi: (pageSize: number, pageNumber: number) => Promise<Response>;
 }
+
 export const ImportPage = (props: ImportPageProps) => {
   const {
     isOpen, setOpen, requestFunc, setData, setLastPage,

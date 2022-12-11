@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import Dialog from "@mui/material/Dialog";
@@ -9,14 +9,10 @@ import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { Box, TextField, Typography } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 import "../dialog.scss";
-import { FilterEmployeesCriteria, isObjEmpty } from "../../api/branch";
+import { isObjEmpty } from "../../api/branch";
 import { FilterSupplierCriteria, getSupplier } from "../../api/supplier";
 import { updateField } from "./util";
-import { findEmployee, findEmployeesInBranch } from "../../api/employee";
-import { EmployeesList } from "../employees/EmployeesList";
-import { SuppliersList } from "./SuppliersList";
 import { SuppliersTable } from "./SuppliersTable";
 
 export const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -76,7 +72,7 @@ export function FindSupplier() {
     getSupplier(value)
       .then((response) => response.ok ? response.json() : undefined)
       .then((json) => {
-        setError(json ? "" : SUPPLIERS_NOT_FOUND)
+        setError(json ? "" : SUPPLIERS_NOT_FOUND);
         setSuppliers(json ? json.result : undefined);
       })
       .catch((e) => {
@@ -86,13 +82,8 @@ export function FindSupplier() {
       );
   }, [value, getSupplier]);
 
-  // const findSupplier = () => {
-  //   navigate("/supplier/" + value,
-  //     { replace: true });
-  // };
-
   return (
-    <Box style={{width: "70%"}}>
+    <Box style={{ width: "70%" }}>
       <Typography component="div" variant="h5">
         Find supplier form
       </Typography>
@@ -100,7 +91,7 @@ export function FindSupplier() {
         <TextField
           autoFocus
           margin="dense"
-          id="name"
+          id="id"
           label="Id"
           fullWidth
           onChange={(val) =>
@@ -118,8 +109,9 @@ export function FindSupplier() {
         />
         <TextField
           margin="dense"
-          id="name"
+          id="email"
           label="Email"
+          placeholder="supplier@gmail.com"
           fullWidth
           onChange={(val) =>
             updateField("email", val.target.value, value, setValue)}
@@ -127,16 +119,50 @@ export function FindSupplier() {
         />
         <TextField
           margin="dense"
-          id="name"
+          id="phone"
           label="Phone"
           fullWidth
+          placeholder="+79998887788"
           onChange={(val) =>
             updateField("phone", val.target.value, value, setValue)}
           variant="standard"
         />
+        <TextField
+          margin="dense"
+          id="descriptor"
+          label="Descriptor ids"
+          placeholder="descriptor1, descriptor2"
+          fullWidth
+          onChange={(val) =>
+            updateField("descriptor_ids", val.target.value, value, setValue)}
+          variant="standard"
+          helperText={`Use "," between descriptors. Example: "descriptor1, descriptor2"`}
+        />
+        <TextField
+          margin="dense"
+          id="product_names"
+          label="Product names"
+          fullWidth
+          placeholder="name1, name2"
+          onChange={(val) =>
+            updateField("product_names", val.target.value, value, setValue)}
+          variant="standard"
+          helperText={`Use "," between names of products. Example: "name1, name2"`}
+        />
+        <TextField
+          margin="dense"
+          id="product_ids"
+          label="Product ids"
+          fullWidth
+          placeholder="id1, id2"
+          onChange={(val) =>
+            updateField("product_ids", val.target.value, value, setValue)}
+          variant="standard"
+          helperText={`Use "," between names of products. Example: id1, id2"`}
+        />
       </DialogContent>
       <DialogActions>
-        <Button autoFocus disabled={isObjEmpty(value)} onClick={findSuppliers} >
+        <Button autoFocus disabled={isObjEmpty(value)} onClick={findSuppliers}>
           Find
         </Button>
       </DialogActions>

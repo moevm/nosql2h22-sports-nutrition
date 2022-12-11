@@ -5,6 +5,7 @@ import { SuppliersList } from "./SuppliersList";
 import { FindSupplier } from "./FindSupplier";
 import { AddSupplier } from "./AddSupplier";
 import { TabPanel } from "components/tabs/tabs";
+import { FindProductsEverywhere } from "../products/FindProductsEverywhere";
 
 export const Suppliers = () => {
   const [tabValue, setTabValue] = useState(0);
@@ -27,6 +28,9 @@ export const Suppliers = () => {
           <Tab
             label="Find supplier"
           />
+          <Tab
+            label="Find product"
+          />
         </Tabs>
       </Box>
       <TabPanel value={tabValue} index={0}>
@@ -37,6 +41,9 @@ export const Suppliers = () => {
       </TabPanel>
       <TabPanel value={tabValue} index={2}>
         <FindSupplier />
+      </TabPanel>
+      <TabPanel value={tabValue} index={3}>
+        <FindProductsEverywhere />
       </TabPanel>
     </Box>
   );

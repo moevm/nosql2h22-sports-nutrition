@@ -14,6 +14,7 @@ interface SupplierProductProps {
   products: any[],
   setProducts: (list: any[]) => void
 }
+
 export function AddProductToSupplier(props: SupplierProductProps) {
 
   const { isOpen, setOpen, supplierId, products, setProducts } = props;
@@ -30,6 +31,7 @@ export function AddProductToSupplier(props: SupplierProductProps) {
       .then((json) => {
         if (json) {
           setProducts(products.concat([json]));
+          alert("Product was successfully added!");
           handleClose();
         }
       });
@@ -49,7 +51,7 @@ export function AddProductToSupplier(props: SupplierProductProps) {
           autoFocus
           margin="dense"
           id="name"
-          label="Enter product's name"
+          label="Product's name"
           fullWidth
           onChange={(val) =>
             setName(val.target.value)}
@@ -59,7 +61,7 @@ export function AddProductToSupplier(props: SupplierProductProps) {
           type="number"
           margin="dense"
           id="price"
-          label="Enter product's price"
+          label="Product's price"
           fullWidth
           onChange={(val) =>
             setPrice(Number(val.target.value))}

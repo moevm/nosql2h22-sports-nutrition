@@ -35,6 +35,7 @@ export const AddEmployee = ({ isOpen, setOpen, branchId, employees, setEmployees
           if (json) {
             setEmployees(employees.concat([json]));
             handleClose();
+            alert("Employee was successfully added!");
           }
         });
     }
@@ -135,10 +136,10 @@ export const AddEmployee = ({ isOpen, setOpen, branchId, employees, setEmployees
           fullWidth
           onChange={(val) => {
             if (!regexPhone.test(val.target.value)) {
-              setHelperTextPhone("Phone format should be: +79998887766")
+              setHelperTextPhone("Phone format should be: +79998887766");
             } else {
               setHelperTextPhone("");
-              updateField("role", val.target.value)
+              updateField("role", val.target.value);
             }
           }
           }

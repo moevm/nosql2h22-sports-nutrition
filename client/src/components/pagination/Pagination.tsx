@@ -1,8 +1,8 @@
 import React from "react";
 import classnames from "classnames";
 import { List, ListItem, ListItemButton, ListItemIcon } from "@mui/material";
-import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
-import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
+import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 
 interface PaginationProps {
   onPageChange: (page: number) => void;
@@ -10,6 +10,7 @@ interface PaginationProps {
   lastPage: boolean;
   className: string;
 }
+
 export const Pagination = (props: PaginationProps) => {
 
   const {
@@ -28,34 +29,34 @@ export const Pagination = (props: PaginationProps) => {
   };
 
   return (
-    <List style={{display: "flex", alignSelf: "center", justifyContent: "center"}}
-      className={classnames("pagination-container", { [className]: className })}>
+    <List style={{ display: "flex", alignSelf: "center", justifyContent: "center" }}
+          className={classnames("pagination-container", { [className]: className })}>
       <ListItem
-        style={{width: "10%"}}
+        style={{ width: "10%" }}
         key={currentPage + className}
       >
         <ListItemButton onClick={onPrevious}
-        disabled={currentPage <= 1}> <ListItemIcon>
+                        disabled={currentPage <= 1}> <ListItemIcon>
           <KeyboardArrowLeftIcon />
         </ListItemIcon> </ListItemButton>
       </ListItem>
 
       <ListItem
-        style={{width: "5%"}}
+        style={{ width: "5%" }}
         key={currentPage}
       >
         {currentPage}
       </ListItem>
 
       <ListItem
-        style={{width: "10%"}}
+        style={{ width: "10%" }}
         key={"pagination-item-disabled"}
       >
         <ListItemButton disabled={lastPage} onClick={() => {
           onNext();
         }}> <ListItemIcon>
           <KeyboardArrowRightIcon />
-        </ListItemIcon>  </ListItemButton>
+        </ListItemIcon> </ListItemButton>
       </ListItem>
     </List>
   );

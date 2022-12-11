@@ -1,11 +1,8 @@
-import { Box, Button, IconButton, Stack, TextField } from "@mui/material";
+import { Box, Button, Stack, TextField } from "@mui/material";
 import * as React from "react";
 import { useCallback, useState } from "react";
-import CancelIcon from "@mui/icons-material/Cancel";
-import AddIcon from "@mui/icons-material/Add";
 import { useNavigate } from "react-router-dom";
 import { postBranch } from "../../api/branch";
-import { Exception } from "sass";
 
 export interface IAddBranchResponse {
   id: string;
@@ -59,7 +56,7 @@ export const AddBranch = () => {
         />
         <Box style={{ marginLeft: "35%" }} flexDirection="row">
           <Button onClick={() => doRequest(name, city)}
-          disabled={!name.length || !city.length}>
+                  disabled={!name.length || !city.length}>
             Add
           </Button>
           <Button onClick={() => navigate("/branches")}>

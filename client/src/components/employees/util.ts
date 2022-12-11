@@ -1,7 +1,7 @@
 import { FilterEmployeesCriteria } from "../../api/branch";
 
 export const updateField = (field: string, data: string, curValue: FilterEmployeesCriteria,
-                     setCurValue: (val: FilterEmployeesCriteria) => void) => {
+                            setCurValue: (val: FilterEmployeesCriteria) => void) => {
   const copy: FilterEmployeesCriteria = { ...curValue };
 
   if (["_id", "role", "phone_number", "name",

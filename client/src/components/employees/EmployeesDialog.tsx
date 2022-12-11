@@ -1,7 +1,7 @@
 import { FilterEmployeesCriteria, isObjEmpty } from "../../api/branch";
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { Box, IconButton, TextField, Typography } from "@mui/material";
+import { Box, IconButton, Typography } from "@mui/material";
 import DialogActions from "@mui/material/DialogActions";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import { FindEmployeeContent } from "./FindEmployeeContent";
@@ -22,10 +22,10 @@ export function EmployeesDialog({ onChange, value }: FindEmployeeProps) {
 
   return (
     <Box sx={{ width: "60%" }}>
-      <Typography component="div" variant="h5">
-        Filter employees
+      <Typography variant="h5">
+        Employees
       </Typography>
-     <FindEmployeeContent updateField={updateField} curVal={curValue} setCurVal={setCurValue} />
+      <FindEmployeeContent updateField={updateField} curVal={curValue} setCurVal={setCurValue} />
       <DialogActions>
         <IconButton
           onClick={() => onChange(curValue)}

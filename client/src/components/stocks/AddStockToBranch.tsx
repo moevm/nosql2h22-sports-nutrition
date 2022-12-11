@@ -6,9 +6,6 @@ import { TextField } from "@mui/material";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import { postStock } from "../../api/branch";
-import { checkObjOnNegativeNumbers } from "../../api/functions";
-
-const errorMessageId = "Error in entered product's id. Product doesn't exist";
 
 interface StockToBranchProps {
   isOpen: boolean,
@@ -17,6 +14,7 @@ interface StockToBranchProps {
   stocks: any[],
   setStocks: (list: any[]) => void
 }
+
 export function AddStockToBranch(props: StockToBranchProps) {
   const { isOpen, setOpen, branchId, stocks, setStocks } = props;
   const [price, setPrice] = useState(-1);
@@ -30,18 +28,23 @@ export function AddStockToBranch(props: StockToBranchProps) {
 
   const addProduct = () => {
     postStock(branchId, productId, price, amount)
-      .then((response) => response.ok ? response.json() : undefined)
+      .then(async (response) => {
+        if (response.ok) return response.json();
+        else {
+          const text = await response.text();
+          setErrorMessage(JSON.parse(text).message);
+          return undefined;
+        }
+      })
       .then((json) => {
         if (json) {
           setErrorMessage("");
           setStocks(stocks.concat([json]));
+          alert("Stock was successfully added!");
           handleClose();
         }
-        else {
-          setErrorMessage(errorMessageId);
-        }
       })
-      .catch((error) => setErrorMessage(errorMessageId));
+      .catch((error) => setErrorMessage(error.message));
   };
 
   return (
@@ -76,7 +79,7 @@ export function AddStockToBranch(props: StockToBranchProps) {
               alert("Price must be not negative");
               return;
             }
-            setPrice(Number(val.target.value))
+            setPrice(Number(val.target.value));
           }
           }
           variant="standard"
@@ -92,7 +95,7 @@ export function AddStockToBranch(props: StockToBranchProps) {
               alert("Amount must be not negative");
               return;
             }
-            setAmount(Number(val.target.value))
+            setAmount(Number(val.target.value));
           }
           }
           variant="standard"

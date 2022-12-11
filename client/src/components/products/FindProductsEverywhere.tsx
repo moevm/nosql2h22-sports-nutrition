@@ -1,62 +1,62 @@
 import * as React from "react";
 import { useCallback, useState } from "react";
+import { isObjEmpty } from "../../api/branch";
 import { Box, Typography } from "@mui/material";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
-import { findEmployee } from "api/employee";
-import { EmployeesList } from "./EmployeesList";
-import { FilterEmployeesCriteria, isObjEmpty } from "../../api/branch";
-import { FindEmployeeContent } from "./FindEmployeeContent";
+import { FilterProductCriteria, getProducts } from "../../api/product";
+import { FindProductsContent } from "./FindProductsContent";
 import { updateField } from "./util";
+import { ProductsList } from "./ProductsList";
 
-export function EmployeeInAllBranches() {
+export function FindProductsEverywhere() {
 
-  const [curValue, setCurValue] = useState<FilterEmployeesCriteria>({});
+  const [curValue, setCurValue] = useState<FilterProductCriteria>({});
 
-  const [employees, setEmployees] = useState([]);
+  const [products, setProducts] = useState([]);
   const [error, setError] = useState("");
 
-  const getEmployee = useCallback(() => {
-    findEmployee(curValue)
+  const findProducts = useCallback(() => {
+    getProducts(curValue)
       .then(async (response) => {
         if (response.ok) return response.json();
         else {
           const text = await response.text();
           setError(JSON.parse(text).message);
-          setEmployees([]);
+          setProducts([]);
           return undefined;
         }
       })
       .then((json) => {
         if (json) {
           setError("");
-          setEmployees(json.result);
+          setProducts(json.result);
         }
       })
       .catch((e) => {
           setError(e.message);
-          setEmployees([]);
+          setProducts([]);
         }
       );
-  }, [curValue, findEmployee]);
+  }, [curValue, getProducts]);
 
   return (
     <Box>
       <Box width="70%">
         <Typography variant="h5">
-          Find employee in all branches
+          Find products among all suppliers
         </Typography>
-        <FindEmployeeContent updateField={updateField} curVal={curValue} setCurVal={setCurValue} />
+        <FindProductsContent updateField={updateField} value={curValue} setValue={setCurValue} />
         <DialogActions>
-          <Button autoFocus onClick={getEmployee}
+          <Button autoFocus onClick={findProducts}
                   disabled={isObjEmpty(curValue) ||
-                    Number(curValue.salary_from) > Number(curValue.salary_to)}>
+                    Number(curValue.price_from) > Number(curValue.price_to)}>
             Find
           </Button>
         </DialogActions>
       </Box>
       {error.length ? <Typography> ERROR: {error}</Typography> : null}
-      {employees.length ? <EmployeesList employees={employees} /> : null}
+      {products.length ? <ProductsList products={products} ofAllSuppliers={true} /> : null}
     </Box>
   );
 }

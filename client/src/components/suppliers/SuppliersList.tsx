@@ -1,9 +1,8 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { Pagination } from "../pagination/Pagination";
-import { HOST } from "../../constants";
 import { getSupplierPage, importSuppliers } from "../../api/supplier";
-import { Box, Button, Stack } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { ExportPage } from "../export/ExportPage";
 import { exportSuppliersPage } from "../../api/export";
 import { ImportPage } from "../import/ImportPage";
@@ -46,7 +45,7 @@ export const SuppliersList = () => {
                   dataList={data}
                   pageSize={pageSize}
                   getPageApi={getSupplierPage} />
-     <SuppliersTable suppliers={data} pagination={true}/>
+      <SuppliersTable suppliers={data} pagination={true} />
       <Pagination
         lastPage={lastPage}
         className="pagination-bar"

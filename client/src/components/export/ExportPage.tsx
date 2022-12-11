@@ -57,7 +57,7 @@ export const ExportPage = ({ isOpen, setOpen, requestFunc }: ExportPageProps) =>
             id="page"
             label="Page number"
             onChange={(val) => {
-              setPageNumber(Number(val.target.value))
+              setPageNumber(Number(val.target.value));
             }}
             variant="standard"
           />

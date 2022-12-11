@@ -18,8 +18,8 @@ const makeQueryString = (query: string, arg: string) => {
 };
 
 export function FindBranch({ setOpen }: {
-                                   setOpen: (action: boolean) => void
-                                 }
+                             setOpen: (action: boolean) => void
+                           }
 ) {
 
   const navigate = useNavigate();

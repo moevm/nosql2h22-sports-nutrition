@@ -1,8 +1,6 @@
 import { HOST, SERVER_PORT } from "../constants";
 import { modeAndHeaders } from "./constants";
-import { FilterEmployeesCriteria } from "./branch";
 import { toQueryString } from "./functions";
-
 
 export interface FilterSupplierCriteria {
   _id?: string;
