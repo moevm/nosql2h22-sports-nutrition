@@ -28,7 +28,9 @@ export function EmployeesDialog({ onChange, value }: FindEmployeeProps) {
       <FindEmployeeContent updateField={updateField} curVal={curValue} setCurVal={setCurValue} />
       <DialogActions>
         <IconButton
-          onClick={() => onChange(curValue)}
+          onClick={() => {
+            console.log(curValue);
+            onChange(curValue)}}
           disabled={isObjEmpty(curValue)}
           color="inherit" title="Find stocks"
           style={{ width: "2em", margin: "10px" }}>

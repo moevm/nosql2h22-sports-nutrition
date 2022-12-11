@@ -170,7 +170,7 @@ export const AddEmployee = ({ isOpen, setOpen, branchId, employees, setEmployees
           variant="standard"
         />
         <label style={{ marginTop: "5px" }} htmlFor={"employment-date"}>
-          Employment date
+          Employment date*
         </label>
         <input
           required

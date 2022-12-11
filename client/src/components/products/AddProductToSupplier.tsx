@@ -27,11 +27,20 @@ export function AddProductToSupplier(props: SupplierProductProps) {
 
   const addProduct = () => {
     postProduct(supplierId, name, price)
-      .then((response) => response.ok ? response.json() : undefined)
+      .then(async (response) => {
+        if (response.ok) {
+          alert("Product was successfully added!");
+          return response.json();
+        }
+        else {
+          const res = await response.text();
+          alert(JSON.parse(res.message));
+          return undefined;
+        }
+      })
       .then((json) => {
         if (json) {
           setProducts(products.concat([json]));
-          alert("Product was successfully added!");
           handleClose();
         }
       });
@@ -63,8 +72,13 @@ export function AddProductToSupplier(props: SupplierProductProps) {
           id="price"
           label="Product's price"
           fullWidth
-          onChange={(val) =>
-            setPrice(Number(val.target.value))}
+          onChange={(val) => {
+            if (Number(val.target.value) < 0) {
+              alert("Price must be positive number!");
+            }
+            else
+            setPrice(Number(val.target.value))
+          }}
           variant="standard"
         />
       </DialogContent>

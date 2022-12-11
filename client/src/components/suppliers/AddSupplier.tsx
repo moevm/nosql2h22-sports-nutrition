@@ -2,7 +2,7 @@ import { Box, Button, Stack, TextField } from "@mui/material";
 import * as React from "react";
 import { useCallback, useState } from "react";
 import { postSupplier } from "../../api/supplier";
-import { regexEmail, regexPhone } from "../../api/constants";
+import { regexEmail, regexLetters, regexPhone } from "../../api/constants";
 
 export interface IAddBranchResponse {
   id: string;
@@ -29,12 +29,19 @@ export const AddSupplier = () => {
 
   const doRequest = useCallback((nameReq: string, phoneReq: string, emailReq: string) => {
     postSupplier(nameReq, phoneReq, emailReq)
-      .then((response) => response.json())
-      .then((json) => {
-        alert(`Supplier "${nameReq}" was successfully added!`);
+      .then( async (response) => {
+        if (response.ok) alert(`Supplier "${nameReq}" was successfully added!`);
+        else {
+          const result = await response.text();
+          alert(JSON.parse(result).message);
+        }
       })
-      .catch((e) => alert(`Error occured: ${e.message}`));
+      .catch((e) => alert(`Error occurred: ${e.message}`));
   }, [convertToObject, postSupplier]);
+
+
+  const [helperTextPhone, setHelperTextPhone] = useState("");
+  const [helperTextEmail, setHelperTextEmail] = useState("");
 
   return (
     <Box style={{ width: "60%" }}>
@@ -54,16 +61,34 @@ export const AddSupplier = () => {
           variant="standard"
           required
           type="phone"
-          onChange={(e) => setPhone(e.target.value)}
+          helperText={helperTextPhone}
+          onChange={(e) => {
+            if (regexPhone.test(e.target.value)) {
+              setPhone(e.target.value);
+              setHelperTextPhone("");
+            }
+            else {
+              setHelperTextPhone("Phone format should be: +79998887766");
+            }
+          }}
         />
         <TextField
           style={{ width: "80%" }}
           label="Email"
+          helperText={helperTextEmail}
           placeholder="supplier@gmail.com"
           variant="standard"
           required
           type="email"
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => {
+            if (regexEmail.test(e.target.value)) {
+              setEmail(e.target.value);
+              setHelperTextPhone("");
+            }
+            else {
+              setHelperTextEmail("Email format should be: supplier@gmail.com");
+            }
+        }}
         />
         <Box style={{ marginLeft: "35%" }} flexDirection="row">
           <Button

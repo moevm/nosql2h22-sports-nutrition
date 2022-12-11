@@ -49,7 +49,7 @@ export function FindBranch({ setOpen }: {
         <TextField
           margin="dense"
           id="id"
-          label="Enter branch's id"
+          label="Id"
           fullWidth
           onChange={(val) =>
             setId(val.target.value)}
@@ -58,7 +58,7 @@ export function FindBranch({ setOpen }: {
         <TextField
           margin="dense"
           id="name"
-          label="Enter branch's name"
+          label="Name"
           fullWidth
           onChange={(val) =>
             setName(val.target.value)}
@@ -67,7 +67,7 @@ export function FindBranch({ setOpen }: {
         <TextField
           margin="dense"
           id="city"
-          label="Enter branch's city"
+          label="City"
           fullWidth
           onChange={(val) =>
             setCity(val.target.value)}

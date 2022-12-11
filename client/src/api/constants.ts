@@ -1,6 +1,7 @@
 export const modeAndHeaders: RequestInit = {
   mode: "cors",
-  headers: { "Content-Type": "application/json", Accept: "application/json" }
+  headers: { "Content-Type": "application/json", "Accept": "application/json",
+    "Access-Control-Allow-Origin" : "*"}
 };
 
 export const regexLetters = /^[A-Za-zА-Яа-я]*$/;

@@ -37,6 +37,9 @@ export const branchDtoFromStrings = (name: string, city: string, id: string): Ge
 export const toServerDateFormat = (date: string) => {
   //"1/1/2020 1:1:1",
   // 2022-12-11T12:43
+  if (!date.length) {
+    return "";
+  }
   const monthSeparatorIndex = date.indexOf("-");
   const daySeparatorIndex = date.lastIndexOf("-");
   const hoursSeparator = date.indexOf("T");

@@ -63,6 +63,15 @@ export function FindStockDialog({ onChange, value }: {
           variant="standard"
         />
         <TextField
+          margin="dense"
+          id="name"
+          label="Name"
+          fullWidth
+          onChange={(val) =>
+            updateField("name", val.target.value)}
+          variant="standard"
+        />
+        <TextField
           type="number"
           margin="dense"
           id="amount_from"
@@ -106,7 +115,7 @@ export function FindStockDialog({ onChange, value }: {
       <DialogActions>
         <IconButton
           onClick={() => {
-            if (!checkObjOnNegativeNumbers(curValue)) {
+            if (checkObjOnNegativeNumbers(curValue)) {
               alert("Amount and price must be not negative");
               return;
             }

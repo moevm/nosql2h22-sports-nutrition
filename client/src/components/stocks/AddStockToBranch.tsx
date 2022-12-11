@@ -32,19 +32,24 @@ export function AddStockToBranch(props: StockToBranchProps) {
         if (response.ok) return response.json();
         else {
           const text = await response.text();
-          setErrorMessage(JSON.parse(text).message);
+          setErrorMessage(text);
           return undefined;
         }
       })
       .then((json) => {
         if (json) {
+          console.log(json);
           setErrorMessage("");
           setStocks(stocks.concat([json]));
           alert("Stock was successfully added!");
           handleClose();
         }
       })
-      .catch((error) => setErrorMessage(error.message));
+      .catch((error) =>
+      {
+        console.log("Set error", error);
+        setErrorMessage(String(error))
+      });
   };
 
   return (

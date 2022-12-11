@@ -14,6 +14,7 @@ import { isObjEmpty } from "../../api/branch";
 import { FilterSupplierCriteria, getSupplier } from "../../api/supplier";
 import { updateField } from "./util";
 import { SuppliersTable } from "./SuppliersTable";
+import { findEmployee } from "../../api/employee";
 
 export const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -70,13 +71,23 @@ export function FindSupplier() {
 
   const findSuppliers = useCallback(() => {
     getSupplier(value)
-      .then((response) => response.ok ? response.json() : undefined)
+      .then(async (response) => {
+       if (response.ok) return response.json();
+       else {
+         const text = await response.text();
+         setError(JSON.parse(text).message);
+         setSuppliers([]);
+         return undefined;
+       }}
+      )
       .then((json) => {
-        setError(json ? "" : SUPPLIERS_NOT_FOUND);
-        setSuppliers(json ? json.result : undefined);
+        if (json) {
+          setError( "" );
+          setSuppliers( json.result);
+        }
       })
       .catch((e) => {
-          setError(e.message + ". " + SUPPLIERS_NOT_FOUND);
+          setError(e.message);
           setSuppliers([]);
         }
       );

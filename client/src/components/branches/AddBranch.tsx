@@ -3,6 +3,7 @@ import * as React from "react";
 import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { postBranch } from "../../api/branch";
+import { getSupplier } from "../../api/supplier";
 
 export interface IAddBranchResponse {
   id: string;
@@ -29,13 +30,17 @@ export const AddBranch = () => {
 
   const doRequest = useCallback((nameReq: string, cityReq: string) => {
     postBranch(nameReq, cityReq)
-      .then((response) => response.json())
-      .then((json) => {
-        const parsedJson = convertToObject(json);
-        alert(`Branch "${nameReq}" was successfully added!`);
+      .then( async (response) => {
+        if (response.ok) alert("Branch was successfully added!");
+        else {
+          const result = await response.text();
+          alert(JSON.parse(result).message);
+        }
       })
-      .catch((e) => alert(`Error occured: ${e.message}`));
+      .catch((e) => alert(`Error occurred: ${e.message}`));
   }, [postBranch, convertToObject]);
+
+
   return (
     <Box style={{ width: "60%" }}>
       <Stack spacing={2}>
