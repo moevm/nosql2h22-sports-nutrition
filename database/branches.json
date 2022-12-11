@@ -132,7 +132,7 @@
             "$numberLong": "1640998861000"
           }
         },
-        "salary": 2,
+        "salary": 20,
         "shifts_history": [
           {
             "$date": {
@@ -283,7 +283,7 @@
             "$numberLong": "1640998861000"
           }
         },
-        "salary": 2,
+        "salary": 5,
         "shifts_history": [
           {
             "$date": {
@@ -320,7 +320,7 @@
             "$numberLong": "1640998861000"
           }
         },
-        "salary": 2,
+        "salary": 3,
         "shifts_history": [
           {
             "$date": {
@@ -434,7 +434,7 @@
             "$numberLong": "1640998861000"
           }
         },
-        "salary": 2,
+        "salary": 11,
         "shifts_history": [
           {
             "$date": {
@@ -471,7 +471,7 @@
             "$numberLong": "1640998861000"
           }
         },
-        "salary": 2,
+        "salary": 12,
         "shifts_history": [
           {
             "$date": {
@@ -563,7 +563,7 @@
             "$numberLong": "1640998861000"
           }
         },
-        "salary": 2,
+        "salary": 30,
         "shifts_history": [
           {
             "$date": {
@@ -655,7 +655,7 @@
             "$numberLong": "1640998861000"
           }
         },
-        "salary": 2,
+        "salary": 45,
         "shifts_history": [],
         "vacation_history": [],
         "salary_change_history": []

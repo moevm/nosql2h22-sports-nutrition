@@ -68,18 +68,18 @@ class IntervalQueryRepresentation(QueryRepresentation):
 
     def represent(self) -> json:
         if self.interval.value_from is not None:
-            self.lazy_get_field_query_json()["$gt"] = self.handle_value_from()
+            self.handle_value_from(self.interval.value_from)
 
         if self.interval.value_to is not None:
-            self.lazy_get_field_query_json()["$lt"] = self.handle_value_to()
+            self.handle_value_to(self.interval.value_to)
 
         return self.query
 
-    def handle_value_to(self):
-        return self.interval.value_to
+    def handle_value_to(self, value_to):
+        self.lazy_get_field_query_json()["$lt"] = value_to
 
-    def handle_value_from(self):
-        return self.interval.value_from
+    def handle_value_from(self, value_from):
+        self.lazy_get_field_query_json()["$gt"] = value_from
 
 
 class ArraySizeIntervalQueryRepresentation(IntervalQueryRepresentation):
@@ -87,14 +87,17 @@ class ArraySizeIntervalQueryRepresentation(IntervalQueryRepresentation):
     def __init__(self, field_name: str, interval: IntervalHolder):
         super().__init__(field_name, interval)
 
-    def handle_value_to(self):
-        return {
-            "$size": self.interval.value_to
+    def __get_array_index(self, array_name: str, index: int) -> str:
+        return array_name + '.' + str(index)
+
+    def handle_value_to(self, value_to):
+        self.query[self.__get_array_index(self.field_name, value_to)] = {
+            "$exists": False
         }
 
-    def handle_value_from(self):
-        return {
-            "$size": self.interval.value_from
+    def handle_value_from(self, value_from):
+        self.query[self.__get_array_index(self.field_name, value_from)] = {
+            "$exists": True
         }
 
 
