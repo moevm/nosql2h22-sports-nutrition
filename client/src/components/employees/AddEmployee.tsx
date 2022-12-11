@@ -131,15 +131,16 @@ export const AddEmployee = ({ isOpen, setOpen, branchId, employees, setEmployees
         <TextField
           required
           margin="dense"
-          id="role"
-          label="Role"
+          id="phone"
+          label="Phone"
           fullWidth
+          placeholder="+79997775566"
           onChange={(val) => {
             if (!regexPhone.test(val.target.value)) {
               setHelperTextPhone("Phone format should be: +79998887766");
             } else {
               setHelperTextPhone("");
-              updateField("role", val.target.value);
+              updateField("phone", val.target.value);
             }
           }
           }
@@ -159,12 +160,11 @@ export const AddEmployee = ({ isOpen, setOpen, branchId, employees, setEmployees
         <TextField
           required
           margin="dense"
-          id="phone"
-          label="Phone"
-          placeholder="+79997775566"
+          id="Role"
+          label="Role"
           fullWidth
           onChange={(val) => {
-            updateField("phone", val.target.value);
+            updateField("role", val.target.value);
           }
           }
           variant="standard"
