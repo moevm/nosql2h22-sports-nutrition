@@ -38,7 +38,7 @@ branch_repository = BranchRepository(mongo_connection)
 
 product_repository = ProductRepository(mongo_connection)
 
-sale_repository = SaleRepository(mongo_connection)
+sale_repository = SaleRepository(mongo_connection, branch_repository)
 
 maintenance_repository = MaintenanceRepository(mongo_connection)
 
