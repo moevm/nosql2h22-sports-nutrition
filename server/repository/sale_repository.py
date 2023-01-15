@@ -17,7 +17,7 @@ class SaleRepository:
         # print(f"request.id info: {type(request.id)}")
         
         # ищем нужный брэнч
-        branch = await self.branch_repository.find_by_id(ObjectId(request.branch_id))
+        branch = (await self.branch_repository.find_by_id(ObjectId(request.branch_id))).get()
         # ищем stock с request.product_id
         stock = None
         for branch_stock in branch.stocks:
@@ -26,8 +26,6 @@ class SaleRepository:
         # смотрим на его количество
         if stock.amount < request.amount:
             raise ValueError("too big amount for sale")
-        
-        # print(branch.get())
 
         request.id = (await self.collection.insert_one(request.dict(by_alias=True))).inserted_id
         return request
