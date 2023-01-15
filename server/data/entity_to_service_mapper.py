@@ -5,6 +5,9 @@ from server.data.services.branch.branch import SalaryChange, Vacation
 from server.data.services.branch.branch_indexed import EmployeeIndexed, ProductDescriptorIndexed, ProductIndexed, \
     StockIndexed, BranchIndexed, BranchInfo
 from server.data.services.supplier.supplier import SupplierIndexed, SupplierInfo
+from server.data.services.sale.sale import SaleIndexed
+from server.data.database.sale_entity import SaleEntity
+from logging import info
 
 
 def from_salary_change_entity(change: SalaryChangeEntity) -> SalaryChange:
@@ -52,3 +55,8 @@ def from_branch_entity(branch: BranchEntity) -> BranchIndexed:
 
 def from_branch_entity_to_info(branch: BranchInfoEntity) -> BranchInfo:
     return BranchInfo(branch.id, branch.name, branch.city, branch.employees, branch.stocks)
+
+
+def from_sale_entity(sale: SaleEntity) -> SaleIndexed:
+    return SaleIndexed(sale.id, str(sale.supplier_id), str(sale.product_id),
+                       str(sale.branch_id), sale.price, sale.amount, sale.date)

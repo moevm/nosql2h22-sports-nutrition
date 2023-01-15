@@ -1,5 +1,7 @@
 from bson import ObjectId
 
+from logging import info
+
 from server.common.exceptions import InvalidPhoneQuery
 from server.common.monad import Optional
 from server.data.database.query import Query, IntervalHolder
@@ -20,6 +22,9 @@ from server.data.services.branch.branch_indexed import StockIndexed, ProductInde
     ProductDescriptorIndexed, EmployeeIndexed, Branch
 from server.data.services.product.product import ProductDescriptor, InsertProductWithDescriptor
 from server.data.services.supplier.supplier import InsertSupplier, Supplier
+from server.data.dto.sale.sale_dto import SaleQueryDto, InsertSaleDto
+from server.data.services.sale.sale import InsertSale
+from server.data.database.query import SaleQuery
 
 
 def from_product_descriptor_indexed_dto(request: ProductDescriptorIndexedDto) -> ProductDescriptorIndexed:
@@ -220,3 +225,29 @@ def from_employee_query_dto(query: EmployeeQueryDto) -> Query:
                                                                                             query.employment_date_to,
                                                                                             get_datetime)) \
         .compile()
+
+
+def from_insert_sale_dto(sale: InsertSaleDto) -> InsertSale:
+    return InsertSale(sale.supplier_id, sale.product_id, sale.branch_id,
+                      sale.price, sale.amount, get_datetime(sale.date))
+
+
+def from_sale_query_dto(query: SaleQueryDto) -> SaleQuery:
+    internal = SaleQuery()
+
+    if query.supplier_id:
+        internal.supplier_id = FieldEqualsValueQueryRepresentation(ObjectId(query.supplier_id[0]), 'supplier_id')
+
+    if query.product_id:
+        internal.product_id = FieldEqualsValueQueryRepresentation(ObjectId(query.product_id[0]), 'product_id')
+
+    if query.branch_id:
+        internal.branch_id = FieldEqualsValueQueryRepresentation(ObjectId(query.branch_id[0]), 'branch_id')
+
+    if query.id:
+        internal.id = IdQueryRepresentation(ObjectId(query.id[0]))
+
+    if not len(vars(internal)):
+        raise EmptyQuery()
+
+    return internal

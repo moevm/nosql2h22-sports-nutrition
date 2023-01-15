@@ -206,5 +206,12 @@ class QueryBuilder:
         return FieldNameSetter(lambda field_name: ConditionBuilder(self.__and_conditions, self, field_name))
 
 
+class SaleQuery(Query):
+    supplier_id: FieldEqualsValueQueryRepresentation
+    product_id: FieldEqualsValueQueryRepresentation
+    branch_id: FieldEqualsValueQueryRepresentation
+    id: IdQueryRepresentation
+
+
 def product_id_query(product_id: ObjectId) -> Query:
     return QueryBuilder().and_condition().field("stocks.product._id").equals(product_id).compile()
