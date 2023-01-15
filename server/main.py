@@ -7,11 +7,12 @@ from server.web.endpoint.maintenance_endpoint import maintenance_blueprint
 from server.web.endpoint.product_endpoint import product_blueprint
 from server.web.endpoint.supplier_endpoint import supplier_blueprint
 from server.web.exception_handler import exception_handler_blueprint
+from server.web.endpoint.sale_endpoint import sale_blueprint
 
 
 def web_server_run():
     api = Blueprint.group(employee_blueprint, branch_blueprint, supplier_blueprint, exception_handler_blueprint,
-                          maintenance_blueprint, product_blueprint)
+                          maintenance_blueprint, product_blueprint, sale_blueprint)
 
     web_server.get_underlying_server().blueprint(api)
 
