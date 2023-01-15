@@ -27,6 +27,9 @@ class SaleRepository:
         if stock.amount < request.amount:
             raise ValueError("too big amount for sale")
 
+        # уменьшаем количество товара
+        await self.branch_repository.update_stock_amount(stock.id, stock.amount - request.amount)
+
         request.id = (await self.collection.insert_one(request.dict(by_alias=True))).inserted_id
         return request
     

@@ -115,3 +115,7 @@ class BranchRepository:
                     }
                 }
             ]).to_list(length=None)]
+
+    @is_logged(['class', 'branch_id', 'request'])
+    async def update_stock_amount(self, stock_id: ObjectId, new_amount: int):
+        await self.collection.update_one({"stocks._id": stock_id}, {"$set": {"stocks.$.amount": new_amount}})
