@@ -4,8 +4,9 @@ from sanic_ext import validate
 
 from server.common.factory import sale_service
 from server.data.dto.sale.sale_dto import InsertSaleDto, SaleQueryDto
-from server.data.dto_to_service_mapper import  from_insert_sale_dto
+from server.data.dto_to_service_mapper import  from_insert_sale_dto, from_sale_query_dto
 from server.data.service_to_dto_mapper import dto_indexed_from_sale_indexed
+from server.data.dto.common.response_dto import response_find_sale
 
 sale_blueprint = Blueprint("sale")
 
@@ -17,4 +18,4 @@ async def insert_sale(request: Request, body: InsertSaleDto) -> HTTPResponse:
 @sale_blueprint.route("/sale", methods=['GET'])
 @validate(query=SaleQueryDto)
 async def find_sale(request: Request, query: SaleQueryDto) -> HTTPResponse:
-    return res.json({})
+    return res.json(response_find_sale(await sale_service.find_sales(from_sale_query_dto(query))).dict(by_alias=True))

@@ -8,3 +8,10 @@ class SaleRepository:
     async def insert(self, request: SaleEntity) -> SaleEntity:
         request.id = (await self.collection.insert_one(request.dict(by_alias=True))).inserted_id
         return request
+    
+    @is_logged(['class'])
+    async def find_by_query(self, request: SaleQuery) -> list:
+        query = request.get_json()
+        info(f"query: {query}")
+        return [from_sale_document(document) for document in
+                await self.collection.find({"$and": query}).to_list(length=None)]
