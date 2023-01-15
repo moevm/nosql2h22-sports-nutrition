@@ -24,7 +24,7 @@ export const BranchesTable = (props: BranchesTableProps) => {
                 return (
                     <tr key={item._id} className="branches-table">
                         <td className="cell-id"
-                        ><a href={`${HOST}8080/branch/id/${item._id}`}>
+                        ><a href={`${HOST}8070/branch/id/${item._id}`}>
                             {item._id}
                         </a></td>
                         <td>{item.name}</td>

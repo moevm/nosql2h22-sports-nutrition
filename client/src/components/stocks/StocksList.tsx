@@ -30,7 +30,7 @@ export const StocksList = ({ stocks }: { stocks: any[] }) => {
               <TableCell align="right">{row.product.descriptor.name}</TableCell>
               <TableCell align="right">{row.price}</TableCell>
               <TableCell align="right">{row.amount}</TableCell>
-              <TableCell align="right"> <a href={`${HOST}8080/supplier/${row.product.supplier_id}`}>
+              <TableCell align="right"> <a href={`${HOST}8070/supplier/${row.product.supplier_id}`}>
                 {row.product.supplier_id}
               </a></TableCell>
             </TableRow>

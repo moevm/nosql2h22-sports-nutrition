@@ -24,7 +24,6 @@ from server.data.services.product.product import ProductDescriptor, InsertProduc
 from server.data.services.supplier.supplier import InsertSupplier, Supplier
 from server.data.dto.sale.sale_dto import SaleQueryDto, InsertSaleDto
 from server.data.services.sale.sale import InsertSale
-from server.data.database.query import SaleQuery
 
 
 def from_product_descriptor_indexed_dto(request: ProductDescriptorIndexedDto) -> ProductDescriptorIndexed:
@@ -232,22 +231,29 @@ def from_insert_sale_dto(sale: InsertSaleDto) -> InsertSale:
                       sale.price, sale.amount, get_datetime(sale.date))
 
 
-def from_sale_query_dto(query: SaleQueryDto) -> SaleQuery:
-    internal = SaleQuery()
+def from_sale_query_dto(query: SaleQueryDto) -> Query:
+    return QueryBuilder() \
+        .and_condition().field("supplier_id").equals(object_id(query.supplier_id)) \
+        .and_condition().field("product_id").equals(object_id(query.product_id)) \
+        .and_condition().field("branch_id").equals(object_id(query.branch_id)) \
+        .and_condition().field("id").equals(object_id(query.id)) \
+        .compile()
 
-    if query.supplier_id:
-        internal.supplier_id = FieldEqualsValueQueryRepresentation(ObjectId(query.supplier_id[0]), 'supplier_id')
+    # internal = SaleQuery()
 
-    if query.product_id:
-        internal.product_id = FieldEqualsValueQueryRepresentation(ObjectId(query.product_id[0]), 'product_id')
+    # if query.supplier_id:
+    #     internal.supplier_id = FieldEqualsValueQueryRepresentation(ObjectId(query.supplier_id[0]), 'supplier_id')
 
-    if query.branch_id:
-        internal.branch_id = FieldEqualsValueQueryRepresentation(ObjectId(query.branch_id[0]), 'branch_id')
+    # if query.product_id:
+    #     internal.product_id = FieldEqualsValueQueryRepresentation(ObjectId(query.product_id[0]), 'product_id')
 
-    if query.id:
-        internal.id = IdQueryRepresentation(ObjectId(query.id[0]))
+    # if query.branch_id:
+    #     internal.branch_id = FieldEqualsValueQueryRepresentation(ObjectId(query.branch_id[0]), 'branch_id')
 
-    if not len(vars(internal)):
-        raise EmptyQuery()
+    # if query.id:
+    #     internal.id = IdQueryRepresentation(ObjectId(query.id[0]))
 
-    return internal
+    # if not len(vars(internal)):
+    #     raise EmptyQuery()
+
+    # return internal

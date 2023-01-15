@@ -7,7 +7,7 @@ services:
     depends_on:
       - server
     ports:
-      - "8080:8080"
+      - "8070:8070"
   server:
     container_name: server
     volumes:

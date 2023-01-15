@@ -11,6 +11,7 @@ from server.data.services.branch.branch_indexed import EmployeeIndexed, ProductD
 from server.data.services.supplier.supplier import SupplierIndexed, SupplierInfo
 from server.data.services.sale.sale import SaleIndexed
 from server.data.dto.sale.sale_indexed_dto import SaleIndexedDto
+from server.common.logger import is_logged
 
 
 def dto_from_salary_change(change: SalaryChange) -> SalaryChangeDto:
