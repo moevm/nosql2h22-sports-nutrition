@@ -4,7 +4,7 @@ import {Branches} from "./components/branches/Branches";
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import {Main} from "./components/Main";
 import {NotFound} from "./components/NotFound";
-import {Sales} from "./components/Sales";
+import {Sales} from "./components/sales/Sales";
 import {AddSupplier} from "./components/suppliers/AddSupplier";
 import {Suppliers} from "./components/suppliers/Suppliers";
 import {SupplierPage} from "./components/suppliers/SupplierPage";

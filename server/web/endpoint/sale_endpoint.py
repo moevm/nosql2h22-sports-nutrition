@@ -7,12 +7,15 @@ from server.data.dto.sale.sale_dto import InsertSaleDto, SaleQueryDto
 from server.data.dto_to_service_mapper import  from_insert_sale_dto, from_sale_query_dto
 from server.data.service_to_dto_mapper import dto_indexed_from_sale_indexed
 from server.data.dto.common.response_dto import response_find_sale
+from server.data.datetime_formatter import get_string
+import datetime
 
 sale_blueprint = Blueprint("sale")
 
 @sale_blueprint.route("/sale", methods=['POST'])
 @validate(json=InsertSaleDto)
 async def insert_sale(request: Request, body: InsertSaleDto) -> HTTPResponse:
+    body.date = get_string(datetime.datetime.now())
     return res.json(dto_indexed_from_sale_indexed(await sale_service.insert(from_insert_sale_dto(body))).dict(by_alias=True))
 
 @sale_blueprint.route("/sale", methods=['GET'])

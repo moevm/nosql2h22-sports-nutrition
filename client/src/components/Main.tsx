@@ -17,5 +17,11 @@ export const Main = () => {
       component={RouterLink}
       to="/suppliers"
     />
+    <Tab
+      value="sales"
+      label="Sales"
+      component={RouterLink}
+      to="/sales"
+    />
   </Box>;
 };
