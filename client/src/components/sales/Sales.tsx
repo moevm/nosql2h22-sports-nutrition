@@ -1,7 +1,7 @@
 import * as React from "react";
 import {useState} from "react";
 import {Box, Tab, Tabs, Typography} from "@mui/material";
-// import {SalesList} from "./SalesList";
+import {SalesList} from "./SalesList";
 import {AddSale} from "./AddSale";
 import {TabPanel} from "components/tabs/tabs";
 
@@ -25,9 +25,9 @@ export const Sales = () => {
           />
         </Tabs>
       </Box>
-      {/* <TabPanel value={tabValue} index={0}>
+      <TabPanel value={tabValue} index={0}>
         <SalesList />
-      </TabPanel> */}
+      </TabPanel>
       <TabPanel value={tabValue} index={1}>
         <AddSale />
       </TabPanel>

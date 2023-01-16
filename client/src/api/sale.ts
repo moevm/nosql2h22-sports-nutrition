@@ -9,3 +9,11 @@ export const postSale = (branchIdReq: string, productIdReq: string, supplierIdRe
       body: JSON.stringify({ branch_id: branchIdReq, product_id: productIdReq, supplier_id: supplierIdReq, price: priceReq, amount: amountReq })
     });
   };
+
+export const getAllSales = () => {
+    return fetch(`${HOST}${SERVER_PORT}/get_all_sales`, {
+      method: "GET",
+      ...modeAndHeaders,
+      body: ""
+    });
+  };
