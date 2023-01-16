@@ -22,3 +22,8 @@ async def insert_sale(request: Request, body: InsertSaleDto) -> HTTPResponse:
 @validate(query=SaleQueryDto)
 async def find_sale(request: Request, query: SaleQueryDto) -> HTTPResponse:
     return res.json(response_find_sale(await sale_service.find_sales(from_sale_query_dto(query))).dict(by_alias=True))
+
+@sale_blueprint.route("/get_all_sales", methods=['GET'])
+async def get_all_sale(request: Request) -> HTTPResponse:
+    all_sales = await sale_service.get_all_sales()
+    return res.json(all_sales)

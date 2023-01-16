@@ -20,3 +20,7 @@ class SaleService:
     @is_logged(['class', 'query'])
     async def find_sales(self, query: Query) -> list:
         return [from_sale_entity(entity) for entity in await self.sale_repository.find_by_query(query)]
+
+    @is_logged(['class'])
+    async def get_all_sales(self):
+        return await self.sale_repository.get_all_sales()        

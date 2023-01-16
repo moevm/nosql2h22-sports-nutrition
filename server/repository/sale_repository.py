@@ -6,6 +6,7 @@ from server.data.database.sale_entity import from_sale_document
 from logging import info
 from server.repository.branch_repository import BranchRepository
 from bson import ObjectId
+from server.data.datetime_formatter import get_string
 
 class SaleRepository:
     def __init__(self, connection: MongoConnection, branch_repository: BranchRepository):
@@ -39,3 +40,21 @@ class SaleRepository:
         info(f"query: {query}")
         return [from_sale_document(document) for document in
                 await self.collection.find(request.get_json()).to_list(length=None)]
+
+    @is_logged(['class'])
+    async def get_all_sales(self) -> list:
+        cursor = self.collection.find({})
+        all_sales = []
+        # while cursor.has_next():
+        #     all_sales.append(await cursor.next())
+
+        while (await cursor.fetch_next):
+            doc = cursor.next_object()
+            doc["_id"] = str(doc["_id"])
+            doc["product_id"] = str(doc["product_id"])
+            doc["supplier_id"] = str(doc["supplier_id"])
+            doc["branch_id"] = str(doc["branch_id"])
+            doc["date"] = get_string(doc["date"])
+            all_sales.append(doc)
+    
+        return all_sales

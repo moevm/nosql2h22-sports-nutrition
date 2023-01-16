@@ -66,3 +66,13 @@ def response_find_product(products: list) -> ListResponseDto:
 
 def response_find_sale(sales: list) -> ListResponseDto:
     return response_find_list(sales, dto_indexed_from_sale_indexed)
+
+def response_get_all_sales(sales: list) -> ListResponseDto:
+    response = ListResponseDto.construct()
+    response.size = len(sales)
+    # response.result = list(mapper(element).dict(by_alias=True) for element in data)
+    for sale in sales:
+        response_sale = dto_indexed_from_sale_indexed(sale)
+    return response
+
+    return response_find_list(sales, dto_indexed_from_sale_indexed)
